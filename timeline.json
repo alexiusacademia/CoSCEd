@@ -1,0 +1,24 @@
+{
+  "projected": [
+    {
+      "time": 0,
+      "accomp": 0
+    },
+    {
+      "time": 30,
+      "accomp": 15
+    },
+    {
+      "time": 60,
+      "accomp": 45
+    },
+    {
+      "time": 90,
+      "accomp": 85
+    },
+    {
+      "time": 120,
+      "accomp": 100
+    }
+  ]
+}
