@@ -20,5 +20,16 @@
       "time": 120,
       "accomp": 100
     }
+  ],
+
+  "actual": [
+    {
+      "time": 0,
+      "accomp": 0
+    },
+    {
+      "time": 20,
+      "accomp": 12
+    }
   ]
 }
