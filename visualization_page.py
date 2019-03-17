@@ -25,6 +25,9 @@ class Graph(tk.Frame):
         self.canvas.configure(width=640, height=480)
         self.canvas.grid(column=1, row=1, sticky='nesw')
 
+    def recalculate_projected(self):
+        pass
+
     def plot_projected(self, projected_list):
         can = self.canvas
 
