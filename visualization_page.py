@@ -2,31 +2,28 @@ import tkinter as tk
 
 
 class Graph(tk.Frame):
-    width = 640
-    height = 480
+    canvas_width = 640
+    canvas_height = 480
+
     def __init__(self, parent):
         super().__init__(parent)
 
-        self.pack(fill="both", expand=True)
+        self.grid(column=0, row=0)
         self.master.title('Timeline Visual')
-        self.centerWindow()
+        self.center_window()
 
-        self.canvas = tk.Canvas(self)
+        lblLeft_controls = tk.Label(self, text="Controls")
+        lblLeft_controls.grid(column=0, row=0, sticky='nesw')
+
+        lbl = tk.Label(self, text="Time Frame")
+        lbl.grid(column=1, row=0)
+
+        canvas_frame = tk.Frame(self)
+        canvas_frame.grid(column=1, row=1)
+
+        self.canvas = tk.Canvas(canvas_frame)
         self.canvas.configure(width=640, height=480)
-        #self.canvas.pack(side="top", fill="both", expand=True)
-        self.canvas.grid(column=0, row=1)
-
-        time_frame = tk.Frame(self)
-        time_frame.grid(column = 0, row = 0)
-
-        lbl = tk.Label(time_frame, text="Time Frame")
-        lbl.pack()
-
-        time_frame_bottom = tk.Frame(self)
-        time_frame_bottom.grid(column=0, row=2)
-
-        lbl_bottom = tk.Label(time_frame_bottom, text="Time Frame")
-        lbl_bottom.pack()
+        self.canvas.grid(column=1, row=1, sticky='nesw')
 
     def plot_projected(self, projected_list):
         can = self.canvas
@@ -39,9 +36,9 @@ class Graph(tk.Frame):
         max_x = projected_list[len(projected_list)-1]['time']
         diff_x = max_x - min_x
 
-        height_factor = self.height / diff_y
+        height_factor = self.canvas_height / diff_y
 
-        width_factor = self.width / diff_x
+        width_factor = self.canvas_width / diff_x
 
         rows = len(projected_list)
         for i in range(rows-1):
@@ -51,14 +48,14 @@ class Graph(tk.Frame):
             x2 = projected_list[i + 1]['time']
             y2 = projected_list[i + 1]['accomp']
             can.create_line(x1 * width_factor,
-                            self.height - y1 * height_factor,
+                            self.canvas_height - y1 * height_factor,
                             x2 * width_factor,
-                            self.height - y2 * height_factor,
+                            self.canvas_height - y2 * height_factor,
                             fill="red", activedash=(5, 5))
 
-    def centerWindow(self):
-        w = self.width
-        h = self.height
+    def center_window(self):
+        w = self.master.winfo_screenwidth()
+        h = self.master.winfo_screenheight()
 
         sw = self.master.winfo_screenwidth()
         sh = self.master.winfo_screenheight()
