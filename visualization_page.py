@@ -34,13 +34,54 @@ class Timeline(tk.Frame):
         self.canvas.grid(column=1, row=1, sticky='nesw')
 
     def recalculate(self):
+        total_suspensions = 0
+        temp_projected = []
         # Break the projected based on suspensions
-        for i in range(len(self.suspensions)-1):
+        for i in range(len(self.suspensions)):
             # Recalculates projected timeline
-            for j in range(len(self.projected_accomplishment)-1):
-                pass
+            start_suspended = self.suspensions[i]['start']
+            duration_suspended = self.suspensions[i]['duration']
+
+            for j in range(len(self.projected_accomplishment) - 1):
+
+                t1 = self.projected_accomplishment[j]['time']
+                accomp1 = self.projected_accomplishment[j]['accomp']
+                t2 = self.projected_accomplishment[j+1]['time']
+                accomp2 = self.projected_accomplishment[j+1]['accomp']
+
+                temp_projected.append({
+                    "time": t1 + total_suspensions,
+                    "accomp": accomp1
+                })
+
+                if (t1 < start_suspended and start_suspended < t2):
+                    total_suspensions += duration_suspended
+
+                    # Now, calculate the corresponding accomplishment
+                    accomp = (accomp2 - accomp1) / (t2 - t1) * (start_suspended - t1) + accomp1
+
+                    # Append to new list
+                    temp_projected.append({
+                        "time": start_suspended,
+                        "accomp": accomp     # To be calculated by interpolation
+                    })
+                    temp_projected.append({
+                        "time": start_suspended + duration_suspended,
+                        "accomp": accomp
+                    })
+
+            # Add the last node
+            temp_projected.append({
+                "time": self.projected_accomplishment[len(self.projected_accomplishment)-1]['time'] + total_suspensions,
+                "accomp": 100
+            })
+
+            self.projected_accomplishment = temp_projected
+        for x in temp_projected:
+            print(x)
 
     def plot_timeline(self):
+        self.recalculate()
         self.plot_projected()
 
     def plot_projected(self):

@@ -38,6 +38,9 @@
   ],
 
   "suspensions": [
-
+    {
+      "start": 45,
+      "duration": 20
+    }
   ]
 }
