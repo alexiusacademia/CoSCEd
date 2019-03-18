@@ -88,7 +88,7 @@ class Timeline(tk.Frame):
 
     def plot_timeline(self):
         self.recalculate()
-        self.plot_projected()
+        # self.plot(self.projected_accomplishment)
 
     def plot_projected(self):
         can = self.canvas
@@ -112,6 +112,34 @@ class Timeline(tk.Frame):
             y1 = self.projected_accomplishment[i]['accomp']
             x2 = self.projected_accomplishment[i + 1]['time']
             y2 = self.projected_accomplishment[i + 1]['accomp']
+            can.create_line(x1 * width_factor,
+                            self.canvas_height - y1 * height_factor,
+                            x2 * width_factor,
+                            self.canvas_height - y2 * height_factor,
+                            fill="red", activedash=(5, 5))
+
+    def plot(self, data):
+        can = self.canvas
+
+        min_y = data[0]['accomp']
+        max_y = data[len(data)-1]['accomp']
+        diff_y = max_y - min_y
+
+        min_x = data[0]['time']
+        max_x = data[len(data)-1]['time']
+        diff_x = max_x - min_x
+
+        height_factor = self.canvas_height / diff_y
+
+        width_factor = self.canvas_width / diff_x
+
+        rows = len(data)
+        for i in range(rows-1):
+            # Draw lines on canavs
+            x1 = data[i]['time']
+            y1 = data[i]['accomp']
+            x2 = data[i + 1]['time']
+            y2 = data[i + 1]['accomp']
             can.create_line(x1 * width_factor,
                             self.canvas_height - y1 * height_factor,
                             x2 * width_factor,
