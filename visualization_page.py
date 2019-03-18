@@ -34,11 +34,19 @@ class Timeline(tk.Frame):
         self.canvas.grid(column=1, row=1, sticky='nesw')
 
     def recalculate(self):
-        total_suspensions = 0
-        temp_projected = []
-        # Break the projected based on suspensions
+        """
+        Recalculates the graph for projected and actual timeline to be plotted
+        by incorporating all the suspensions.
+        """
+
+        # Breaks the projected based on suspensions
         for i in range(len(self.suspensions)):
-            # Recalculates projected timeline
+            # Temporary holder for the projected timeline
+            temp_projected = []
+
+            # Total number of days the project is suspended
+            total_suspensions = 0
+
             start_suspended = self.suspensions[i]['start']
             duration_suspended = self.suspensions[i]['duration']
 
@@ -77,8 +85,6 @@ class Timeline(tk.Frame):
             })
 
             self.projected_accomplishment = temp_projected
-        for x in temp_projected:
-            print(x)
 
     def plot_timeline(self):
         self.recalculate()
