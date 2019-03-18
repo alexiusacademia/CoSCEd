@@ -1,7 +1,11 @@
 import tkinter as tk
 
 
-class Graph(tk.Frame):
+class Timeline(tk.Frame):
+    projected_accomplishment = []
+    actual_accomplishment = []
+    suspensions = []
+
     canvas_width = 640
     canvas_height = 480
 
@@ -10,9 +14,10 @@ class Graph(tk.Frame):
 
         self.grid(column=0, row=0)
         self.master.title('Timeline Visual')
-        self.center_window()
+        # self.center_window()
 
         lblLeft_controls = tk.Label(self, text="Controls")
+        lblLeft_controls.configure(bg="#ff0000")
         lblLeft_controls.grid(column=0, row=0, sticky='nesw')
 
         lbl = tk.Label(self, text="Time Frame")
@@ -22,10 +27,13 @@ class Graph(tk.Frame):
         canvas_frame.grid(column=1, row=1)
 
         self.canvas = tk.Canvas(canvas_frame)
-        self.canvas.configure(width=640, height=480)
+        self.canvas.configure(width=640, height=480, bg="#ffffff")
         self.canvas.grid(column=1, row=1, sticky='nesw')
 
-    def recalculate_projected(self):
+    def recalculate(self):
+        pass
+
+    def plot_timeline(self):
         pass
 
     def plot_projected(self, projected_list):

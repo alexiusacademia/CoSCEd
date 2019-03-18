@@ -5,8 +5,8 @@ from visualization_page import *
 
 if __name__ == '__main__':
     root = tk.Tk()
-    root.columnconfigure(0, weight=1)
-    root.rowconfigure(0, weight=1)
+    #.columnconfigure(0, weight=1)
+    # root.rowconfigure(0, weight=1)
     # root.geometry('640x480') -> No need to set
 
     # Retrieve the string from project file
@@ -26,7 +26,12 @@ if __name__ == '__main__':
     # Retrieve actual object timeline
     actual_implementation = json_project['actual']
 
-    g = Graph(root)
-    g.plot_projected(projected_imeplementation)
+    # Retrieve suspensions
+    suspensions = json_project['suspensions']
+
+    timeline = Timeline(root)
+    timeline.projected_accomplishment = projected_imeplementation
+    timeline.actual_accomplishment = actual_implementation
+    timeline.suspensions = suspensions
 
     root.mainloop()
