@@ -6,18 +6,22 @@
     },
     {
       "time": 30,
-      "accomp": 15
+      "accomp": 8.86
     },
     {
       "time": 60,
-      "accomp": 45
+      "accomp": 34.31
     },
     {
       "time": 90,
-      "accomp": 85
+      "accomp": 59.14
     },
     {
       "time": 120,
+      "accomp": 83.98
+    },
+    {
+      "time": 150,
       "accomp": 100
     }
   ],

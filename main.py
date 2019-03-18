@@ -33,5 +33,7 @@ if __name__ == '__main__':
     timeline.projected_accomplishment = projected_imeplementation
     timeline.actual_accomplishment = actual_implementation
     timeline.suspensions = suspensions
+    timeline.recalculate()
+    timeline.plot_timeline()
 
     root.mainloop()
