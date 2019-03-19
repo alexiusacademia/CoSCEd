@@ -1,4 +1,6 @@
 import tkinter as tk
+from tkinter import filedialog as fd
+
 from PIL import Image
 import io
 import os
@@ -323,6 +325,12 @@ class Timeline(tk.Frame):
             self.str_slippage.set(self.slippage)
 
     def save_scurve(self):
+        """
+        Saves the canvas content to an image file.
+        """
         ps = self.canvas.postscript(colormode='color')
         img = Image.open(io.BytesIO(ps.encode('utf-8')))
-        img.save("save.jpg", 'jpeg')
+        fn = fd.asksaveasfilename(initialdir='',
+                                  title='Save S-Curve File',
+                                  filetypes=[("PNG files", "*.png")])
+        img.save(fn, 'png', optimize=True, dpi=(300, 300))
