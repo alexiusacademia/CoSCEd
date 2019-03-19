@@ -1,13 +1,9 @@
-import tkinter as tk
 import json
 
 from visualization_page import *
 
 if __name__ == '__main__':
     root = tk.Tk()
-    #.columnconfigure(0, weight=1)
-    # root.rowconfigure(0, weight=1)
-    # root.geometry('640x480') -> No need to set
 
     # Retrieve the string from project file
     proj_file = open('timeline.json', 'r')

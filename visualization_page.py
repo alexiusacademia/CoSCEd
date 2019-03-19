@@ -1,5 +1,6 @@
 import tkinter as tk
 
+
 class Timeline(tk.Frame):
     projected_accomplishment = []
     actual_accomplishment = []
@@ -23,6 +24,7 @@ class Timeline(tk.Frame):
         self.grid_columnconfigure(1, weight=1)
 
         self.total_suspension_duration = 0
+        self.slippage = 0
 
         canvas_title = tk.Label(self, text="Time Frame")
         canvas_title.grid(column=1, row=0)
@@ -33,7 +35,8 @@ class Timeline(tk.Frame):
         self.str_cdp_accomp = tk.StringVar()
         self.str_summary_total_suspended = tk.StringVar()
         self.str_summary_total_suspension_order = tk.StringVar()
-        #===========================================================
+        self.str_slippage = tk.StringVar()
+        # ===========================================================
         left_panel = tk.Frame(self)
         left_panel.grid(row=0, column=0, rowspan=2, sticky='nesw')
 
@@ -43,11 +46,17 @@ class Timeline(tk.Frame):
         frame_canvas_data_display.grid_columnconfigure(1, weight=1)
 
         cdp_time_label = tk.Label(frame_canvas_data_display, text="Time").grid(row=0, column=0, sticky="nw")
-        cdp_time = tk.Label(frame_canvas_data_display, text='', width=10, anchor='ne', relief='sunken', textvariable=self.str_cdp_time)\
-            .grid(row=0, column=1, sticky="nesw", padx=5)
+        cdp_time = tk.Label(frame_canvas_data_display, text='', width=10, anchor='ne',
+                            relief='sunken', textvariable=self.str_cdp_time)\
+            .grid(row=0, column=1, sticky="nesw", padx=5, pady=5)
         cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Accomplishment").grid(row=1, column=0, sticky='nw')
-        cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne', relief='sunken', textvariable=self.str_cdp_accomp)\
-            .grid(row=1, column=1, sticky='nesw', padx=5)
+        cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
+                              relief='sunken', textvariable=self.str_cdp_accomp)\
+            .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
+        cdp_slippage_label = tk.Label(frame_canvas_data_display, text='Slippage').grid(row=2, column=0, sticky="nw")
+        cdp_slippage = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
+                                relief='sunken', textvariable=self.str_slippage)\
+            .grid(row=2, column=1, sticky='nesw', padx=5, pady=5)
 
         # Summary
         frame_summary = tk.LabelFrame(left_panel, text='Summary')
@@ -55,22 +64,24 @@ class Timeline(tk.Frame):
         frame_summary.grid_columnconfigure(1, weight=1)
 
         summary_total_suspended_days_label = tk.Label(frame_summary, text='Total Suspended Days').grid(row=0, column=0)
-        summary_total_suspended = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken', textvariable=self.str_summary_total_suspended)\
+        summary_total_suspended = tk.Label(frame_summary, width=10, anchor='ne',
+                                           relief='sunken', textvariable=self.str_summary_total_suspended)\
             .grid(row=0, column=1, padx=5, pady=5)
 
-        summary_total_suspension_order_label = tk.Label(frame_summary, text='Total Suspension Orders').grid(row=1, column=0)
+        summary_total_suspension_order_label = tk.Label(frame_summary, text='Total Suspension Orders')\
+            .grid(row=1, column=0)
         summary_total_suspension_order = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
-                                           textvariable=self.str_summary_total_suspension_order) \
+                                                  textvariable=self.str_summary_total_suspension_order) \
             .grid(row=1, column=1, padx=5, pady=5)
 
-        #===========================================================
+        # ==========================================================
         # Canvas
         canvas_frame = tk.Frame(self)
         canvas_frame.grid(column=1, row=1)
         self.canvas = tk.Canvas(canvas_frame, cursor='cross')
         self.canvas.configure(width=self.canvas_width, height=self.canvas_height, bg="#ffffff")
         self.canvas.grid(column=1, row=1, sticky='nesw')
-        #===========================================================
+        # ==========================================================
 
     def recalculate(self):
         """
@@ -130,14 +141,21 @@ class Timeline(tk.Frame):
         self.str_summary_total_suspended.set(self.total_suspension_duration)
 
     def hover(self, event):
+        self.slippage = 0
         point = (event.widget.find_closest(event.x, event.y))[0]
         data = None
         for p in self.points:
             if p['point'] == point:
                 data = p
         if data is not None:
+            time = data['time']
             self.str_cdp_time.set(data['time'])
             self.str_cdp_accomp.set(round(data['accomp'], 2))
+            # Check if time is within the actual accomplishment range
+            actual_time_elapsed = self.actual_accomplishment[len(self.actual_accomplishment)-1]['time']
+            if time <= actual_time_elapsed:
+                self.calculate_slippage(time)
+            self.str_slippage.set(self.slippage)
 
     def plot_timeline(self):
         self.recalculate()
@@ -215,16 +233,16 @@ class Timeline(tk.Frame):
                             self.canvas_height - y2 * height_factor - bottom_margin,
                             fill=line_fill_color, activedash=(5, 5))
             pt = can.create_rectangle(x1 * width_factor - 2 + left_margin,
-                                 self.canvas_height - y1 * height_factor - 2 - bottom_margin,
-                                 x1 * width_factor + 2 + left_margin,
-                                 self.canvas_height - y1 * height_factor + 2 - bottom_margin,
-                                 fill=line_fill_color,
-                                 tags='point')
+                                      self.canvas_height - y1 * height_factor - 2 - bottom_margin,
+                                      x1 * width_factor + 2 + left_margin,
+                                      self.canvas_height - y1 * height_factor + 2 - bottom_margin,
+                                      fill=line_fill_color,
+                                      tags='point')
             self.canvas.tag_bind(pt, '<Enter>', self.hover)
             self.points.append({
-                "point" : pt,
-                "time" : x1,
-                "accomp" : y1
+                "point": pt,
+                "time": x1,
+                "accomp": y1
             })
         # Plot the last node
         x1 = data[rows-1]['time']
@@ -252,3 +270,23 @@ class Timeline(tk.Frame):
         x = (sw - w) / 2
         y = (sh - h) / 2
         self.master.geometry('%dx%d+%d+%d' % (w, h, x, y))
+
+    def calculate_slippage(self, time):
+        actual = self.get_accomplishment_at(time, self.actual_accomplishment)
+        projected = self.get_accomplishment_at(time, self.projected_accomplishment)
+        self.slippage = round((actual - projected), 2)
+
+    def get_accomplishment_at(self, time, accomplishment_list):
+        # Calculates accomplishment by interpolation
+        for i in range(len(accomplishment_list) - 1):
+            t1 = accomplishment_list[i]['time']
+            a1 = accomplishment_list[i]['accomp']
+            t2 = accomplishment_list[i+1]['time']
+            a2 = accomplishment_list[i+1]['accomp']
+            if (time >= t1) and (time <= t2):
+                if time == t1:
+                    return a1
+                elif time == t2:
+                    return a2
+                else:
+                    return (time - t1) / (t2 - t1) * (a2 - a1) + a1
