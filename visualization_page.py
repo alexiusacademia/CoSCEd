@@ -1,6 +1,4 @@
 import tkinter as tk
-from tkinter import ttk
-
 
 class Timeline(tk.Frame):
     projected_accomplishment = []
@@ -100,7 +98,8 @@ class Timeline(tk.Frame):
         for p in self.points:
             if p['point'] == point:
                 data = p
-        print(data)
+        if data != None:
+            print(data)
 
     def plot_timeline(self):
         self.recalculate()
@@ -116,29 +115,54 @@ class Timeline(tk.Frame):
 
         w = self.canvas_width
 
-        for i in range(grid_count_vertical + 1):
+        for i in range(1, grid_count_vertical):
             can.create_line(self.canvas_left_margin,
                             i * grid_height + self.canvas_top_margin,
                             w - self.canvas_right_margin,
                             i * grid_height + self.canvas_top_margin,
                             fill=grid_color,
                             dash=(2, 2))
+        can.create_line(self.canvas_left_margin,
+                        self.canvas_top_margin,
+                        w - self.canvas_right_margin,
+                        self.canvas_top_margin,
+                        width=2)
+        can.create_line(self.canvas_left_margin,
+                        self.canvas_height - self.canvas_bottom_margin,
+                        w - self.canvas_right_margin,
+                        self.canvas_height - self.canvas_bottom_margin,
+                        width=2)
+        can.create_line(self.canvas_left_margin,
+                        self.canvas_top_margin,
+                        self.canvas_left_margin,
+                        self.canvas_height - self.canvas_bottom_margin,
+                        width=2)
+        can.create_line(self.canvas_width - self.canvas_right_margin,
+                        self.canvas_top_margin,
+                        self.canvas_width - self.canvas_right_margin,
+                        self.canvas_height - self.canvas_bottom_margin,
+                        width=2)
 
     def plot(self, data, line_fill_color):
         can = self.canvas
 
         min_y = data[0]['accomp']
         max_y = 100
+
         diff_y = max_y - min_y
 
+        # Minimum abscissa shall always be the taken from the first time entry of projected
         min_x = data[0]['time']
         # Maximum width shall always be the timeline of projected
         max_x = self.projected_accomplishment[len(self.projected_accomplishment)-1]['time']
         diff_x = max_x - min_x
 
-        height_factor = self.canvas_height / diff_y
+        height_factor = (self.canvas_height - (self.canvas_top_margin + self.canvas_bottom_margin)) / diff_y
 
-        width_factor = self.canvas_width / diff_x
+        width_factor = (self.canvas_width - (self.canvas_left_margin + self.canvas_right_margin)) / diff_x
+
+        left_margin = self.canvas_left_margin
+        bottom_margin = self.canvas_bottom_margin
 
         rows = len(data)
         for i in range(rows-1):
@@ -147,15 +171,15 @@ class Timeline(tk.Frame):
             y1 = data[i]['accomp']
             x2 = data[i + 1]['time']
             y2 = data[i + 1]['accomp']
-            can.create_line(x1 * width_factor,
-                            self.canvas_height - y1 * height_factor,
-                            x2 * width_factor,
-                            self.canvas_height - y2 * height_factor,
+            can.create_line(x1 * width_factor + left_margin,
+                            self.canvas_height - y1 * height_factor - bottom_margin,
+                            x2 * width_factor + left_margin,
+                            self.canvas_height - y2 * height_factor - bottom_margin,
                             fill=line_fill_color, activedash=(5, 5))
-            pt = can.create_rectangle(x1 * width_factor - 2,
-                                 self.canvas_height - y1 * height_factor - 2,
-                                 x1 * width_factor + 2,
-                                 self.canvas_height - y1 * height_factor + 2,
+            pt = can.create_rectangle(x1 * width_factor - 2 + left_margin,
+                                 self.canvas_height - y1 * height_factor - 2 - bottom_margin,
+                                 x1 * width_factor + 2 + left_margin,
+                                 self.canvas_height - y1 * height_factor + 2 - bottom_margin,
                                  fill=line_fill_color,
                                  tags='point')
             self.canvas.tag_bind(pt, '<Enter>', self.hover)
