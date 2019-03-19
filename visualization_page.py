@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 
 
 class Timeline(tk.Frame):
@@ -6,12 +7,12 @@ class Timeline(tk.Frame):
     actual_accomplishment = []
     suspensions = []
 
-    canvas_width = 640
+    canvas_width = 720
     canvas_height = 480
 
     def __init__(self, parent):
         super().__init__(parent)
-
+        self.points = []
         self.grid(column=0, row=0)
         self.master.title('Timeline Visual')
 
@@ -29,7 +30,7 @@ class Timeline(tk.Frame):
         canvas_frame.grid(column=1, row=1)
 
         self.canvas = tk.Canvas(canvas_frame)
-        self.canvas.configure(width=640, height=480, bg="#ffffff")
+        self.canvas.configure(width=self.canvas_width, height=self.canvas_height, bg="#ffffff")
 
         self.canvas.grid(column=1, row=1, sticky='nesw')
 
@@ -86,47 +87,38 @@ class Timeline(tk.Frame):
 
             self.projected_accomplishment = temp_projected
 
+        # Recalculates the plot for the actual accomplishment
+
+    def hover(self, event):
+        print(event)
+
     def plot_timeline(self):
         self.recalculate()
-        # self.plot(self.projected_accomplishment)
+        self.display_grid()
+        self.plot(self.projected_accomplishment, '#0000ff')
+        self.plot(self.actual_accomplishment, '#ff0000')
 
-    def plot_projected(self):
+    def display_grid(self):
+        grid_color = '#808080'
         can = self.canvas
+        v_interval = 10
+        grid_height = self.canvas_height / v_interval
 
-        min_y = self.projected_accomplishment[0]['accomp']
-        max_y = self.projected_accomplishment[len(self.projected_accomplishment)-1]['accomp']
-        diff_y = max_y - min_y
+        w = self.canvas_width
 
-        min_x = self.projected_accomplishment[0]['time']
-        max_x = self.projected_accomplishment[len(self.projected_accomplishment)-1]['time']
-        diff_x = max_x - min_x
+        for i in range(10):
+            can.create_line(0, i * grid_height, w, i * grid_height, fill=grid_color, dash=(2, 2))
 
-        height_factor = self.canvas_height / diff_y
-
-        width_factor = self.canvas_width / diff_x
-
-        rows = len(self.projected_accomplishment)
-        for i in range(rows-1):
-            # Draw lines on canavs
-            x1 = self.projected_accomplishment[i]['time']
-            y1 = self.projected_accomplishment[i]['accomp']
-            x2 = self.projected_accomplishment[i + 1]['time']
-            y2 = self.projected_accomplishment[i + 1]['accomp']
-            can.create_line(x1 * width_factor,
-                            self.canvas_height - y1 * height_factor,
-                            x2 * width_factor,
-                            self.canvas_height - y2 * height_factor,
-                            fill="red", activedash=(5, 5))
-
-    def plot(self, data):
+    def plot(self, data, line_fill_color):
         can = self.canvas
 
         min_y = data[0]['accomp']
-        max_y = data[len(data)-1]['accomp']
+        max_y = 100
         diff_y = max_y - min_y
 
         min_x = data[0]['time']
-        max_x = data[len(data)-1]['time']
+        # Maximum width shall always be the timeline of projected
+        max_x = self.projected_accomplishment[len(self.projected_accomplishment)-1]['time']
         diff_x = max_x - min_x
 
         height_factor = self.canvas_height / diff_y
@@ -144,7 +136,14 @@ class Timeline(tk.Frame):
                             self.canvas_height - y1 * height_factor,
                             x2 * width_factor,
                             self.canvas_height - y2 * height_factor,
-                            fill="red", activedash=(5, 5))
+                            fill=line_fill_color, activedash=(5, 5))
+            pt = can.create_rectangle(x1 * width_factor - 2,
+                                 self.canvas_height - y1 * height_factor - 2,
+                                 x1 * width_factor + 2,
+                                 self.canvas_height - y1 * height_factor + 2,
+                                 fill=line_fill_color,
+                                 tags='point')
+            self.canvas.tag_bind(pt, '<Enter>', self.hover)
 
     def center_window(self):
         w = self.master.winfo_screenwidth()

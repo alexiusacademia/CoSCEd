@@ -33,7 +33,15 @@
     },
     {
       "time": 20,
-      "accomp": 12
+      "accomp": 9
+    },
+    {
+      "time": 45,
+      "accomp": 25
+    },
+    {
+      "time": 65,
+      "accomp": 25
     }
   ],
 
