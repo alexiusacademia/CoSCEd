@@ -1,5 +1,8 @@
 import tkinter as tk
-
+from PIL import Image
+import io
+import os
+import subprocess
 
 class Timeline(tk.Frame):
     projected_accomplishment = []
@@ -16,6 +19,8 @@ class Timeline(tk.Frame):
 
     def __init__(self, parent):
         super().__init__(parent)
+
+        self.parent = parent
         self.points = []
         self.grid(column=0, row=0)
         self.master.title('Timeline Visual')
@@ -25,6 +30,23 @@ class Timeline(tk.Frame):
 
         self.total_suspension_duration = 0
         self.slippage = 0
+
+        # ===========================================================
+        # Menus
+        menu_bar = tk.Menu(parent)
+
+        menu_save = tk.Menu(menu_bar, tearoff=0)
+        menu_save.add_command(label='Save S-Curve', command=self.save_scurve)
+
+        file_menu = tk.Menu(menu_bar, tearoff=0)
+        file_menu.add_command(label='New')
+        file_menu.add_cascade(label='Save', menu=menu_save)
+        file_menu.add_separator()
+        file_menu.add_command(label='Quit', command=parent.quit)
+
+        menu_bar.add_cascade(label="File", menu=file_menu)
+
+        parent.config(menu=menu_bar)
 
         canvas_title = tk.Label(self, text="Time Frame")
         canvas_title.grid(column=1, row=0)
@@ -76,9 +98,9 @@ class Timeline(tk.Frame):
 
         # ==========================================================
         # Canvas
-        canvas_frame = tk.Frame(self)
-        canvas_frame.grid(column=1, row=1)
-        self.canvas = tk.Canvas(canvas_frame, cursor='cross')
+        # canvas_frame = tk.Frame(self)
+        # canvas_frame.grid(column=1, row=1)
+        self.canvas = tk.Canvas(self, cursor='cross')
         self.canvas.configure(width=self.canvas_width, height=self.canvas_height, bg="#ffffff")
         self.canvas.grid(column=1, row=1, sticky='nesw')
         # ==========================================================
@@ -139,23 +161,6 @@ class Timeline(tk.Frame):
 
             self.projected_accomplishment = temp_projected
         self.str_summary_total_suspended.set(self.total_suspension_duration)
-
-    def hover(self, event):
-        self.slippage = 0
-        point = (event.widget.find_closest(event.x, event.y))[0]
-        data = None
-        for p in self.points:
-            if p['point'] == point:
-                data = p
-        if data is not None:
-            time = data['time']
-            self.str_cdp_time.set(data['time'])
-            self.str_cdp_accomp.set(round(data['accomp'], 2))
-            # Check if time is within the actual accomplishment range
-            actual_time_elapsed = self.actual_accomplishment[len(self.actual_accomplishment)-1]['time']
-            if time <= actual_time_elapsed:
-                self.calculate_slippage(time)
-            self.str_slippage.set(self.slippage)
 
     def plot_timeline(self):
         self.recalculate()
@@ -290,3 +295,34 @@ class Timeline(tk.Frame):
                     return a2
                 else:
                     return (time - t1) / (t2 - t1) * (a2 - a1) + a1
+
+    # ===========================================================
+    # Binding methods
+
+    def hover(self, event):
+        """
+        To be called when the cursor is over an element in the
+        canvas.
+        :param event:
+        :return:
+        """
+        self.slippage = 0
+        point = (event.widget.find_closest(event.x, event.y))[0]
+        data = None
+        for p in self.points:
+            if p['point'] == point:
+                data = p
+        if data is not None:
+            time = data['time']
+            self.str_cdp_time.set(data['time'])
+            self.str_cdp_accomp.set(round(data['accomp'], 2))
+            # Check if time is within the actual accomplishment range
+            actual_time_elapsed = self.actual_accomplishment[len(self.actual_accomplishment)-1]['time']
+            if time <= actual_time_elapsed:
+                self.calculate_slippage(time)
+            self.str_slippage.set(self.slippage)
+
+    def save_scurve(self):
+        ps = self.canvas.postscript(colormode='color')
+        img = Image.open(io.BytesIO(ps.encode('utf-8')))
+        img.save("save.jpg", 'jpeg')
