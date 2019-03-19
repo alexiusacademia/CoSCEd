@@ -39,24 +39,27 @@ class Timeline(tk.Frame):
         # Canvas data display
         frame_canvas_data_display = tk.LabelFrame(left_panel, text="Canvas Data")
         frame_canvas_data_display.grid(row=0, column=0, sticky="new", padx=10, pady=5)
+        frame_canvas_data_display.grid_columnconfigure(1, weight=1)
 
         cdp_time_label = tk.Label(frame_canvas_data_display, text="Time").grid(row=0, column=0, sticky="nw")
-        cdp_time = tk.Label(frame_canvas_data_display, text='', width=10, anchor='ne', textvariable=self.str_cdp_time).grid(row=0, column=1, sticky="new", padx=10)
+        cdp_time = tk.Label(frame_canvas_data_display, text='', width=10, anchor='ne', relief='sunken', textvariable=self.str_cdp_time)\
+            .grid(row=0, column=1, sticky="nesw", padx=5)
         cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Accomplishment").grid(row=1, column=0, sticky='nw')
-        cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne', textvariable=self.str_cdp_accomp).grid(row=1, column=1, sticky='new', padx=10)
+        cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne', relief='sunken', textvariable=self.str_cdp_accomp)\
+            .grid(row=1, column=1, sticky='nesw', padx=5)
 
         # Summary
         frame_summary = tk.LabelFrame(left_panel, text='Summary')
         frame_summary.grid(row=1, column=0, sticky='new', padx=10, pady=5)
 
         summary_total_suspension_label = tk.Label(frame_summary, text='Total Suspension').grid(row=0, column=0)
-        summary_total_suspension = tk.Entry(frame_summary, textvariable=self.str_summary_total_suspensions).grid(row=0, column=1, padx=5, pady=5)
+        summary_total_suspension = tk.Entry(frame_summary, textvariable=self.str_summary_total_suspensions, justify='right').grid(row=0, column=1, padx=5, pady=5)
 
         #===========================================================
         # Canvas
         canvas_frame = tk.Frame(self)
         canvas_frame.grid(column=1, row=1)
-        self.canvas = tk.Canvas(canvas_frame, cursor='target')
+        self.canvas = tk.Canvas(canvas_frame, cursor='cross')
         self.canvas.configure(width=self.canvas_width, height=self.canvas_height, bg="#ffffff")
         self.canvas.grid(column=1, row=1, sticky='nesw')
         #===========================================================
