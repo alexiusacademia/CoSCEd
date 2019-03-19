@@ -31,7 +31,8 @@ class Timeline(tk.Frame):
         # String Variables
         self.str_cdp_time = tk.StringVar()
         self.str_cdp_accomp = tk.StringVar()
-        self.str_summary_total_suspensions = tk.StringVar()
+        self.str_summary_total_suspended = tk.StringVar()
+        self.str_summary_total_suspension_order = tk.StringVar()
         #===========================================================
         left_panel = tk.Frame(self)
         left_panel.grid(row=0, column=0, rowspan=2, sticky='nesw')
@@ -51,9 +52,16 @@ class Timeline(tk.Frame):
         # Summary
         frame_summary = tk.LabelFrame(left_panel, text='Summary')
         frame_summary.grid(row=1, column=0, sticky='new', padx=10, pady=5)
+        frame_summary.grid_columnconfigure(1, weight=1)
 
-        summary_total_suspension_label = tk.Label(frame_summary, text='Total Suspension').grid(row=0, column=0)
-        summary_total_suspension = tk.Entry(frame_summary, textvariable=self.str_summary_total_suspensions, justify='right').grid(row=0, column=1, padx=5, pady=5)
+        summary_total_suspended_days_label = tk.Label(frame_summary, text='Total Suspended Days').grid(row=0, column=0)
+        summary_total_suspended = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken', textvariable=self.str_summary_total_suspended)\
+            .grid(row=0, column=1, padx=5, pady=5)
+
+        summary_total_suspension_order_label = tk.Label(frame_summary, text='Total Suspension Orders').grid(row=1, column=0)
+        summary_total_suspension_order = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
+                                           textvariable=self.str_summary_total_suspension_order) \
+            .grid(row=1, column=1, padx=5, pady=5)
 
         #===========================================================
         # Canvas
@@ -71,6 +79,7 @@ class Timeline(tk.Frame):
         """
 
         # Breaks the projected based on suspensions
+        self.str_summary_total_suspension_order.set(len(self.suspensions))
         for i in range(len(self.suspensions)):
             # Temporary holder for the projected timeline
             temp_projected = []
@@ -118,7 +127,7 @@ class Timeline(tk.Frame):
             })
 
             self.projected_accomplishment = temp_projected
-        self.str_summary_total_suspensions.set(self.total_suspension_duration)
+        self.str_summary_total_suspended.set(self.total_suspension_duration)
 
     def hover(self, event):
         point = (event.widget.find_closest(event.x, event.y))[0]
@@ -128,7 +137,7 @@ class Timeline(tk.Frame):
                 data = p
         if data is not None:
             self.str_cdp_time.set(data['time'])
-            self.str_cdp_accomp.set(data['accomp'])
+            self.str_cdp_accomp.set(round(data['accomp'], 2))
 
     def plot_timeline(self):
         self.recalculate()
