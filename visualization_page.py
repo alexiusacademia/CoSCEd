@@ -10,6 +10,11 @@ class Timeline(tk.Frame):
     canvas_width = 720
     canvas_height = 480
 
+    canvas_top_margin = 30
+    canvas_bottom_margin = 30
+    canvas_left_margin = 30
+    canvas_right_margin = 30
+
     def __init__(self, parent):
         super().__init__(parent)
         self.points = []
@@ -90,7 +95,12 @@ class Timeline(tk.Frame):
         # Recalculates the plot for the actual accomplishment
 
     def hover(self, event):
-        print(event)
+        point = (event.widget.find_closest(event.x, event.y))[0]
+        data = None
+        for p in self.points:
+            if p['point'] == point:
+                data = p
+        print(data)
 
     def plot_timeline(self):
         self.recalculate()
@@ -101,13 +111,18 @@ class Timeline(tk.Frame):
     def display_grid(self):
         grid_color = '#808080'
         can = self.canvas
-        v_interval = 10
-        grid_height = self.canvas_height / v_interval
+        grid_count_vertical = 10
+        grid_height = (self.canvas_height - self.canvas_top_margin - self.canvas_bottom_margin) / grid_count_vertical
 
         w = self.canvas_width
 
-        for i in range(10):
-            can.create_line(0, i * grid_height, w, i * grid_height, fill=grid_color, dash=(2, 2))
+        for i in range(grid_count_vertical + 1):
+            can.create_line(self.canvas_left_margin,
+                            i * grid_height + self.canvas_top_margin,
+                            w - self.canvas_right_margin,
+                            i * grid_height + self.canvas_top_margin,
+                            fill=grid_color,
+                            dash=(2, 2))
 
     def plot(self, data, line_fill_color):
         can = self.canvas
@@ -144,6 +159,11 @@ class Timeline(tk.Frame):
                                  fill=line_fill_color,
                                  tags='point')
             self.canvas.tag_bind(pt, '<Enter>', self.hover)
+            self.points.append({
+                "point" : pt,
+                "time" : x1,
+                "accomp" : y1
+            })
 
     def center_window(self):
         w = self.master.winfo_screenwidth()
