@@ -1,7 +1,6 @@
 import json
-import tkinter as tk
 
-from visualization_page import *
+from main.visualization_page import *
 
 if __name__ == '__main__':
     root = tk.Tk()

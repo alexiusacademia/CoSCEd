@@ -389,4 +389,4 @@ class Timeline(tk.Frame):
         img.save(fn, 'png', optimize=True, dpi=(300, 300))
 
     def start_date_changed(self):
-        print('Test')
+        print('')
