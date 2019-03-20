@@ -1,6 +1,6 @@
 import json
 
-from main.visualization_page import *
+from visualization_page import *
 
 if __name__ == '__main__':
     root = tk.Tk()

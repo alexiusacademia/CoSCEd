@@ -37,7 +37,7 @@
     },
     {
       "time": 54,
-      "accomp": 76.72
+      "accomp": 20
     }
   ],
 
@@ -45,10 +45,6 @@
     {
       "start": 45,
       "duration": 20
-    },
-    {
-      "start": 95,
-      "duration": 30
     }
   ]
 }

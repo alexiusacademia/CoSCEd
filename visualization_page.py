@@ -1,5 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog as fd
+from datetime import date
+import datetime
 
 from PIL import Image
 import io
@@ -42,6 +44,8 @@ class Timeline(tk.Frame):
         self.str_summary_total_suspension_order = tk.StringVar()
         self.str_summ_orig_completion_days = tk.StringVar()
         self.str_summ_rev_completion_days = tk.StringVar()
+        self.str_summ_rev_completion_date = tk.StringVar()
+        self.str_start_date = tk.StringVar()
 
         self.init_ui()
 
@@ -98,23 +102,28 @@ class Timeline(tk.Frame):
             .grid(row=0, column=0, sticky='nw')
         summ_total_susp = tk.Label(frame_summary, width=10, anchor='ne',
                                    relief='sunken', textvariable=self.str_summary_total_suspended) \
-            .grid(row=0, column=1, padx=5, pady=5)
+            .grid(row=0, column=1, padx=5, pady=5, sticky='nes')
 
         summ_total_susp_order_label = tk.Label(frame_summary, text='Total Suspension Orders') \
             .grid(row=1, column=0, sticky='nw')
         summ_total_susp_order = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
                                          textvariable=self.str_summary_total_suspension_order) \
-            .grid(row=1, column=1, padx=5, pady=5)
+            .grid(row=1, column=1, padx=5, pady=5, sticky='nes')
         summ_orig_completion_days_label = tk.Label(frame_summary, text='Original Completion Days') \
             .grid(row=2, column=0, sticky='nw')
         summ_orig_completion_days = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
                                              textvariable=self.str_summ_orig_completion_days) \
-            .grid(row=2, column=1, padx=5, pady=5)
+            .grid(row=2, column=1, padx=5, pady=5, sticky='nes')
         summ_rev_completion_days_label = tk.Label(frame_summary, text='Revised Completion Days') \
             .grid(row=3, column=0, sticky='nw')
         summ_rev_completion_days = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
                                             textvariable=self.str_summ_rev_completion_days) \
-            .grid(row=3, column=1, padx=5, pady=5)
+            .grid(row=3, column=1, padx=5, pady=5, sticky='nes')
+        summ_rev_completion_date_label = tk.Label(frame_summary, text='Revised Completion Date') \
+            .grid(row=4, column=0, sticky='nw')
+        summ_rev_completion_date = tk.Label(frame_summary, width=20, anchor='ne', relief='sunken',
+                                            textvariable=self.str_summ_rev_completion_date) \
+            .grid(row=4, column=1, padx=5, pady=5, sticky='nes')
 
         frame_inputs = tk.LabelFrame(left_panel, text='Inputs')
         frame_inputs.grid(row=2, column=0, sticky='nesw', padx=10, pady=5)
@@ -122,8 +131,11 @@ class Timeline(tk.Frame):
 
         inputs_start_date_label = tk.Label(frame_inputs, text='Start Date')\
             .grid(row=0, column=0, sticky='nsw')
-        inputs_start_date = tk.Entry(frame_inputs, validatecommand=self.start_date_changed, validate='all')\
+        inputs_start_date = tk.Entry(frame_inputs, validatecommand=self.start_date_changed, textvariable=self.str_start_date)\
             .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
+
+        inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.start_date_changed)\
+            .grid(row=100, column=1, sticky='nes', padx=5, pady=5)
 
         # ==========================================================
         # Canvas
@@ -144,6 +156,7 @@ class Timeline(tk.Frame):
         self.str_summ_orig_completion_days\
             .set(self.projected_accomplishment[len(self.projected_accomplishment)-1]['time'])
 
+        temp_projected = []
         # Breaks the projected based on suspensions
         for i in range(len(self.suspensions)):
             # Temporary holder for the projected timeline
@@ -195,7 +208,9 @@ class Timeline(tk.Frame):
         self.str_summary_total_suspended.set(self.total_suspension_duration)
         # Total number of days to complete
 
-        total_days = temp_projected[len(temp_projected)-1]['time']
+        total_days = 0
+        if temp_projected is not None and (len(temp_projected) > 0):
+            total_days = temp_projected[len(temp_projected)-1]['time']
         self.str_summ_rev_completion_days.set(total_days)
 
     def plot_timeline(self):
@@ -389,4 +404,13 @@ class Timeline(tk.Frame):
         img.save(fn, 'png', optimize=True, dpi=(300, 300))
 
     def start_date_changed(self):
-        print('')
+        str_start_date = self.str_start_date.get()
+        start_date = str_start_date.split('/')
+        start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+        duration = 0
+        if int(self.str_summ_orig_completion_days.get()) > int(self.str_summ_rev_completion_days.get()):
+            duration = int(self.str_summ_orig_completion_days.get())
+        else:
+            duration = int(self.str_summ_rev_completion_days.get())
+        end_date = start_date + datetime.timedelta(days=int(self.str_summ_rev_completion_days.get()) - 1)
+        self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
