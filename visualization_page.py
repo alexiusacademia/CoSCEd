@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog as fd
+from tkinter import messagebox
 from datetime import date
 import datetime
 
@@ -405,8 +406,8 @@ class Timeline(tk.Frame):
 
     def start_date_changed(self):
         str_start_date = self.str_start_date.get()
-        start_date = str_start_date.split('/')
-        if type(start_date) != bool:
+        if '/' in str_start_date:
+            start_date = str_start_date.split('/')
             if len(start_date == 3):
                 start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
                 duration = 0
@@ -416,3 +417,5 @@ class Timeline(tk.Frame):
                     duration = int(self.str_summ_rev_completion_days.get())
                 end_date = start_date + datetime.timedelta(days=duration-1)
                 self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
+        else:
+            messagebox.showerror('Input Error', 'Wrong date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
