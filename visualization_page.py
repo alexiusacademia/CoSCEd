@@ -116,6 +116,15 @@ class Timeline(tk.Frame):
                                             textvariable=self.str_summ_rev_completion_days) \
             .grid(row=3, column=1, padx=5, pady=5)
 
+        frame_inputs = tk.LabelFrame(left_panel, text='Inputs')
+        frame_inputs.grid(row=2, column=0, sticky='nesw', padx=10, pady=5)
+        frame_inputs.grid_columnconfigure(1, weight=1)
+
+        inputs_start_date_label = tk.Label(frame_inputs, text='Start Date')\
+            .grid(row=0, column=0, sticky='nsw')
+        inputs_start_date = tk.Entry(frame_inputs, validatecommand=self.start_date_changed, validate='all')\
+            .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
+
         # ==========================================================
         # Canvas
         # canvas_frame = tk.Frame(self)
@@ -378,3 +387,6 @@ class Timeline(tk.Frame):
                                   title='Save S-Curve File',
                                   filetypes=[("PNG files", "*.png")])
         img.save(fn, 'png', optimize=True, dpi=(300, 300))
+
+    def start_date_changed(self):
+        print('Test')
