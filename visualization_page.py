@@ -208,7 +208,7 @@ class Timeline(tk.Frame):
         self.str_summary_total_suspended.set(self.total_suspension_duration)
         # Total number of days to complete
 
-        total_days = 0
+        total_days = int(self.str_summ_orig_completion_days.get())
         if temp_projected is not None and (len(temp_projected) > 0):
             total_days = temp_projected[len(temp_projected)-1]['time']
         self.str_summ_rev_completion_days.set(total_days)
@@ -406,11 +406,13 @@ class Timeline(tk.Frame):
     def start_date_changed(self):
         str_start_date = self.str_start_date.get()
         start_date = str_start_date.split('/')
-        start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
-        duration = 0
-        if int(self.str_summ_orig_completion_days.get()) > int(self.str_summ_rev_completion_days.get()):
-            duration = int(self.str_summ_orig_completion_days.get())
-        else:
-            duration = int(self.str_summ_rev_completion_days.get())
-        end_date = start_date + datetime.timedelta(days=int(self.str_summ_rev_completion_days.get()) - 1)
-        self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
+        if type(start_date) != bool:
+            if len(start_date == 3):
+                start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+                duration = 0
+                if int(self.str_summ_orig_completion_days.get()) > int(self.str_summ_rev_completion_days.get()):
+                    duration = int(self.str_summ_orig_completion_days.get())
+                else:
+                    duration = int(self.str_summ_rev_completion_days.get())
+                end_date = start_date + datetime.timedelta(days=duration-1)
+                self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
