@@ -9,6 +9,7 @@ import io
 import os
 import subprocess
 
+
 class Timeline(tk.Frame):
     projected_accomplishment = []
     actual_accomplishment = []
@@ -130,12 +131,13 @@ class Timeline(tk.Frame):
         frame_inputs.grid(row=2, column=0, sticky='nesw', padx=10, pady=5)
         frame_inputs.grid_columnconfigure(1, weight=1)
 
-        inputs_start_date_label = tk.Label(frame_inputs, text='Start Date')\
+        inputs_start_date_label = tk.Label(frame_inputs, text='Start Date') \
             .grid(row=0, column=0, sticky='nsw')
-        inputs_start_date = tk.Entry(frame_inputs, validatecommand=self.start_date_changed, textvariable=self.str_start_date)\
+        inputs_start_date = tk.Entry(frame_inputs, validatecommand=self.start_date_changed,
+                                     textvariable=self.str_start_date, justify='right') \
             .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
 
-        inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.start_date_changed)\
+        inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.start_date_changed) \
             .grid(row=100, column=1, sticky='nes', padx=5, pady=5)
 
         # ==========================================================
@@ -154,8 +156,8 @@ class Timeline(tk.Frame):
         """
 
         self.str_summary_total_suspension_order.set(len(self.suspensions))
-        self.str_summ_orig_completion_days\
-            .set(self.projected_accomplishment[len(self.projected_accomplishment)-1]['time'])
+        self.str_summ_orig_completion_days \
+            .set(self.projected_accomplishment[len(self.projected_accomplishment) - 1]['time'])
 
         temp_projected = []
         # Breaks the projected based on suspensions
@@ -175,8 +177,8 @@ class Timeline(tk.Frame):
 
                 t1 = self.projected_accomplishment[j]['time']
                 accomp1 = self.projected_accomplishment[j]['accomp']
-                t2 = self.projected_accomplishment[j+1]['time']
-                accomp2 = self.projected_accomplishment[j+1]['accomp']
+                t2 = self.projected_accomplishment[j + 1]['time']
+                accomp2 = self.projected_accomplishment[j + 1]['accomp']
 
                 temp_projected.append({
                     "time": t1 + total_suspensions,
@@ -192,7 +194,7 @@ class Timeline(tk.Frame):
                     # Append to new list
                     temp_projected.append({
                         "time": start_suspended,
-                        "accomp": accomp     # To be calculated by interpolation
+                        "accomp": accomp  # To be calculated by interpolation
                     })
                     temp_projected.append({
                         "time": start_suspended + duration_suspended,
@@ -201,7 +203,8 @@ class Timeline(tk.Frame):
 
             # Add the last node
             temp_projected.append({
-                "time": self.projected_accomplishment[len(self.projected_accomplishment)-1]['time'] + total_suspensions,
+                "time": self.projected_accomplishment[len(self.projected_accomplishment) - 1][
+                            'time'] + total_suspensions,
                 "accomp": 100
             })
 
@@ -211,7 +214,7 @@ class Timeline(tk.Frame):
 
         total_days = int(self.str_summ_orig_completion_days.get())
         if temp_projected is not None and (len(temp_projected) > 0):
-            total_days = temp_projected[len(temp_projected)-1]['time']
+            total_days = temp_projected[len(temp_projected) - 1]['time']
         self.str_summ_rev_completion_days.set(total_days)
 
     def plot_timeline(self):
@@ -241,8 +244,9 @@ class Timeline(tk.Frame):
                             i * grid_height + self.canvas_top_margin,
                             fill=grid_color,
                             dash=(2, 2), width=0.01)
-            can.create_text(10, self.canvas_height - (i+1) * grid_height, text=i * 10, anchor='nw', offset='15, 0')
-        can.create_text(10, self.canvas_height - (grid_count_vertical + 1) * grid_height, text=100, anchor='nw', offset='5, 0')
+            can.create_text(10, self.canvas_height - (i + 1) * grid_height, text=i * 10, anchor='nw', offset='15, 0')
+        can.create_text(10, self.canvas_height - (grid_count_vertical + 1) * grid_height, text=100, anchor='nw',
+                        offset='5, 0')
 
         can.create_line(self.canvas_left_margin,
                         self.canvas_top_margin,
@@ -281,7 +285,7 @@ class Timeline(tk.Frame):
         # Minimum abscissa shall always be the taken from the first time entry of projected
         min_x = data[0]['time']
         # Maximum width shall always be the timeline of projected
-        max_x = self.projected_accomplishment[len(self.projected_accomplishment)-1]['time']
+        max_x = self.projected_accomplishment[len(self.projected_accomplishment) - 1]['time']
         diff_x = max_x - min_x
 
         height_factor = (self.canvas_height - (self.canvas_top_margin + self.canvas_bottom_margin)) / diff_y
@@ -292,7 +296,7 @@ class Timeline(tk.Frame):
         bottom_margin = self.canvas_bottom_margin
 
         rows = len(data)
-        for i in range(rows-1):
+        for i in range(rows - 1):
             # Draw lines on canavs
             x1 = data[i]['time']
             y1 = data[i]['accomp']
@@ -316,8 +320,8 @@ class Timeline(tk.Frame):
                 "accomp": y1
             })
         # Plot the last node
-        x1 = data[rows-1]['time']
-        y1 = data[rows-1]['accomp']
+        x1 = data[rows - 1]['time']
+        y1 = data[rows - 1]['accomp']
         pt = can.create_rectangle(x1 * width_factor - 2 + left_margin,
                                   self.canvas_height - y1 * height_factor - 2 - bottom_margin,
                                   x1 * width_factor + 2 + left_margin,
@@ -357,8 +361,8 @@ class Timeline(tk.Frame):
         for i in range(len(accomplishment_list) - 1):
             t1 = accomplishment_list[i]['time']
             a1 = accomplishment_list[i]['accomp']
-            t2 = accomplishment_list[i+1]['time']
-            a2 = accomplishment_list[i+1]['accomp']
+            t2 = accomplishment_list[i + 1]['time']
+            a2 = accomplishment_list[i + 1]['accomp']
             if (time >= t1) and (time <= t2):
                 if time == t1:
                     return a1
@@ -388,7 +392,7 @@ class Timeline(tk.Frame):
             self.str_cdp_time.set(data['time'])
             self.str_cdp_accomp.set(round(data['accomp'], 2))
             # Check if time is within the actual accomplishment range
-            actual_time_elapsed = self.actual_accomplishment[len(self.actual_accomplishment)-1]['time']
+            actual_time_elapsed = self.actual_accomplishment[len(self.actual_accomplishment) - 1]['time']
             if time <= actual_time_elapsed:
                 self.calculate_slippage(time)
             self.str_slippage.set(self.slippage)
@@ -408,14 +412,14 @@ class Timeline(tk.Frame):
         str_start_date = self.str_start_date.get()
         if '/' in str_start_date:
             start_date = str_start_date.split('/')
-            if len(start_date == 3):
-                start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
-                duration = 0
-                if int(self.str_summ_orig_completion_days.get()) > int(self.str_summ_rev_completion_days.get()):
-                    duration = int(self.str_summ_orig_completion_days.get())
-                else:
-                    duration = int(self.str_summ_rev_completion_days.get())
-                end_date = start_date + datetime.timedelta(days=duration-1)
-                self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
+            start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+            duration = 0
+            if int(self.str_summ_orig_completion_days.get()) > int(self.str_summ_rev_completion_days.get()):
+                duration = int(self.str_summ_orig_completion_days.get())
+            else:
+                duration = int(self.str_summ_rev_completion_days.get())
+            end_date = start_date + datetime.timedelta(days=duration - 1)
+            self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
+
         else:
             messagebox.showerror('Input Error', 'Wrong date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
