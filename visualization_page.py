@@ -3,6 +3,7 @@ from tkinter import filedialog as fd
 from tkinter import messagebox, ttk
 from datetime import date
 import datetime
+import json
 
 from PIL import Image
 import io
@@ -64,6 +65,7 @@ class Timeline(tk.Frame):
 
         file_menu = tk.Menu(menu_bar, tearoff=0)
         file_menu.add_command(label='New')
+        file_menu.add_command(label='Open Project', command=self.open_project)
         file_menu.add_cascade(label='Save', menu=menu_save)
         file_menu.add_separator()
         file_menu.add_command(label='Quit', command=self.parent.quit)
@@ -417,6 +419,30 @@ class Timeline(tk.Frame):
                                   filetypes=[("PNG files", "*.png")])
         img.save(fn, 'png', optimize=True, dpi=(300, 300))
 
+    def open_project(self):
+        fn = fd.askopenfilename(initialdir='',
+                                title='Open Project',
+                                filetypes=[("JSON files", "*.json")])
+        proj_file = open(fn, 'r')
+        proj_file_lines = proj_file.readlines()
+        json_string = ''
+        for line in proj_file_lines:
+            json_string += line
+        json_project = json.loads(json_string)
+        # Retrieve the projected object timeline
+        projected_imeplementation = json_project['projected']
+
+        # Retrieve actual object timeline
+        actual_implementation = json_project['actual']
+
+        # Retrieve suspensions
+        suspensions = json_project['suspensions']
+
+        self.projected_accomplishment = projected_imeplementation
+        self.actual_accomplishment = actual_implementation
+        self.suspensions = suspensions
+        self.plot_timeline()
+
     def calculate_btn_pressed(self):
         # For the start date
         str_start_date = self.str_start_date.get()
@@ -443,15 +469,23 @@ class Timeline(tk.Frame):
 
         if vert_grid_interval == 0:
             # Interval is every 10 days
+            interval = 10
             grid_qty = int(num_of_days / 10)
             for i in range(grid_qty):
-                self.canvas.create_line((i+1)*10*self.width_factor + self.canvas_left_margin,
+                self.canvas.create_line((i + 1) * interval * self.width_factor + self.canvas_left_margin,
                                         self.canvas_top_margin,
-                                        (i+1)*10*self.width_factor + self.canvas_left_margin,
+                                        (i + 1) * interval * self.width_factor + self.canvas_left_margin,
                                         self.canvas_height - self.canvas_bottom_margin,
                                         fill='#808080',
                                         dash=(2, 2),
                                         tag='vert_grid')
+                self.canvas.create_text(i * interval * self.width_factor + self.canvas_left_margin,
+                                        self.canvas_top_margin - 20,
+                                        text=str(i * interval), tag='vert_grid')
+            self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
+                                    self.canvas_top_margin - 20,
+                                    text=str(num_of_days), tag='vert_grid')
+
         elif vert_grid_interval == 1:
             str_start_date = self.str_start_date.get()
             if '/' in str_start_date:
@@ -474,7 +508,7 @@ class Timeline(tk.Frame):
                                         tag='vert_grid')
                 self.canvas.create_text(i * interval * self.width_factor + self.canvas_left_margin,
                                         self.canvas_top_margin - 20,
-                                        text=str(i * interval))
+                                        text=str(i * interval), tag='vert_grid')
             self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
                                     self.canvas_top_margin - 20,
-                                    text=str(num_of_days))
+                                    text=str(num_of_days), tag='vert_grid')

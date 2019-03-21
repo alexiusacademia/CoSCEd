@@ -26,9 +26,9 @@ if __name__ == '__main__':
     suspensions = json_project['suspensions']
 
     timeline = Timeline(root)
-    timeline.projected_accomplishment = projected_imeplementation
-    timeline.actual_accomplishment = actual_implementation
-    timeline.suspensions = suspensions
-    timeline.plot_timeline()
+    # timeline.projected_accomplishment = projected_imeplementation
+    # timeline.actual_accomplishment = actual_implementation
+    # timeline.suspensions = suspensions
+    # timeline.plot_timeline()
 
     root.mainloop()
