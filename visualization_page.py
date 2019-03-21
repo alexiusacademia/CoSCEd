@@ -23,6 +23,8 @@ class Timeline(tk.Frame):
     canvas_left_margin = 40
     canvas_right_margin = 30
 
+    width_factor = 0
+
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -138,11 +140,12 @@ class Timeline(tk.Frame):
             .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
         inputs_verti_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
             .grid(row=1, column=0, sticky='nsw')
-        inputs_verti_grid_interval = ttk.Combobox(frame_inputs,
-                                                  values=['Decadal', 'Monthly', '30 Day Period'], justify='right', textvariable=self.str_vert_grid_interval)\
-            .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
+        self.inputs_verti_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', 'Monthly', '30 Day Period'],
+                                                  justify='right', textvariable=self.str_vert_grid_interval)
+        self.inputs_verti_grid_interval.grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
+        self.inputs_verti_grid_interval.bind('<<ComboboxSelected>>', self.cbo_vert_grid_selected)
 
-        inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.start_date_changed) \
+        inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.calculate_btn_pressed) \
             .grid(row=100, column=1, sticky='nes', padx=5, pady=5)
 
         # ==========================================================
@@ -296,6 +299,7 @@ class Timeline(tk.Frame):
         height_factor = (self.canvas_height - (self.canvas_top_margin + self.canvas_bottom_margin)) / diff_y
 
         width_factor = (self.canvas_width - (self.canvas_left_margin + self.canvas_right_margin)) / diff_x
+        self.width_factor = width_factor
 
         left_margin = self.canvas_left_margin
         bottom_margin = self.canvas_bottom_margin
@@ -413,7 +417,8 @@ class Timeline(tk.Frame):
                                   filetypes=[("PNG files", "*.png")])
         img.save(fn, 'png', optimize=True, dpi=(300, 300))
 
-    def start_date_changed(self):
+    def calculate_btn_pressed(self):
+        # For the start date
         str_start_date = self.str_start_date.get()
         if '/' in str_start_date:
             start_date = str_start_date.split('/')
@@ -427,4 +432,49 @@ class Timeline(tk.Frame):
             self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
 
         else:
-            messagebox.showerror('Input Error', 'Wrong date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
+            messagebox.showerror('Input Error', 'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
+
+    def cbo_vert_grid_selected(self, event):
+        # Draw the vertical grid
+        self.canvas.delete('vert_grid')
+        vert_grid_interval = self.inputs_verti_grid_interval.current()
+
+        num_of_days = int(self.str_summ_rev_completion_days.get())
+
+        if vert_grid_interval == 0:
+            # Interval is every 10 days
+            grid_qty = int(num_of_days / 10)
+            for i in range(grid_qty):
+                self.canvas.create_line((i+1)*10*self.width_factor + self.canvas_left_margin,
+                                        self.canvas_top_margin,
+                                        (i+1)*10*self.width_factor + self.canvas_left_margin,
+                                        self.canvas_height - self.canvas_bottom_margin,
+                                        fill='#808080',
+                                        dash=(2, 2),
+                                        tag='vert_grid')
+        elif vert_grid_interval == 1:
+            str_start_date = self.str_start_date.get()
+            if '/' in str_start_date:
+                start_date = str_start_date.split('/')
+                start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+            else:
+                messagebox.showerror('Input Error',
+                                     'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
+        elif vert_grid_interval == 2:
+            interval = 30
+            # Interval is every 30 days (fixed)
+            grid_qty = int(num_of_days / interval)
+            for i in range(grid_qty+1):
+                self.canvas.create_line((i + 1) * interval * self.width_factor + self.canvas_left_margin,
+                                        self.canvas_top_margin,
+                                        (i + 1) * interval * self.width_factor + self.canvas_left_margin,
+                                        self.canvas_height - self.canvas_bottom_margin,
+                                        fill='#808080',
+                                        dash=(2, 2),
+                                        tag='vert_grid')
+                self.canvas.create_text(i * interval * self.width_factor + self.canvas_left_margin,
+                                        self.canvas_top_margin - 20,
+                                        text=str(i * interval))
+            self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
+                                    self.canvas_top_margin - 20,
+                                    text=str(num_of_days))
