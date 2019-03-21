@@ -64,11 +64,11 @@ class Timeline(tk.Frame):
         menu_save.add_command(label='Save S-Curve', command=self.save_scurve)
 
         file_menu = tk.Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label='New')
-        file_menu.add_command(label='Open Project', command=self.open_project)
+        file_menu.add_command(label='New', accelerator='Ctrl+N')
+        file_menu.add_command(label='Open Project', command=self.open_project, accelerator='Ctrl+O')
         file_menu.add_cascade(label='Save', menu=menu_save)
         file_menu.add_separator()
-        file_menu.add_command(label='Quit', command=self.parent.quit)
+        file_menu.add_command(label='Quit', command=self.parent.quit, accelerator='Ctrl+X')
 
         menu_bar.add_cascade(label="File", menu=file_menu)
 
@@ -76,7 +76,6 @@ class Timeline(tk.Frame):
 
         canvas_title = tk.Label(self, text="Time Frame")
         canvas_title.grid(column=1, row=0)
-
         # ===========================================================
         # Left panel for displaying of textual data.
         left_panel = tk.Frame(self)
@@ -143,12 +142,12 @@ class Timeline(tk.Frame):
         inputs_verti_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
             .grid(row=1, column=0, sticky='nsw')
         self.inputs_verti_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', 'Monthly', '30 Day Period'],
-                                                  justify='right', textvariable=self.str_vert_grid_interval)
+                                                  justify='right', textvariable=self.str_vert_grid_interval, state='disabled')
         self.inputs_verti_grid_interval.grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
         self.inputs_verti_grid_interval.bind('<<ComboboxSelected>>', self.cbo_vert_grid_selected)
 
-        inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.calculate_btn_pressed) \
-            .grid(row=100, column=1, sticky='nes', padx=5, pady=5)
+        self.inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.calculate_btn_pressed, state='disabled')
+        self.inputs_calculate_btn.grid(row=100, column=1, sticky='nes', padx=5, pady=5)
 
         # ==========================================================
         # Canvas
@@ -443,6 +442,14 @@ class Timeline(tk.Frame):
         self.suspensions = suspensions
         self.plot_timeline()
 
+        # Trigger the vertical grid option and select the first option
+        self.inputs_verti_grid_interval.current(0)
+        self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
+
+        # Enable some controls that are disabled on startup
+        self.inputs_verti_grid_interval.config(state='active')
+        self.inputs_calculate_btn.config(state='active')
+
     def calculate_btn_pressed(self):
         # For the start date
         str_start_date = self.str_start_date.get()
@@ -491,9 +498,19 @@ class Timeline(tk.Frame):
             if '/' in str_start_date:
                 start_date = str_start_date.split('/')
                 start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+                messagebox.showinfo('Unimplemented', 'This feature is not yet implemented in this version.')
+
+                # Set the vertical grid to default
+                self.inputs_verti_grid_interval.current(0)
+                self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
             else:
                 messagebox.showerror('Input Error',
                                      'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
+
+                # Set the vertical grid to default
+                self.inputs_verti_grid_interval.current(0)
+                self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
+
         elif vert_grid_interval == 2:
             interval = 30
             # Interval is every 30 days (fixed)
