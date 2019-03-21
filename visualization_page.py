@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import filedialog as fd
-from tkinter import messagebox
+from tkinter import messagebox, ttk
 from datetime import date
 import datetime
 
@@ -48,6 +48,7 @@ class Timeline(tk.Frame):
         self.str_summ_rev_completion_days = tk.StringVar()
         self.str_summ_rev_completion_date = tk.StringVar()
         self.str_start_date = tk.StringVar()
+        self.str_vert_grid_interval = tk.StringVar()
 
         self.init_ui()
 
@@ -133,9 +134,13 @@ class Timeline(tk.Frame):
 
         inputs_start_date_label = tk.Label(frame_inputs, text='Start Date') \
             .grid(row=0, column=0, sticky='nsw')
-        inputs_start_date = tk.Entry(frame_inputs, validatecommand=self.start_date_changed,
-                                     textvariable=self.str_start_date, justify='right') \
+        inputs_start_date = tk.Entry(frame_inputs, textvariable=self.str_start_date, justify='right') \
             .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
+        inputs_verti_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
+            .grid(row=1, column=0, sticky='nsw')
+        inputs_verti_grid_interval = ttk.Combobox(frame_inputs,
+                                                  values=['Decadal', 'Monthly', '30 Day Period'], justify='right', textvariable=self.str_vert_grid_interval)\
+            .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
 
         inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.start_date_changed) \
             .grid(row=100, column=1, sticky='nes', padx=5, pady=5)
