@@ -284,6 +284,11 @@ class Timeline(tk.Frame):
                         self.canvas_height - self.canvas_bottom_margin,
                         width=2)
 
+        can.create_text(self.canvas_width - self.canvas_right_margin + 10,
+                        self.canvas_height/2,
+                        text='Accomplishment (%)',
+                        angle=90)
+
     def plot(self, data, line_fill_color):
         """
         Plot a given data, either the projected or actual accomplishment.
