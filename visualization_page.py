@@ -557,3 +557,8 @@ class Timeline(tk.Frame):
                                         self.canvas_height - self.canvas_bottom_margin,
                                         fill='green',
                                         tag='current_time_indicator')
+                # Find overlaps
+                # overlappers = self.canvas.find_overlapping(event.x-10, event.y-10, event.x+10, event.y+10)
+                # for o in overlappers:
+                #    self.canvas.tag_raise(o)
+                self.canvas.tag_lower('current_time_indicator')
