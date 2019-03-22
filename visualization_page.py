@@ -161,6 +161,7 @@ class Timeline(tk.Frame):
         self.canvas = tk.Canvas(self, cursor='cross')
         self.canvas.configure(width=self.canvas_width, height=self.canvas_height, bg="#ffffff")
         self.canvas.grid(column=1, row=1, sticky='nesw')
+        self.canvas.bind('<Motion>', self.canvas_hover)
         # ==========================================================
 
     def recalculate(self):
@@ -544,3 +545,15 @@ class Timeline(tk.Frame):
             self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
                                     self.canvas_top_margin - 20,
                                     text=str(num_of_days), tag='vert_grid')
+
+    def canvas_hover(self, event):
+        if (event.x > self.canvas_left_margin) and (event.x < (self.canvas_width - self.canvas_right_margin)):
+            if (event.y > self.canvas_top_margin) and (event.y < (self.canvas_height - self.canvas_bottom_margin)):
+                # Draw a vertical line
+                self.canvas.delete('current_time_indicator')
+                self.canvas.create_line(event.x,
+                                        self.canvas_top_margin,
+                                        event.x,
+                                        self.canvas_height - self.canvas_bottom_margin,
+                                        fill='green',
+                                        tag='current_time_indicator')
