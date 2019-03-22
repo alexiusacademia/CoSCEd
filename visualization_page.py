@@ -44,7 +44,8 @@ class Timeline(tk.Frame):
         # String Variables
         self.str_cdp_time = tk.StringVar()
         self.str_cdp_accomp = tk.StringVar()
-        self.str_slippage = tk.StringVar()
+        self.str_cdp_slippage = tk.StringVar()
+        self.str_cdp_date = tk.StringVar()
         self.str_summary_total_suspended = tk.StringVar()
         self.str_summary_total_suspension_order = tk.StringVar()
         self.str_summ_orig_completion_days = tk.StringVar()
@@ -96,8 +97,12 @@ class Timeline(tk.Frame):
             .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
         cdp_slippage_label = tk.Label(frame_canvas_data_display, text='Slippage').grid(row=2, column=0, sticky="nw")
         cdp_slippage = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
-                                relief='sunken', textvariable=self.str_slippage) \
+                                relief='sunken', textvariable=self.str_cdp_slippage) \
             .grid(row=2, column=1, sticky='nesw', padx=5, pady=5)
+        cdp_date_label = tk.Label(frame_canvas_data_display, text='Date').grid(row=3, column=0, sticky="nw")
+        cdp_date = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
+                            relief='sunken', textvariable=self.str_cdp_date) \
+            .grid(row=3, column=1, sticky='nesw', padx=5, pady=5)
 
         # Summary
         frame_summary = tk.LabelFrame(left_panel, text='Summary')
@@ -405,7 +410,17 @@ class Timeline(tk.Frame):
             actual_time_elapsed = self.actual_accomplishment[len(self.actual_accomplishment) - 1]['time']
             if time <= actual_time_elapsed:
                 self.calculate_slippage(time)
-            self.str_slippage.set(self.slippage)
+            self.str_cdp_slippage.set(self.slippage)
+            # Get the start date
+            if self.str_start_date.get() != '':
+                # Start date is not empty, display current date
+                curr_date = self.str_start_date.get()
+                if '/' in curr_date:
+                    start_date = curr_date.split('/')
+                    start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+                    curr_date = start_date + datetime.timedelta(days=int(time))
+                    curr_date = date.strftime(curr_date, "%B %d, %Y")
+                    self.str_cdp_date.set(curr_date)
 
     def save_scurve(self):
         """
