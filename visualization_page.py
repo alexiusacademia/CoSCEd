@@ -58,6 +58,7 @@ class Timeline(tk.Frame):
         self.str_summ_rev_completion_date = tk.StringVar()
         self.str_start_date = tk.StringVar()
         self.str_vert_grid_interval = tk.StringVar()
+        self.str_status_message = tk.StringVar()
 
         self.init_ui()
 
@@ -176,6 +177,15 @@ class Timeline(tk.Frame):
         self.canvas.grid(column=1, row=1, sticky='nesw')
         self.canvas.bind('<Motion>', self.canvas_hover)
         # ==========================================================
+        # Status bar
+        frame_status_bar = tk.Frame(self, bd=1, relief='sunken')
+        frame_status_bar.grid(row=100, column=0, columnspan=2, sticky='nesw', padx=10, pady=10)
+
+        status_message_label = tk.Label(frame_status_bar, text='Status: ', anchor='nw', justify='left')\
+            .grid(row=0, column=0, sticky='nesw')
+        status_message = tk.Label(frame_status_bar, textvariable=self.str_status_message,
+                                  anchor='nw', justify = 'left')\
+            .grid(row=0, column=1)
 
     def recalculate(self):
         """
