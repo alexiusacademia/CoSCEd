@@ -32,7 +32,7 @@ class Timeline(tk.Frame):
         self.parent = parent
         self.points = []
         self.grid(column=0, row=0)
-        self.master.title('Timeline Visual')
+        self.master.title('Project Timeline Editor')
 
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(1, weight=1)
@@ -62,6 +62,9 @@ class Timeline(tk.Frame):
         self.init_ui()
 
     def init_ui(self):
+        """
+        Creation of the user interface elements.
+        """
         # ===========================================================
         # Menus
         menu_bar = tk.Menu(self.parent)
@@ -418,12 +421,12 @@ class Timeline(tk.Frame):
         :return: bool. True if the format is valid.
         """
         str_start_date = self.str_start_date.get()
-        if '/' in str_start_date:
-            start_date = str_start_date.split('/')
-            start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+        if '/' in str_start_date and (str_start_date.count('/') == 2):
+            _date = str_start_date.split('/')
+            _date = date(int(_date[2]), int(_date[0]), int(_date[1]))
 
             # Check if the type is correct
-            if type(start_date) is datetime.date:
+            if type(_date) is datetime.date:
                 return True
 
         return False
