@@ -616,6 +616,7 @@ class Timeline(tk.Frame):
         if (event.x > self.canvas_left_margin) and (event.x < (self.canvas_width - self.canvas_right_margin)):
             if (event.y > self.canvas_top_margin) and (event.y < (self.canvas_height - self.canvas_bottom_margin)) and\
                     self.project_opened:
+
                 # Draw a vertical line
                 self.canvas.delete('current_time_indicator')
                 self.canvas.create_line(event.x,
@@ -644,9 +645,24 @@ class Timeline(tk.Frame):
                 slippage = self.calculate_slippage(time)
                 self.str_cdp_slippage.set(slippage)
 
+                curr_date = ''
+
                 if self.valid_start_date():
                     curr_date = self.get_new_date(self.str_start_date.get(), time)
                     self.str_cdp_date.set(curr_date)
+
+                # Show date on cursor
+                self.canvas.delete('current_date')
+                if event.x / self.canvas_width < 0.8:
+                    date_text_anchor = 'sw'
+                else:
+                    date_text_anchor = 'se'
+
+                self.canvas.create_text(event.x, event.y,
+                                        text=curr_date,
+                                        anchor=date_text_anchor,
+                                        fill='green',
+                                        tag='current_date')
 
     def canvas_location_to_time(self, x):
         """
