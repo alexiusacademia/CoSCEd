@@ -40,10 +40,15 @@ class Timeline(tk.Frame):
         self.total_suspension_duration = 0
         self.slippage = 0
 
+        self.project_opened = False
+
+        self.actual_accomp = 0
+
         # ===========================================================
         # String Variables
         self.str_cdp_time = tk.StringVar()
         self.str_cdp_accomp = tk.StringVar()
+        self.str_cdp_actual_accomp = tk.StringVar()
         self.str_cdp_slippage = tk.StringVar()
         self.str_cdp_date = tk.StringVar()
         self.str_summary_total_suspended = tk.StringVar()
@@ -91,18 +96,23 @@ class Timeline(tk.Frame):
         cdp_time = tk.Label(frame_canvas_data_display, text='', width=10, anchor='ne',
                             relief='sunken', textvariable=self.str_cdp_time) \
             .grid(row=0, column=1, sticky="nesw", padx=5, pady=5)
-        cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Accomplishment").grid(row=1, column=0, sticky='nw')
+        cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Projected Accomplishment").grid(row=1, column=0, sticky='nw')
         cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
                               relief='sunken', textvariable=self.str_cdp_accomp) \
             .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
-        cdp_slippage_label = tk.Label(frame_canvas_data_display, text='Slippage').grid(row=2, column=0, sticky="nw")
+        cdp_actual_accomp_label = tk.Label(frame_canvas_data_display, text="Actual Accomplishment")\
+            .grid(row=2, column=0, sticky='nw')
+        cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
+                              relief='sunken', textvariable=self.str_cdp_actual_accomp) \
+            .grid(row=2, column=1, sticky='nesw', padx=5, pady=5)
+        cdp_slippage_label = tk.Label(frame_canvas_data_display, text='Slippage').grid(row=3, column=0, sticky="nw")
         cdp_slippage = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
                                 relief='sunken', textvariable=self.str_cdp_slippage) \
-            .grid(row=2, column=1, sticky='nesw', padx=5, pady=5)
-        cdp_date_label = tk.Label(frame_canvas_data_display, text='Date').grid(row=3, column=0, sticky="nw")
+            .grid(row=3, column=1, sticky='nesw', padx=5, pady=5)
+        cdp_date_label = tk.Label(frame_canvas_data_display, text='Date').grid(row=4, column=0, sticky="nw")
         cdp_date = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
                             relief='sunken', textvariable=self.str_cdp_date) \
-            .grid(row=3, column=1, sticky='nesw', padx=5, pady=5)
+            .grid(row=4, column=1, sticky='nesw', padx=5, pady=5)
 
         # Summary
         frame_summary = tk.LabelFrame(left_panel, text='Summary')
@@ -289,6 +299,10 @@ class Timeline(tk.Frame):
                         text='Accomplishment (%)',
                         angle=90)
 
+        can.create_text(self.canvas_width/2,
+                        self.canvas_height - self.canvas_bottom_margin + 10,
+                        text='Time')
+
     def plot(self, data, line_fill_color):
         """
         Plot a given data, either the projected or actual accomplishment.
@@ -375,7 +389,13 @@ class Timeline(tk.Frame):
         """
         actual = self.get_accomplishment_at(time, self.actual_accomplishment)
         projected = self.get_accomplishment_at(time, self.projected_accomplishment)
-        self.slippage = round((actual - projected), 2)
+
+        # Check if actual time elapsed reached the given time
+        if self.actual_accomplishment[len(self.actual_accomplishment)-1]['time'] < time:
+            self.slippage = 0
+        else:
+            self.slippage = round((actual - projected), 2)
+        return self.slippage
 
     def get_accomplishment_at(self, time, accomplishment_list):
         # Calculates accomplishment by interpolation
@@ -391,6 +411,35 @@ class Timeline(tk.Frame):
                     return a2
                 else:
                     return (time - t1) / (t2 - t1) * (a2 - a1) + a1
+
+    def valid_start_date(self):
+        """
+        Check if the supplied format for the start date is valid
+        :return: bool. True if the format is valid.
+        """
+        str_start_date = self.str_start_date.get()
+        if '/' in str_start_date:
+            start_date = str_start_date.split('/')
+            start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+
+            # Check if the type is correct
+            if type(start_date) is datetime.date:
+                return True
+
+        return False
+
+    def get_new_date(self, start, duration):
+        """
+        Calculates the future date by adding number of days from
+        a given start date.
+        :param start: Start Date (valid string mm/dd/yyyy date format)
+        :param duration: Number of days to be added
+        :return: New date in the form mm/dd/yyyy
+        """
+        start_date = start.split('/')
+        start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+        new_date = start_date + datetime.timedelta(days=duration-1)
+        return date.strftime(new_date, '%B %d, %Y')
 
     # ===========================================================
     # Binding methods
@@ -471,19 +520,31 @@ class Timeline(tk.Frame):
         self.inputs_verti_grid_interval.config(state='active')
         self.inputs_calculate_btn.config(state='active')
 
+        self.project_opened = True
+
     def calculate_btn_pressed(self):
         # For the start date
         str_start_date = self.str_start_date.get()
-        if '/' in str_start_date:
-            start_date = str_start_date.split('/')
-            start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
-            duration = 0
+
+        # if '/' in str_start_date:
+        if self.valid_start_date():
+            # Separates the month, day and year
+            # start_date = str_start_date.split('/')
+
+            # Convert to date
+            # start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
+
+            # Sets the final duration to the larger of
+            # original and revised based on suspensions.
             if int(self.str_summ_orig_completion_days.get()) > int(self.str_summ_rev_completion_days.get()):
                 duration = int(self.str_summ_orig_completion_days.get())
             else:
                 duration = int(self.str_summ_rev_completion_days.get())
-            end_date = start_date + datetime.timedelta(days=duration - 1)
-            self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
+
+            # end_date = start_date + datetime.timedelta(days=duration - 1)
+            end_date = self.get_new_date(str_start_date, duration)
+            # self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
+            self.str_summ_rev_completion_date.set(end_date)
 
         else:
             messagebox.showerror('Input Error', 'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
@@ -553,7 +614,8 @@ class Timeline(tk.Frame):
 
     def canvas_hover(self, event):
         if (event.x > self.canvas_left_margin) and (event.x < (self.canvas_width - self.canvas_right_margin)):
-            if (event.y > self.canvas_top_margin) and (event.y < (self.canvas_height - self.canvas_bottom_margin)):
+            if (event.y > self.canvas_top_margin) and (event.y < (self.canvas_height - self.canvas_bottom_margin)) and\
+                    self.project_opened:
                 # Draw a vertical line
                 self.canvas.delete('current_time_indicator')
                 self.canvas.create_line(event.x,
@@ -567,3 +629,34 @@ class Timeline(tk.Frame):
                 # for o in overlappers:
                 #    self.canvas.tag_raise(o)
                 self.canvas.tag_lower('current_time_indicator')
+
+                time = self.canvas_location_to_time(event.x)
+                self.str_cdp_time.set(time)
+
+                actual_accomp = self.get_accomplishment_at(time, self.actual_accomplishment)
+                if type(actual_accomp) == float:
+                    self.actual_accomp = round(actual_accomp, 2)
+                self.str_cdp_actual_accomp.set(self.actual_accomp)
+
+                projected_accomp = self.get_accomplishment_at(time, self.projected_accomplishment)
+                self.str_cdp_accomp.set(round(projected_accomp))
+
+                slippage = self.calculate_slippage(time)
+                self.str_cdp_slippage.set(slippage)
+
+                if self.valid_start_date():
+                    curr_date = self.get_new_date(self.str_start_date.get(), time)
+                    self.str_cdp_date.set(curr_date)
+
+    def canvas_location_to_time(self, x):
+        """
+        Converts the canvas relative x location measured from time = 0 to time
+        :return:
+        """
+        w = self.canvas_width - self.canvas_left_margin - self.canvas_right_margin
+        elapsed_x = x - self.canvas_left_margin
+        percentage_elapsed = elapsed_x / w
+        total_duration = int(self.str_summ_rev_completion_days.get())
+        elapsed_time = int(percentage_elapsed * total_duration)
+
+        return elapsed_time
