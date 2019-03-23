@@ -74,11 +74,11 @@ class Timeline(tk.Frame):
         menu_save.add_command(label='Save S-Curve', command=self.save_scurve)
 
         file_menu = tk.Menu(menu_bar, tearoff=0)
-        file_menu.add_command(label='New', accelerator='Ctrl+N')
-        file_menu.add_command(label='Open Project', command=self.open_project, accelerator='Ctrl+O')
+        file_menu.add_command(label='New', command=self.new_project)
+        file_menu.add_command(label='Open Project', command=self.open_project)
         file_menu.add_cascade(label='Save', menu=menu_save)
         file_menu.add_separator()
-        file_menu.add_command(label='Quit', command=self.parent.quit, accelerator='Ctrl+X')
+        file_menu.add_command(label='Quit', command=self.parent.quit)
 
         menu_bar.add_cascade(label="File", menu=file_menu)
 
@@ -534,6 +534,11 @@ class Timeline(tk.Frame):
         self.inputs_calculate_btn.config(state='active')
 
         self.project_opened = True
+
+    def new_project(self):
+        fn = fd.asksaveasfilename(initialdir='',
+                                  title='New Project',
+                                  filetypes=[("JSON File", "*.json")])
 
     def calculate_btn_pressed(self):
         # For the start date
