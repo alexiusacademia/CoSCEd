@@ -496,12 +496,15 @@ class Timeline(tk.Frame):
         """
         Saves the canvas content to an image file.
         """
-        ps = self.canvas.postscript(colormode='color')
-        img = Image.open(io.BytesIO(ps.encode('utf-8')))
         fn = fd.asksaveasfilename(initialdir='',
                                   title='Save S-Curve File',
-                                  filetypes=[("PNG files", "*.png")])
-        img.save(fn, 'png', optimize=True, dpi=(300, 300))
+                                  filetypes=[("Postscript files", "*.ps")])
+        ps = self.canvas.postscript(file=fn, colormode='color',
+                                    rotate=1)
+
+        # img = Image.open(io.BytesIO(ps.encode('utf-8')))
+
+        # img.save(fn, 'png', optimize=True, dpi=(300, 300))
 
     def open_project(self):
         fn = fd.askopenfilename(initialdir='',
@@ -551,7 +554,6 @@ class Timeline(tk.Frame):
             json.dump(data, output_file, indent=4)
 
         self.project_filename = fn
-
 
     def calculate_btn_pressed(self):
         # For the start date
