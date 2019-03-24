@@ -4,10 +4,6 @@ from tkinter import messagebox, ttk
 from datetime import date
 import datetime
 import json
-
-from PIL import Image
-import io
-import os
 import subprocess
 
 
@@ -501,10 +497,11 @@ class Timeline(tk.Frame):
                                   filetypes=[("Postscript files", "*.ps")])
         ps = self.canvas.postscript(file=fn, colormode='color',
                                     rotate=1)
-
-        # img = Image.open(io.BytesIO(ps.encode('utf-8')))
-
-        # img.save(fn, 'png', optimize=True, dpi=(300, 300))
+        root = fn[:-2]
+        img_file = root + 'jpg'
+        import os
+        result = os.system('convert ' + fn + ' +antialias ' + img_file)
+        print(result)
 
     def open_project(self):
         fn = fd.askopenfilename(initialdir='',
