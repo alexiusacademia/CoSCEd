@@ -44,6 +44,8 @@ class Timeline(tk.Frame):
 
         self.actual_accomp = 0
 
+        self.project_filename = ''
+
         # ===========================================================
         # String Variables
         self.str_cdp_time = tk.StringVar()
@@ -534,11 +536,22 @@ class Timeline(tk.Frame):
         self.inputs_calculate_btn.config(state='active')
 
         self.project_opened = True
+        self.project_filename = fn
 
     def new_project(self):
         fn = fd.asksaveasfilename(initialdir='',
                                   title='New Project',
                                   filetypes=[("JSON File", "*.json")])
+        data = {}
+        data['projected'] = []
+        data['actual'] = []
+        data['suspensions'] = []
+
+        with open(fn, 'w') as output_file:
+            json.dump(data, output_file, indent=4)
+
+        self.project_filename = fn
+
 
     def calculate_btn_pressed(self):
         # For the start date
