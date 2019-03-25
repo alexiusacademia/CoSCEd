@@ -22,6 +22,9 @@ class Timeline(tk.Frame):
 
     width_factor = 0
 
+    LINE_COLOR_PROJECTED = '#0000ff'
+    LINE_COLOR_ACTUAL = '#ff0000'
+
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -259,8 +262,8 @@ class Timeline(tk.Frame):
         """
         self.recalculate()
         self.display_grid()
-        self.plot(self.projected_accomplishment, '#0000ff')
-        self.plot(self.actual_accomplishment, '#ff0000')
+        self.plot(self.projected_accomplishment, self.LINE_COLOR_PROJECTED)
+        self.plot(self.actual_accomplishment, self.LINE_COLOR_ACTUAL)
 
     def display_grid(self):
         """
@@ -313,6 +316,31 @@ class Timeline(tk.Frame):
         can.create_text(self.canvas_width/2,
                         self.canvas_height - self.canvas_bottom_margin + 10,
                         text='Time')
+
+        # Display Legends
+        can.create_line(self.canvas_left_margin + 10,
+                        self.canvas_top_margin + 30,
+                        self.canvas_left_margin + 100,
+                        self.canvas_top_margin + 30,
+                        fill=self.LINE_COLOR_PROJECTED,
+                        tags=['legend'])
+
+        can.create_text(self.canvas_left_margin + 110,
+                        self.canvas_top_margin + 30,
+                        text='Projected', anchor='w', fill=self.LINE_COLOR_PROJECTED,
+                        tags=['legend'])
+
+        can.create_line(self.canvas_left_margin + 10,
+                        self.canvas_top_margin + 60,
+                        self.canvas_left_margin + 100,
+                        self.canvas_top_margin + 60,
+                        fill=self.LINE_COLOR_ACTUAL,
+                        tags=['legend'])
+
+        can.create_text(self.canvas_left_margin + 110,
+                        self.canvas_top_margin + 60,
+                        text='Actual', anchor='w', fill=self.LINE_COLOR_ACTUAL,
+                        tags=['legend'])
 
     def plot(self, data, line_fill_color):
         """
