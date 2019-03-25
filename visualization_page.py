@@ -552,6 +552,8 @@ class Timeline(tk.Frame):
 
         self.project_filename = fn
 
+        self.display_grid()
+
     def calculate_btn_pressed(self):
         # For the start date
         str_start_date = self.str_start_date.get()
