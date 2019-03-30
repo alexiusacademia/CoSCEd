@@ -335,7 +335,10 @@ class Timeline(tk.Frame):
 
         height_factor = (self.canvas_height - (self.canvas_top_margin + self.canvas_bottom_margin)) / diff_y
 
-        width_factor = (self.canvas_width - (self.canvas_left_margin + self.canvas_right_margin)) / diff_x
+        if len(data[0]):
+            width_factor = 1.0
+        else:
+            width_factor = (self.canvas_width - (self.canvas_left_margin + self.canvas_right_margin)) / diff_x
         self.width_factor = width_factor
 
         left_margin = self.canvas_left_margin
@@ -400,6 +403,9 @@ class Timeline(tk.Frame):
         """
         actual = self.get_accomplishment_at(time, self.actual_accomplishment)
         projected = self.get_accomplishment_at(time, self.projected_accomplishment)
+
+        if (actual is None) or (projected is None):
+            return 0
 
         # Check if actual time elapsed reached the given time
         if self.actual_accomplishment[len(self.actual_accomplishment)-1]['time'] < time:
@@ -504,7 +510,7 @@ class Timeline(tk.Frame):
         print(result)
 
     def open_project(self):
-        fn = fd.askopenfilename(initialdir='',
+        fn = fd.askopenfilename(initialdir='/',
                                 title='Open Project',
                                 filetypes=[("JSON files", "*.json")])
         proj_file = open(fn, 'r')
@@ -544,7 +550,18 @@ class Timeline(tk.Frame):
                                   filetypes=[("JSON File", "*.json")])
         data = {}
         data['projected'] = []
+
+        data['projected'].append({
+            'time': 0,
+            'accomp': 0
+        })
+
         data['actual'] = []
+
+        data['actual'].append({
+            'time': 0,
+            'accomp': 0
+        })
         data['suspensions'] = []
 
         with open(fn, 'w') as output_file:
@@ -672,7 +689,8 @@ class Timeline(tk.Frame):
                 self.str_cdp_actual_accomp.set(self.actual_accomp)
 
                 projected_accomp = self.get_accomplishment_at(time, self.projected_accomplishment)
-                self.str_cdp_accomp.set(round(projected_accomp))
+                if projected_accomp is not None:
+                    self.str_cdp_accomp.set(round(projected_accomp))
 
                 slippage = self.calculate_slippage(time)
                 self.str_cdp_slippage.set(slippage)
