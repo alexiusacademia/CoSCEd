@@ -81,7 +81,11 @@ class Timeline(tk.Frame):
         file_menu.add_separator()
         file_menu.add_command(label='Quit', command=self.parent.quit)
 
+        edit_menu = tk.Menu(menu_bar, tearoff=0)
+        edit_menu.add_command(label='Projected Accomplishment', command=self.edit_projected)
+
         menu_bar.add_cascade(label="File", menu=file_menu)
+        menu_bar.add_cascade(label="Edit", menu=edit_menu)
 
         self.parent.config(menu=menu_bar)
 
@@ -598,6 +602,9 @@ class Timeline(tk.Frame):
         self.project_filename = fn
 
         self.display_grid()
+
+    def edit_projected(self):
+        print('Projected accomplishment.')
 
     def calculate_btn_pressed(self):
         # For the start date

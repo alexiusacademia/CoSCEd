@@ -2,7 +2,7 @@ import tkinter as tk
 
 
 class ProjectedAccomplishmentDialog(tk.Toplevel):
-    def __init__(self, parent, data, title=None):
+    def __init__(self, parent, file, title=None):
 
         tk.Toplevel.__init__(self, parent)
         self.transient(parent)
