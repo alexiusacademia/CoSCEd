@@ -20,7 +20,7 @@ class Timeline(tk.Frame):
     canvas_left_margin = 40
     canvas_right_margin = 30
 
-    width_factor = 0
+    width_factor = 1
 
     LINE_COLOR_PROJECTED = '#0000ff'
     LINE_COLOR_ACTUAL = '#ff0000'
@@ -367,10 +367,7 @@ class Timeline(tk.Frame):
 
         height_factor = (self.canvas_height - (self.canvas_top_margin + self.canvas_bottom_margin)) / diff_y
 
-        if len(data[0]):
-            width_factor = 1.0
-        else:
-            width_factor = (self.canvas_width - (self.canvas_left_margin + self.canvas_right_margin)) / diff_x
+        width_factor = (self.canvas_width - (self.canvas_left_margin + self.canvas_right_margin)) / diff_x
         self.width_factor = width_factor
 
         left_margin = self.canvas_left_margin
