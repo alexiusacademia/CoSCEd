@@ -365,6 +365,9 @@ class Timeline(tk.Frame):
         max_x = self.projected_accomplishment[len(self.projected_accomplishment) - 1]['time']
         diff_x = max_x - min_x
 
+        if diff_x == 0:
+            return
+
         height_factor = (self.canvas_height - (self.canvas_top_margin + self.canvas_bottom_margin)) / diff_y
 
         width_factor = (self.canvas_width - (self.canvas_left_margin + self.canvas_right_margin)) / diff_x
