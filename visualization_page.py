@@ -565,6 +565,7 @@ class Timeline(tk.Frame):
         self.projected_accomplishment = projected_imeplementation
         self.actual_accomplishment = actual_implementation
         self.suspensions = suspensions
+        self.canvas.delete('all')
         self.plot_timeline()
 
         # Trigger the vertical grid option and select the first option
