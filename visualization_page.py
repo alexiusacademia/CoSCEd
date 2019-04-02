@@ -6,6 +6,8 @@ import datetime
 import json
 import subprocess
 
+import dialogs.projected as projected_dialog
+
 
 class Timeline(tk.Frame):
     projected_accomplishment = []
@@ -604,7 +606,7 @@ class Timeline(tk.Frame):
         self.display_grid()
 
     def edit_projected(self):
-        print('Projected accomplishment.')
+        dlg = projected_dialog.ProjectedAccomplishmentDialog(self.parent)
 
     def calculate_btn_pressed(self):
         # For the start date
