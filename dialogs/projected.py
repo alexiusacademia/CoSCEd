@@ -38,13 +38,22 @@ class ProjectedAccomplishmentDialog:
             data = {}
             ctr = 0
             for rec in project_json['projected']:
-                data['row'+str(ctr)] = rec
+                data[ctr] = rec
                 ctr += 1
 
-            table = TableCanvas(self.top, data=data)
-            table.rowheight = 30
-            table.show()
+            self.model = TableModel()
+            self.table = TableCanvas(self.top, model=self.model)
+            self.model.importDict(data)
+            self.table.rowheight = 30
+            self.table.show()
+            self.table.bind('<FocusIn>', self.enter_pressed)
 
     def write_data(self, json_data):
         with open(self.filename, 'w') as output_file:
             json.dump(json_data, output_file, indent=4)
+
+    def enter_pressed(self, evt):
+        print('Enter pressed!', evt)
+        data = self.model.getData()
+        print(data)
+
