@@ -607,6 +607,7 @@ class Timeline(tk.Frame):
 
     def edit_projected(self):
         dlg = projected_dialog.ProjectedAccomplishmentDialog(self.parent)
+        dlg.show()
 
     def calculate_btn_pressed(self):
         # For the start date
