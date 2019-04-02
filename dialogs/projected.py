@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import messagebox
 import json
+from tkintertable import TableModel, TableCanvas
 
 
 class ProjectedAccomplishmentDialog:
@@ -34,11 +35,16 @@ class ProjectedAccomplishmentDialog:
             # Convert string to json
             project_json = json.loads(json_string)
 
-            project_json['projected'].append({
-                'time': 30,
-                'accomp': 25
-            })
+            data = {}
+            ctr = 0
+            for rec in project_json['projected']:
+                data['row'+str(ctr)] = rec
+                ctr += 1
 
-            # Convert the json object to python object
-            with open(self.filename, 'w') as output_file:
-                json.dump(project_json, output_file, indent=4)
+            table = TableCanvas(self.top, data=data)
+            table.rowheight = 30
+            table.show()
+
+    def write_data(self, json_data):
+        with open(self.filename, 'w') as output_file:
+            json.dump(json_data, output_file, indent=4)
