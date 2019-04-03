@@ -1,5 +1,10 @@
 # Project Timeline Editor
-![alt text](imgs/screenshot_03-22-2019.png "Logo Title Text 1")
+## Screenshots
+### 1. Project opened
+![alt text](imgs/screenshot_project_opened.png "Logo Title Text 1")
+### 2. Projected accomplishment editor
+![alt text](imgs/screenshot_showing_projected_editor.png "Logo Title Text 1")
+
 
 **Project Timeline Editor** is a desktop application to view and edit project
 or contract timeline in a graphical way to easily visualize the activities.
