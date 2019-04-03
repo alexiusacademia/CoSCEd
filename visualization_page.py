@@ -8,6 +8,7 @@ import subprocess
 
 import dialogs.projected as projected_dialog
 import dialogs.actual as actual_dialog
+import dialogs.suspensions as suspensions_dialog
 
 
 class Timeline(tk.Frame):
@@ -87,6 +88,7 @@ class Timeline(tk.Frame):
         edit_menu = tk.Menu(menu_bar, tearoff=0)
         edit_menu.add_command(label='Projected Accomplishment', command=self.edit_projected)
         edit_menu.add_command(label='Actual Accomplishment', command=self.edit_actual)
+        edit_menu.add_command(label='Suspensions', command=self.edit_suspensions)
 
         menu_bar.add_cascade(label="File", menu=file_menu)
         menu_bar.add_cascade(label="Edit", menu=edit_menu)
@@ -652,6 +654,13 @@ class Timeline(tk.Frame):
             self.dlg.top.bind('<FocusIn>', self.projected_table_focused)
             self.dlg.top.protocol('WM_DELETE_WINDOW', self.projected_editor_closed)
 
+    def edit_suspensions(self):
+        self.dlg = suspensions_dialog.SuspensionsDialog(self.parent)
+        self.dlg.show(self.project_filename)
+        if self.dlg.top is not None:
+            self.dlg.top.bind('<FocusIn>', self.suspensions_table_focused)
+            self.dlg.top.protocol('WM_DELETE_WINDOW', self.suspensions_editor_closed)
+
     def projected_editor_closed(self):
         # Reopen the file
         self.reopen_project()
@@ -662,6 +671,28 @@ class Timeline(tk.Frame):
     def actual_editor_closed(self):
         self.reopen_project()
         self.dlg.top.destroy()
+
+    def suspensions_editor_closed(self):
+        self.reopen_project()
+        self.dlg.top.destroy()
+
+    def suspensions_table_focused(self, evt):
+        data = self.dlg.model.getData()
+        temp_suspensions = []
+        for i in range(self.dlg.table.rows):
+            if ('start' in data[i]) and ('duration' in data[i]):
+                if (data[i]['start'] == '') or (data[i]['duration'] == ''):
+                    pass
+                else:
+                    temp_suspensions.append({
+                        'start': int(data[i]['start']),
+                        'duration': float(data[i]['duration'])
+                    })
+        self.dlg.project_json['actual'] = temp_suspensions
+
+        self.dlg.write_data(self.dlg.project_json)
+
+        self.reopen_project()
 
     def actual_table_focused(self, evt):
         data = self.dlg.model.getData()
