@@ -686,9 +686,9 @@ class Timeline(tk.Frame):
                 else:
                     temp_suspensions.append({
                         'start': int(data[i]['start']),
-                        'duration': float(data[i]['duration'])
+                        'duration': int(data[i]['duration'])
                     })
-        self.dlg.project_json['actual'] = temp_suspensions
+        self.dlg.project_json['suspensions'] = temp_suspensions
 
         self.dlg.write_data(self.dlg.project_json)
 
