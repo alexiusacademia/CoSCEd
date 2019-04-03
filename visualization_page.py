@@ -824,6 +824,8 @@ class Timeline(tk.Frame):
                                     text=str(num_of_days), tag='vert_grid')
 
     def canvas_hover(self, event):
+        # TODO: Check time cutting during the addition of suspensions in the graph
+        # TODO: Check bug -> Date of last day not showing on canvas hover display
         if (event.x > self.canvas_left_margin) and (event.x < (self.canvas_width - self.canvas_right_margin)):
             if (event.y > self.canvas_top_margin) and (event.y < (self.canvas_height - self.canvas_bottom_margin)) and\
                     self.project_opened:
