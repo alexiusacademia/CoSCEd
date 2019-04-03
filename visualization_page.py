@@ -7,6 +7,7 @@ import json
 import subprocess
 
 import dialogs.projected as projected_dialog
+import dialogs.actual as actual_dialog
 
 
 class Timeline(tk.Frame):
@@ -85,6 +86,7 @@ class Timeline(tk.Frame):
 
         edit_menu = tk.Menu(menu_bar, tearoff=0)
         edit_menu.add_command(label='Projected Accomplishment', command=self.edit_projected)
+        edit_menu.add_command(label='Actual Accomplishment', command=self.edit_actual)
 
         menu_bar.add_cascade(label="File", menu=file_menu)
         menu_bar.add_cascade(label="Edit", menu=edit_menu)
@@ -636,11 +638,19 @@ class Timeline(tk.Frame):
 
         self.display_grid()
 
+    def edit_actual(self):
+        self.dlg = actual_dialog.ActualAccomplishmentDialog(self.parent)
+        self.dlg.show(self.project_filename)
+        if self.dlg.top is not None:
+            self.dlg.top.bind('<FocusIn>', self.actual_table_focused)
+            self.dlg.top.protocol('WM_DELETE_WINDOW', self.actual_editor_closed)
+
     def edit_projected(self):
         self.dlg = projected_dialog.ProjectedAccomplishmentDialog(self.parent)
         self.dlg.show(self.project_filename)
-        self.dlg.top.bind('<FocusIn>', self.projected_table_focused)
-        self.dlg.top.protocol('WM_DELETE_WINDOW', self.projected_editor_closed)
+        if self.dlg.top is not None:
+            self.dlg.top.bind('<FocusIn>', self.projected_table_focused)
+            self.dlg.top.protocol('WM_DELETE_WINDOW', self.projected_editor_closed)
 
     def projected_editor_closed(self):
         # Reopen the file
@@ -648,6 +658,28 @@ class Timeline(tk.Frame):
 
         # Close the editor
         self.dlg.top.destroy()
+
+    def actual_editor_closed(self):
+        self.reopen_project()
+        self.dlg.top.destroy()
+
+    def actual_table_focused(self, evt):
+        data = self.dlg.model.getData()
+        temp_actual = []
+        for i in range(self.dlg.table.rows):
+            if ('time' in data[i]) and ('accomp' in data[i]):
+                if (data[i]['time'] == '') or (data[i]['accomp'] == ''):
+                    pass
+                else:
+                    temp_actual.append({
+                        'time': int(data[i]['time']),
+                        'accomp': float(data[i]['accomp'])
+                    })
+        self.dlg.project_json['actual'] = temp_actual
+
+        self.dlg.write_data(self.dlg.project_json)
+
+        self.reopen_project()
 
     def projected_table_focused(self, evt):
         data = self.dlg.model.getData()

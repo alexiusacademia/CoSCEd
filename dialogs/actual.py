@@ -4,7 +4,7 @@ import json
 from tkintertable import TableModel, TableCanvas
 
 
-class ProjectedAccomplishmentDialog:
+class ActualAccomplishmentDialog:
     top = None
     filename = ''
 
@@ -21,7 +21,7 @@ class ProjectedAccomplishmentDialog:
                                          "A file is necessary to be opened or created to show this editor.")
         else:
             self.top = tk.Toplevel(self.parent)
-            self.top.title = "Projected Accomplishment Editor"
+            self.top.title = "Actual Accomplishment Editor"
             self.top.transient(self.parent)
             self.top.grab_set()
 
@@ -37,7 +37,7 @@ class ProjectedAccomplishmentDialog:
 
             data = {}
             ctr = 0
-            for rec in self.project_json['projected']:
+            for rec in self.project_json['actual']:
                 data[ctr] = rec
                 ctr += 1
 
