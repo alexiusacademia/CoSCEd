@@ -33,11 +33,11 @@ class ProjectedAccomplishmentDialog:
             file.close()
 
             # Convert string to json
-            project_json = json.loads(json_string)
+            self.project_json = json.loads(json_string)
 
             data = {}
             ctr = 0
-            for rec in project_json['projected']:
+            for rec in self.project_json['projected']:
                 data[ctr] = rec
                 ctr += 1
 
@@ -53,7 +53,20 @@ class ProjectedAccomplishmentDialog:
             json.dump(json_data, output_file, indent=4)
 
     def enter_pressed(self, evt):
-        print('Enter pressed!', evt)
         data = self.model.getData()
-        print(data)
 
+        temp_projected = []
+
+        for i in range(self.table.rows):
+            if ('time' in data[i]) and ('accomp' in data[i]):
+                if (data[i]['time'] == '') or (data[i]['accomp'] == ''):
+                    pass
+                else:
+                    temp_projected.append({
+                        'time': int(data[i]['time']),
+                        'accomp': float(data[i]['accomp'])
+                    })
+
+        self.project_json['projected'] = temp_projected
+
+        self.write_data(self.project_json)
