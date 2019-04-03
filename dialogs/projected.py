@@ -46,13 +46,13 @@ class ProjectedAccomplishmentDialog:
             self.model.importDict(data)
             self.table.rowheight = 30
             self.table.show()
-            self.table.bind('<FocusIn>', self.enter_pressed)
+            # self.table.bind('<FocusIn>', self.table_focused)
 
     def write_data(self, json_data):
         with open(self.filename, 'w') as output_file:
             json.dump(json_data, output_file, indent=4)
 
-    def enter_pressed(self, evt):
+    def table_focused(self, evt):
         data = self.model.getData()
 
         temp_projected = []

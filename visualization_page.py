@@ -579,6 +579,36 @@ class Timeline(tk.Frame):
         self.project_opened = True
         self.project_filename = fn
 
+    def reopen_project(self):
+        proj_file = open(self.project_filename, 'r')
+        proj_file_lines = proj_file.readlines()
+        json_string = ''
+        for line in proj_file_lines:
+            json_string += line
+        json_project = json.loads(json_string)
+        # Retrieve the projected object timeline
+        projected_implementation = json_project['projected']
+
+        # Retrieve actual object timeline
+        actual_implementation = json_project['actual']
+
+        # Retrieve suspensions
+        suspensions = json_project['suspensions']
+
+        self.projected_accomplishment = projected_implementation
+        self.actual_accomplishment = actual_implementation
+        self.suspensions = suspensions
+        self.canvas.delete('all')
+        self.plot_timeline()
+
+        # Trigger the vertical grid option and select the first option
+        self.inputs_verti_grid_interval.current(0)
+        self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
+
+        # Enable some controls that are disabled on startup
+        self.inputs_verti_grid_interval.config(state='active')
+        self.inputs_calculate_btn.config(state='active')
+
     def new_project(self):
         fn = fd.asksaveasfilename(initialdir='',
                                   title='New Project',
@@ -607,8 +637,38 @@ class Timeline(tk.Frame):
         self.display_grid()
 
     def edit_projected(self):
-        dlg = projected_dialog.ProjectedAccomplishmentDialog(self.parent)
-        dlg.show(self.project_filename)
+        self.dlg = projected_dialog.ProjectedAccomplishmentDialog(self.parent)
+        self.dlg.show(self.project_filename)
+        self.dlg.top.bind('<FocusIn>', self.projected_table_focused)
+        self.dlg.top.protocol('WM_DELETE_WINDOW', self.projected_editor_closed)
+
+    def projected_editor_closed(self):
+        # Reopen the file
+        self.reopen_project()
+
+        # Close the editor
+        self.dlg.top.destroy()
+
+    def projected_table_focused(self, evt):
+        data = self.dlg.model.getData()
+
+        temp_projected = []
+
+        for i in range(self.dlg.table.rows):
+            if ('time' in data[i]) and ('accomp' in data[i]):
+                if (data[i]['time'] == '') or (data[i]['accomp'] == ''):
+                    pass
+                else:
+                    temp_projected.append({
+                        'time': int(data[i]['time']),
+                        'accomp': float(data[i]['accomp'])
+                    })
+
+        self.dlg.project_json['projected'] = temp_projected
+
+        self.dlg.write_data(self.dlg.project_json)
+
+        self.reopen_project()
 
     def calculate_btn_pressed(self):
         # For the start date
