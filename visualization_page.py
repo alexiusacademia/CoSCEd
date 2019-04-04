@@ -9,6 +9,7 @@ import subprocess
 import dialogs.projected as projected_dialog
 import dialogs.actual as actual_dialog
 import dialogs.suspensions as suspensions_dialog
+import utils.convert_to_num as converter
 
 
 class Timeline(tk.Frame):
@@ -686,19 +687,15 @@ class Timeline(tk.Frame):
         temp_suspensions = []
         for i in range(self.dlg.table.rows):
             if ('start' in data[i]) and ('duration' in data[i]):
-                if (data[i]['start'] == '') or (data[i]['duration'] == ''):
-                    pass
-                elif (type(data[i]['start']) != int) and (data[i]['start'] != '0'):
-                    self.str_status_message.set('Start parameter must be whole number instead of ' + str(data[i]['start']))
-                    pass
-                elif (type(data[i]['duration']) != int) and (data[i]['duration'] != '0'):
-                    self.str_status_message.set('Duration parameter must be whole number instead of ' + str(data[i]['duration']))
-                    pass
-                else:
-                    temp_suspensions.append({
-                        'start': int(data[i]['start']),
-                        'duration': int(data[i]['duration'])
-                    })
+                s = converter.convert_to_int(data[i]['start'])
+                d = converter.convert_to_int(data[i]['duration'])
+                temp_suspensions.append({
+                    'start': s[0],
+                    'duration': d[0]
+                })
+
+                self.str_status_message.set(s[1] + ' ' + d[1])
+
         self.dlg.project_json['suspensions'] = temp_suspensions
 
         self.dlg.write_data(self.dlg.project_json)
@@ -710,16 +707,16 @@ class Timeline(tk.Frame):
         temp_actual = []
         for i in range(self.dlg.table.rows):
             if ('time' in data[i]) and ('accomp' in data[i]):
-                if (data[i]['time'] == '') or (data[i]['accomp'] == ''):
-                    pass
-                elif type(data[i]['time']) != int:
-                    self.str_status_message.set('Time parameter must be whole number instead of ' + str(data[i]['time']))
-                    pass
-                else:
-                    temp_actual.append({
-                        'time': int(data[i]['time']),
-                        'accomp': float(data[i]['accomp'])
-                    })
+                t = converter.convert_to_int(data[i]['time'])
+                a = converter.convert_to_float(data[i]['accomp'])
+
+                temp_actual.append({
+                    'time': t[0],
+                    'accomp': a[0]
+                })
+
+                self.str_status_message.set(t[1] + ' ' + a[1])
+
         self.dlg.project_json['actual'] = temp_actual
 
         self.dlg.write_data(self.dlg.project_json)
@@ -733,16 +730,15 @@ class Timeline(tk.Frame):
 
         for i in range(self.dlg.table.rows):
             if ('time' in data[i]) and ('accomp' in data[i]):
-                if (data[i]['time'] == '') or (data[i]['accomp'] == ''):
-                    pass
-                elif type(data[i]['time']) != int:
-                    self.str_status_message.set('Time parameter must be whole number instead of ' + str(data[i]['time']))
-                    pass
-                else:
-                    temp_projected.append({
-                        'time': int(data[i]['time']),
-                        'accomp': float(data[i]['accomp'])
-                    })
+                t = converter.convert_to_int(data[i]['time'])
+                a = converter.convert_to_float(data[i]['accomp'])
+
+                temp_projected.append({
+                    'time': t[0],
+                    'accomp': a[0]
+                })
+
+                self.str_status_message.set(t[1] + ' ' + a[1])
 
         self.dlg.project_json['projected'] = temp_projected
 
