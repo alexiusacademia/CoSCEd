@@ -688,10 +688,10 @@ class Timeline(tk.Frame):
             if ('start' in data[i]) and ('duration' in data[i]):
                 if (data[i]['start'] == '') or (data[i]['duration'] == ''):
                     pass
-                elif type(data[i]['start']) != int:
+                elif (type(data[i]['start']) != int) and (data[i]['start'] != '0'):
                     self.str_status_message.set('Start parameter must be whole number instead of ' + str(data[i]['start']))
                     pass
-                elif type(data[i]['duration']) != int:
+                elif (type(data[i]['duration']) != int) and (data[i]['duration'] != '0'):
                     self.str_status_message.set('Duration parameter must be whole number instead of ' + str(data[i]['duration']))
                     pass
                 else:
