@@ -1,50 +1,48 @@
 {
-  "projected": [
-    {
-      "time": 0,
-      "accomp": 0
-    },
-    {
-      "time": 30,
-      "accomp": 8.86
-    },
-    {
-      "time": 60,
-      "accomp": 34.31
-    },
-    {
-      "time": 90,
-      "accomp": 59.14
-    },
-    {
-      "time": 120,
-      "accomp": 83.98
-    },
-    {
-      "time": 150,
-      "accomp": 100
-    }
-  ],
-
-  "actual": [
-    {
-      "time": 0,
-      "accomp": 0
-    },
-    {
-      "time": 30,
-      "accomp": 14.11
-    },
-    {
-      "time": 54,
-      "accomp": 76.72
-    }
-  ],
-
-  "suspensions": [
-    {
-      "start": 54,
-      "duration": 20
-    }
-  ]
+    "projected": [
+        {
+            "time": 0,
+            "accomp": 0.0
+        },
+        {
+            "time": 30,
+            "accomp": 8.86
+        },
+        {
+            "time": 60,
+            "accomp": 34.31
+        },
+        {
+            "time": 90,
+            "accomp": 59.14
+        },
+        {
+            "time": 120,
+            "accomp": 83.98
+        },
+        {
+            "time": 150,
+            "accomp": 100.0
+        }
+    ],
+    "actual": [
+        {
+            "time": 0,
+            "accomp": 0
+        },
+        {
+            "time": 30,
+            "accomp": 14.11
+        },
+        {
+            "time": 54,
+            "accomp": 76.72
+        }
+    ],
+    "suspensions": [
+        {
+            "start": 54,
+            "duration": 20
+        }
+    ]
 }

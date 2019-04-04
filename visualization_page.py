@@ -633,6 +633,11 @@ class Timeline(tk.Frame):
         })
         data['suspensions'] = []
 
+        data['suspensions'].append({
+            'start': 0,
+            'duration': 0
+        })
+
         with open(fn, 'w') as output_file:
             json.dump(data, output_file, indent=4)
 
