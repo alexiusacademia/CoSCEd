@@ -633,6 +633,11 @@ class Timeline(tk.Frame):
         })
         data['suspensions'] = []
 
+        data['suspensions'].append({
+            'start': 0,
+            'duration': 0
+        })
+
         with open(fn, 'w') as output_file:
             json.dump(data, output_file, indent=4)
 
@@ -683,6 +688,12 @@ class Timeline(tk.Frame):
             if ('start' in data[i]) and ('duration' in data[i]):
                 if (data[i]['start'] == '') or (data[i]['duration'] == ''):
                     pass
+                elif type(data[i]['start']) != int:
+                    self.str_status_message.set('Start parameter must be whole number instead of ' + str(data[i]['start']))
+                    pass
+                elif type(data[i]['duration']) != int:
+                    self.str_status_message.set('Duration parameter must be whole number instead of ' + str(data[i]['duration']))
+                    pass
                 else:
                     temp_suspensions.append({
                         'start': int(data[i]['start']),
@@ -700,6 +711,9 @@ class Timeline(tk.Frame):
         for i in range(self.dlg.table.rows):
             if ('time' in data[i]) and ('accomp' in data[i]):
                 if (data[i]['time'] == '') or (data[i]['accomp'] == ''):
+                    pass
+                elif type(data[i]['time']) != int:
+                    self.str_status_message.set('Time parameter must be whole number instead of ' + str(data[i]['time']))
                     pass
                 else:
                     temp_actual.append({
@@ -720,6 +734,9 @@ class Timeline(tk.Frame):
         for i in range(self.dlg.table.rows):
             if ('time' in data[i]) and ('accomp' in data[i]):
                 if (data[i]['time'] == '') or (data[i]['accomp'] == ''):
+                    pass
+                elif type(data[i]['time']) != int:
+                    self.str_status_message.set('Time parameter must be whole number instead of ' + str(data[i]['time']))
                     pass
                 else:
                     temp_projected.append({
