@@ -609,7 +609,7 @@ class Timeline(tk.Frame):
         self.plot_timeline()
 
         # Trigger the vertical grid option and select the first option
-        self.inputs_verti_grid_interval.current(0)
+        # self.inputs_verti_grid_interval.current(0)
         self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
 
         # Enable some controls that are disabled on startup
