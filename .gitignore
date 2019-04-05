@@ -4,3 +4,6 @@ __pycache__/
 *.ps
 dependencies/
 installer.cfg
+build/
+dist/
+*.spec
