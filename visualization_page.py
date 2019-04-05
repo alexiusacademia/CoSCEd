@@ -287,6 +287,7 @@ class Timeline(tk.Frame):
 
         w = self.canvas_width
 
+        # Display the horizontaal grid lines
         for i in range(1, grid_count_vertical):
             can.create_line(self.canvas_left_margin,
                             i * grid_height + self.canvas_top_margin,
@@ -298,6 +299,7 @@ class Timeline(tk.Frame):
         can.create_text(10, self.canvas_height - (grid_count_vertical + 1) * grid_height, text=100, anchor='nw',
                         offset='5, 0')
 
+        # Display borders
         can.create_line(self.canvas_left_margin,
                         self.canvas_top_margin,
                         w - self.canvas_right_margin,
