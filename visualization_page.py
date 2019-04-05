@@ -170,12 +170,12 @@ class Timeline(tk.Frame):
             .grid(row=0, column=0, sticky='nsw')
         inputs_start_date = tk.Entry(frame_inputs, textvariable=self.str_start_date, justify='right') \
             .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
-        inputs_verti_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
+        inputs_vert_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
             .grid(row=1, column=0, sticky='nsw')
-        self.inputs_verti_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', 'Monthly', '30 Day Period'],
-                                                  justify='right', textvariable=self.str_vert_grid_interval, state='disabled')
-        self.inputs_verti_grid_interval.grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
-        self.inputs_verti_grid_interval.bind('<<ComboboxSelected>>', self.cbo_vert_grid_selected)
+        self.inputs_vert_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', 'Monthly', '30 Day Period'],
+                                                      justify='right', textvariable=self.str_vert_grid_interval, state='disabled')
+        self.inputs_vert_grid_interval.grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
+        self.inputs_vert_grid_interval.bind('<<ComboboxSelected>>', self.cbo_vert_grid_selected)
 
         self.inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.calculate_btn_pressed, state='disabled')
         self.inputs_calculate_btn.grid(row=100, column=1, sticky='nes', padx=5, pady=5)
@@ -576,11 +576,11 @@ class Timeline(tk.Frame):
         self.plot_timeline()
 
         # Trigger the vertical grid option and select the first option
-        self.inputs_verti_grid_interval.current(0)
-        self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
+        self.inputs_vert_grid_interval.current(0)
+        self.inputs_vert_grid_interval.event_generate('<<ComboboxSelected>>')
 
         # Enable some controls that are disabled on startup
-        self.inputs_verti_grid_interval.config(state='active')
+        self.inputs_vert_grid_interval.config(state='active')
         self.inputs_calculate_btn.config(state='active')
 
         self.project_opened = True
@@ -610,10 +610,10 @@ class Timeline(tk.Frame):
 
         # Trigger the vertical grid option and select the first option
         # self.inputs_verti_grid_interval.current(0)
-        self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
+        self.inputs_vert_grid_interval.event_generate('<<ComboboxSelected>>')
 
         # Enable some controls that are disabled on startup
-        self.inputs_verti_grid_interval.config(state='active')
+        self.inputs_vert_grid_interval.config(state='active')
         self.inputs_calculate_btn.config(state='active')
 
     def new_project(self):
@@ -778,7 +778,7 @@ class Timeline(tk.Frame):
     def cbo_vert_grid_selected(self, event):
         # Draw the vertical grid
         self.canvas.delete('vert_grid')
-        vert_grid_interval = self.inputs_verti_grid_interval.current()
+        vert_grid_interval = self.inputs_vert_grid_interval.current()
 
         num_of_days = int(self.str_summ_rev_completion_days.get())
 
@@ -809,15 +809,15 @@ class Timeline(tk.Frame):
                 messagebox.showinfo('Unimplemented', 'This feature is not yet implemented in this version.')
 
                 # Set the vertical grid to default
-                self.inputs_verti_grid_interval.current(0)
-                self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
+                self.inputs_vert_grid_interval.current(0)
+                self.inputs_vert_grid_interval.event_generate('<<ComboboxSelected>>')
             else:
                 messagebox.showerror('Input Error',
                                      'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
 
                 # Set the vertical grid to default
-                self.inputs_verti_grid_interval.current(0)
-                self.inputs_verti_grid_interval.event_generate('<<ComboboxSelected>>')
+                self.inputs_vert_grid_interval.current(0)
+                self.inputs_vert_grid_interval.event_generate('<<ComboboxSelected>>')
 
         elif vert_grid_interval == 2:
             interval = 30
