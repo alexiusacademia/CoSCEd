@@ -11,12 +11,11 @@ or contract timeline in a graphical way to easily visualize the activities.
 ![alt text](imgs/screenshot_showing_projected_editor.png "Logo Title Text 1")
 
 
-**Running**
+**Download**
 ---
-The software has no package yet, but it can be run using the main.py script
-with python installed on the system.
-```commandline
-python main.py
-```
+Here are the available releases.
+
+- [Pre-release v0.1.0 (Windows)](https://github.com/alexiusacademia/project-timeline-editor/releases/download/v0.1.0/ProjectTimelineEditor.exe)
+
 
 Copyright 2019 Alexius Academia
