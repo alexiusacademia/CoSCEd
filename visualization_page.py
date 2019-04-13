@@ -210,6 +210,7 @@ class Timeline(tk.Frame):
             .set(self.projected_accomplishment[len(self.projected_accomplishment) - 1]['time'])
 
         temp_projected = []
+        self.total_suspension_duration = 0
         # Breaks the projected based on suspensions
         for i in range(len(self.suspensions)):
             # Temporary holder for the projected timeline
@@ -235,7 +236,7 @@ class Timeline(tk.Frame):
                     "accomp": accomp1
                 })
 
-                if (t1 < start_suspended) and (start_suspended < t2):
+                if (t1 <= start_suspended) and (start_suspended <= t2):
                     total_suspensions += duration_suspended
 
                     # Now, calculate the corresponding accomplishment
