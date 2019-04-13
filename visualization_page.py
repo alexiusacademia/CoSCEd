@@ -204,8 +204,15 @@ class Timeline(tk.Frame):
         Recalculates the graph for projected and actual timeline to be plotted
         by incorporating all the suspensions.
         """
+        # Check for the total number of suspension orders
+        if len(self.suspensions) == 1:
+            if self.suspensions[0]['duration'] == 0:
+                self.str_summary_total_suspension_order.set(0)
+            else:
+                self.str_summary_total_suspension_order.set(len(self.suspensions))
+        else:
+            self.str_summary_total_suspension_order.set(len(self.suspensions))
 
-        self.str_summary_total_suspension_order.set(len(self.suspensions))
         self.str_summ_orig_completion_days \
             .set(self.projected_accomplishment[len(self.projected_accomplishment) - 1]['time'])
 
