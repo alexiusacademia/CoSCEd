@@ -243,7 +243,7 @@ class Timeline(tk.Frame):
                     "accomp": accomp1
                 })
 
-                if (t1 <= start_suspended) and (start_suspended <= t2):
+                if (t1 < start_suspended) and (start_suspended <= t2):
                     total_suspensions += duration_suspended
 
                     # Now, calculate the corresponding accomplishment
