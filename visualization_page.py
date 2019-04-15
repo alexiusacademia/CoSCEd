@@ -831,6 +831,8 @@ class Timeline(tk.Frame):
             self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
                                     self.canvas_top_margin - 20,
                                     text=str(num_of_days), tag='vert_grid')
+        else:
+            self.canvas.delete('vert_grid')
 
     def canvas_hover(self, event):
         # TODO: Check time cutting during the addition of suspensions in the graph
