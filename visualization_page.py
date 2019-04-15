@@ -338,6 +338,10 @@ class Timeline(tk.Frame):
                         self.canvas_height - self.canvas_bottom_margin + 10,
                         text='Time')
 
+        self.display_legend()
+
+    def display_legend(self):
+        can = self.canvas
         # Display Legends
         can.create_line(self.canvas_left_margin + 10,
                         self.canvas_top_margin + 30,
