@@ -172,7 +172,7 @@ class Timeline(tk.Frame):
             .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
         inputs_vert_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
             .grid(row=1, column=0, sticky='nsw')
-        self.inputs_vert_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', '30 Day Period'],
+        self.inputs_vert_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', '30 Day Period', 'None'],
                                                       justify='right', textvariable=self.str_vert_grid_interval, state='disabled')
         self.inputs_vert_grid_interval.grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
         self.inputs_vert_grid_interval.bind('<<ComboboxSelected>>', self.cbo_vert_grid_selected)
