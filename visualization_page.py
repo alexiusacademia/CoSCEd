@@ -88,7 +88,7 @@ class Timeline(tk.Frame):
         file_menu.add_command(label='Open Project', command=self.open_project)
         file_menu.add_cascade(label='Export', menu=menu_save)
         file_menu.add_separator()
-        file_menu.add_command(label='Quit', command=self.parent.quit)
+        file_menu.add_command(label='Quit', command=self.close_main_window)
 
         edit_menu = tk.Menu(menu_bar, tearoff=0)
         edit_menu.add_command(label='Projected Accomplishment', command=self.edit_projected)
