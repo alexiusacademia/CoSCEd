@@ -172,7 +172,7 @@ class Timeline(tk.Frame):
             .grid(row=0, column=1, sticky='nesw', padx=5, pady=5)
         inputs_vert_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
             .grid(row=1, column=0, sticky='nsw')
-        self.inputs_vert_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', '30 Day Period'],
+        self.inputs_vert_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', '30 Day Period', 'None'],
                                                       justify='right', textvariable=self.str_vert_grid_interval, state='disabled')
         self.inputs_vert_grid_interval.grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
         self.inputs_vert_grid_interval.bind('<<ComboboxSelected>>', self.cbo_vert_grid_selected)
@@ -835,6 +835,8 @@ class Timeline(tk.Frame):
             self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
                                     self.canvas_top_margin - 20,
                                     text=str(num_of_days), tag='vert_grid')
+        else:
+            self.canvas.delete('vert_grid')
 
     def canvas_hover(self, event):
         # TODO: Check time cutting during the addition of suspensions in the graph
