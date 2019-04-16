@@ -30,6 +30,8 @@ class Timeline(tk.Frame):
     LINE_COLOR_PROJECTED = '#0000ff'
     LINE_COLOR_ACTUAL = '#ff0000'
 
+    app_title = "Project Timeline Editor"
+
     def __init__(self, parent):
         super().__init__(parent)
 
@@ -67,6 +69,8 @@ class Timeline(tk.Frame):
         self.str_status_message = tk.StringVar()
 
         self.init_ui()
+
+        self.parent.protocol('WM_DELETE_WINDOW', self.close_main_window)
 
     def init_ui(self):
         """
@@ -112,11 +116,12 @@ class Timeline(tk.Frame):
         cdp_time = tk.Label(frame_canvas_data_display, text='', width=10, anchor='ne',
                             relief='sunken', textvariable=self.str_cdp_time) \
             .grid(row=0, column=1, sticky="nesw", padx=5, pady=5)
-        cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Projected Accomplishment").grid(row=1, column=0, sticky='nw')
+        cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Projected Accomplishment").grid(row=1, column=0,
+                                                                                                     sticky='nw')
         cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
                               relief='sunken', textvariable=self.str_cdp_accomp) \
             .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
-        cdp_actual_accomp_label = tk.Label(frame_canvas_data_display, text="Actual Accomplishment")\
+        cdp_actual_accomp_label = tk.Label(frame_canvas_data_display, text="Actual Accomplishment") \
             .grid(row=2, column=0, sticky='nw')
         cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
                               relief='sunken', textvariable=self.str_cdp_actual_accomp) \
@@ -173,11 +178,13 @@ class Timeline(tk.Frame):
         inputs_vert_grid_interval_label = tk.Label(frame_inputs, text='Vertical Grid Interval') \
             .grid(row=1, column=0, sticky='nsw')
         self.inputs_vert_grid_interval = ttk.Combobox(frame_inputs, values=['Decadal', '30 Day Period', 'None'],
-                                                      justify='right', textvariable=self.str_vert_grid_interval, state='disabled')
+                                                      justify='right', textvariable=self.str_vert_grid_interval,
+                                                      state='disabled')
         self.inputs_vert_grid_interval.grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
         self.inputs_vert_grid_interval.bind('<<ComboboxSelected>>', self.cbo_vert_grid_selected)
 
-        self.inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.calculate_btn_pressed, state='disabled')
+        self.inputs_calculate_btn = tk.Button(frame_inputs, text='Calculate', command=self.calculate_btn_pressed,
+                                              state='disabled')
         self.inputs_calculate_btn.grid(row=100, column=1, sticky='nes', padx=5, pady=5)
 
         # ==========================================================
@@ -193,10 +200,10 @@ class Timeline(tk.Frame):
         frame_status_bar = tk.Frame(self, bd=1, relief='sunken')
         frame_status_bar.grid(row=100, column=0, columnspan=2, sticky='nesw', padx=10, pady=10)
 
-        status_message_label = tk.Label(frame_status_bar, text='Status: ', anchor='nw', justify='left')\
+        status_message_label = tk.Label(frame_status_bar, text='Status: ', anchor='nw', justify='left') \
             .grid(row=0, column=0, sticky='nesw')
         status_message = tk.Label(frame_status_bar, textvariable=self.str_status_message,
-                                  anchor='nw', justify = 'left')\
+                                  anchor='nw', justify='left') \
             .grid(row=0, column=1)
 
     def recalculate(self):
@@ -330,11 +337,11 @@ class Timeline(tk.Frame):
                         width=2)
 
         can.create_text(self.canvas_width - self.canvas_right_margin + 10,
-                        self.canvas_height/2,
+                        self.canvas_height / 2,
                         text='Accomplishment (%)',
                         angle=90)
 
-        can.create_text(self.canvas_width/2,
+        can.create_text(self.canvas_width / 2,
                         self.canvas_height - self.canvas_bottom_margin + 10,
                         text='Time')
 
@@ -461,7 +468,7 @@ class Timeline(tk.Frame):
             return 0
 
         # Check if actual time elapsed reached the given time
-        if self.actual_accomplishment[len(self.actual_accomplishment)-1]['time'] < time:
+        if self.actual_accomplishment[len(self.actual_accomplishment) - 1]['time'] < time:
             self.slippage = 0
         else:
             self.slippage = round((actual - projected), 2)
@@ -508,7 +515,7 @@ class Timeline(tk.Frame):
         """
         start_date = start.split('/')
         start_date = date(int(start_date[2]), int(start_date[0]), int(start_date[1]))
-        new_date = start_date + datetime.timedelta(days=duration-1)
+        new_date = start_date + datetime.timedelta(days=duration - 1)
         return date.strftime(new_date, '%B %d, %Y')
 
     # ===========================================================
@@ -828,7 +835,7 @@ class Timeline(tk.Frame):
             interval = 30
             # Interval is every 30 days (fixed)
             grid_qty = int(num_of_days / interval)
-            for i in range(grid_qty+1):
+            for i in range(grid_qty + 1):
                 self.canvas.create_line((i + 1) * interval * self.width_factor + self.canvas_left_margin,
                                         self.canvas_top_margin,
                                         (i + 1) * interval * self.width_factor + self.canvas_left_margin,
@@ -849,7 +856,7 @@ class Timeline(tk.Frame):
         # TODO: Check time cutting during the addition of suspensions in the graph
         # TODO: Check bug -> Date of last day not showing on canvas hover display
         if (event.x > self.canvas_left_margin) and (event.x < (self.canvas_width - self.canvas_right_margin)):
-            if (event.y > self.canvas_top_margin) and (event.y < (self.canvas_height - self.canvas_bottom_margin)) and\
+            if (event.y > self.canvas_top_margin) and (event.y < (self.canvas_height - self.canvas_bottom_margin)) and \
                     self.project_opened:
 
                 # Draw a vertical line
@@ -912,3 +919,14 @@ class Timeline(tk.Frame):
         elapsed_time = int(percentage_elapsed * total_duration)
 
         return elapsed_time
+
+    def close_main_window(self):
+        """
+        Do some saving file checking or something before closing the
+        window.
+        """
+        res = messagebox.askyesno("Close " + self.app_title,
+                                  "Are you sure you want to close the application?")
+
+        if res:
+            self.parent.destroy()
