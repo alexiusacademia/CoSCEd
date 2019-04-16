@@ -77,7 +77,7 @@ class Timeline(tk.Frame):
         menu_bar = tk.Menu(self.parent)
 
         menu_save = tk.Menu(menu_bar, tearoff=0)
-        menu_save.add_command(label='Export S-Curve as Post Script', command=self.save_scurve)
+        menu_save.add_command(label='Export S-Curve as Post Script', command=self.export_scurve_as_postscript)
 
         file_menu = tk.Menu(menu_bar, tearoff=0)
         file_menu.add_command(label='New', command=self.new_project)
@@ -547,10 +547,14 @@ class Timeline(tk.Frame):
                     curr_date = date.strftime(curr_date, "%B %d, %Y")
                     self.str_cdp_date.set(curr_date)
 
-    def save_scurve(self):
+    def export_scurve_as_postscript(self):
         """
         Saves the canvas content to an image file.
         """
+        # Check first if a project is open
+        if self.project_filename == '':
+            messagebox.showerror('Export Error', 'A project must be opened first before exporting the s-curve image.')
+            return
         fn = fd.asksaveasfilename(initialdir='',
                                   title='Save S-Curve File',
                                   filetypes=[("Postscript files", "*.ps")])
