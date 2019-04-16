@@ -77,12 +77,12 @@ class Timeline(tk.Frame):
         menu_bar = tk.Menu(self.parent)
 
         menu_save = tk.Menu(menu_bar, tearoff=0)
-        menu_save.add_command(label='Save S-Curve', command=self.save_scurve)
+        menu_save.add_command(label='Export S-Curve as Post Script', command=self.save_scurve)
 
         file_menu = tk.Menu(menu_bar, tearoff=0)
         file_menu.add_command(label='New', command=self.new_project)
         file_menu.add_command(label='Open Project', command=self.open_project)
-        file_menu.add_cascade(label='Save', menu=menu_save)
+        file_menu.add_cascade(label='Export', menu=menu_save)
         file_menu.add_separator()
         file_menu.add_command(label='Quit', command=self.parent.quit)
 
