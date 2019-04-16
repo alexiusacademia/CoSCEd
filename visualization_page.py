@@ -555,16 +555,23 @@ class Timeline(tk.Frame):
         if self.project_filename == '':
             messagebox.showerror('Export Error', 'A project must be opened first before exporting the s-curve image.')
             return
+
+        import sys
+
         fn = fd.asksaveasfilename(initialdir='',
                                   title='Save S-Curve File',
                                   filetypes=[("Postscript files", "*.ps")])
+
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
+            fn += '.ps'
+
         ps = self.canvas.postscript(file=fn, colormode='color',
                                     rotate=1)
         root = fn[:-2]
         img_file = root + 'jpg'
         import os
         result = os.system('convert ' + fn + ' +antialias ' + img_file)
-        print(result)
+        # print(result)
 
     def open_project(self):
         fn = fd.askopenfilename(initialdir='/',
