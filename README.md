@@ -16,6 +16,7 @@ or contract timeline in a graphical way to easily visualize the activities.
 Here are the available releases.
 
 - [Pre-release v0.1.0 (Windows)](https://github.com/alexiusacademia/project-timeline-editor/releases/download/v0.1.0/ProjectTimelineEditor.exe)
+- [Pre-release v0.2.0 (Windows)](https://github.com/alexiusacademia/project-timeline-editor/releases/download/v0.2.0/ProjectTimelineEditor.exe)
 
 
 Copyright 2019 Alexius Academia
