@@ -629,6 +629,8 @@ class Timeline(tk.Frame):
         self.project_opened = True
         self.project_filename = fn
 
+        self.str_status_message.set("Project Opened from " + self.project_filename)
+
     def reopen_project(self):
         proj_file = open(self.project_filename, 'r')
         proj_file_lines = proj_file.readlines()
