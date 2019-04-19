@@ -155,29 +155,29 @@ class Timeline(tk.Frame):
 
         summ_total_susp_days_label = tk.Label(frame_summary, text='Total Suspended Days') \
             .grid(row=0, column=0, sticky='nw')
-        summ_total_susp = tk.Label(frame_summary, width=10, anchor='ne',
-                                   relief='sunken', textvariable=self.str_summary_total_suspended) \
+        summ_total_susp = ttk.Entry(frame_summary, width=10, justify='right',
+                                   textvariable=self.str_summary_total_suspended, state='readonly') \
             .grid(row=0, column=1, padx=5, pady=5, sticky='nes')
 
         summ_total_susp_order_label = tk.Label(frame_summary, text='Total Suspension Orders') \
             .grid(row=1, column=0, sticky='nw')
-        summ_total_susp_order = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
-                                         textvariable=self.str_summary_total_suspension_order) \
+        summ_total_susp_order = ttk.Entry(frame_summary, width=10, justify='right',
+                                         textvariable=self.str_summary_total_suspension_order, state='readonly') \
             .grid(row=1, column=1, padx=5, pady=5, sticky='nes')
         summ_orig_completion_days_label = tk.Label(frame_summary, text='Original Completion Days') \
             .grid(row=2, column=0, sticky='nw')
-        summ_orig_completion_days = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
-                                             textvariable=self.str_summ_orig_completion_days) \
+        summ_orig_completion_days = ttk.Entry(frame_summary, width=10, justify='right',
+                                             textvariable=self.str_summ_orig_completion_days, state='readonly') \
             .grid(row=2, column=1, padx=5, pady=5, sticky='nes')
         summ_rev_completion_days_label = tk.Label(frame_summary, text='Revised Completion Days') \
             .grid(row=3, column=0, sticky='nw')
-        summ_rev_completion_days = tk.Label(frame_summary, width=10, anchor='ne', relief='sunken',
-                                            textvariable=self.str_summ_rev_completion_days) \
+        summ_rev_completion_days = ttk.Entry(frame_summary, width=10, justify='right',
+                                            textvariable=self.str_summ_rev_completion_days, state='readonly') \
             .grid(row=3, column=1, padx=5, pady=5, sticky='nes')
         summ_rev_completion_date_label = tk.Label(frame_summary, text='Revised Completion Date') \
             .grid(row=4, column=0, sticky='nw')
-        summ_rev_completion_date = tk.Label(frame_summary, width=20, anchor='ne', relief='sunken',
-                                            textvariable=self.str_summ_rev_completion_date) \
+        summ_rev_completion_date = ttk.Entry(frame_summary, width=20, justify='right',
+                                            textvariable=self.str_summ_rev_completion_date, state='readonly') \
             .grid(row=4, column=1, padx=5, pady=5, sticky='nes')
 
         frame_inputs = tk.LabelFrame(left_panel, text='Inputs')
