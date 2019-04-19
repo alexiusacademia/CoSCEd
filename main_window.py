@@ -131,21 +131,21 @@ class Timeline(tk.Frame):
 
         cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Projected Accomplishment").grid(row=1, column=0,
                                                                                                      sticky='nw')
-        cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
-                              relief='sunken', textvariable=self.str_cdp_accomp) \
+        cdp_accomp = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
+                              textvariable=self.str_cdp_accomp, state='readonly') \
             .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
         cdp_actual_accomp_label = tk.Label(frame_canvas_data_display, text="Actual Accomplishment") \
             .grid(row=2, column=0, sticky='nw')
-        cdp_accomp = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
-                              relief='sunken', textvariable=self.str_cdp_actual_accomp) \
+        cdp_accomp = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
+                              textvariable=self.str_cdp_actual_accomp, state='readonly') \
             .grid(row=2, column=1, sticky='nesw', padx=5, pady=5)
         cdp_slippage_label = tk.Label(frame_canvas_data_display, text='Slippage').grid(row=3, column=0, sticky="nw")
-        cdp_slippage = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
-                                relief='sunken', textvariable=self.str_cdp_slippage) \
+        cdp_slippage = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
+                                textvariable=self.str_cdp_slippage, state='readonly') \
             .grid(row=3, column=1, sticky='nesw', padx=5, pady=5)
         cdp_date_label = tk.Label(frame_canvas_data_display, text='Date').grid(row=4, column=0, sticky="nw")
-        cdp_date = tk.Label(frame_canvas_data_display, width=10, anchor='ne',
-                            relief='sunken', textvariable=self.str_cdp_date) \
+        cdp_date = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
+                            textvariable=self.str_cdp_date, state='readonly') \
             .grid(row=4, column=1, sticky='nesw', padx=5, pady=5)
 
         # Summary
