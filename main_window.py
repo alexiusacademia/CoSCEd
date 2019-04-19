@@ -116,7 +116,7 @@ class Timeline(tk.Frame):
         style = ttk.Style()
         style.theme_create('LabelValues')
         style.theme_settings('LabelValues', {
-            'TLabel': {
+            'TEntry': {
                 'configure': {
                     'padding': 6,
                     'background': '#fff'
@@ -125,8 +125,8 @@ class Timeline(tk.Frame):
         })
 
         cdp_time_label = ttk.Label(frame_canvas_data_display, text="Time").grid(row=0, column=0, sticky="nw")
-        cdp_time = ttk.Label(frame_canvas_data_display, text='', width=10, anchor='ne',
-                            relief='sunken', textvariable=self.str_cdp_time)\
+        cdp_time = ttk.Entry(frame_canvas_data_display, width=10,
+                             textvariable=self.str_cdp_time, state='readonly', justify='right')\
             .grid(row=0, column=1, sticky="nesw", padx=5, pady=5)
 
         cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Projected Accomplishment").grid(row=1, column=0,
