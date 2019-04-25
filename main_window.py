@@ -5,6 +5,7 @@ from datetime import date
 import datetime
 import json
 import subprocess
+import sys
 
 import dialogs.projected as projected_dialog
 import dialogs.actual as actual_dialog
@@ -576,8 +577,6 @@ class Timeline(tk.Frame):
             messagebox.showerror('Export Error', 'A project must be opened first before exporting the s-curve image.')
             return
 
-        import sys
-
         fn = fd.asksaveasfilename(initialdir='',
                                   title='Save S-Curve File',
                                   filetypes=[("Postscript files", "*.ps")])
@@ -663,6 +662,10 @@ class Timeline(tk.Frame):
         fn = fd.asksaveasfilename(initialdir='',
                                   title='New Project',
                                   filetypes=[("JSON File", "*.json")])
+
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
+            fn += '.json'
+
         data = {}
         data['projected'] = []
 
