@@ -693,8 +693,8 @@ class Timeline(tk.Frame):
             json.dump(data, output_file, indent=4)
 
         self.project_filename = fn
-
         self.display_grid()
+        self.master.title('Project Timeline Editor' + ' | ' + fn)
 
     def edit_actual(self):
         self.dlg = actual_dialog.ActualAccomplishmentDialog(self.parent)
