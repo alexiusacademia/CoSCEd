@@ -608,11 +608,14 @@ class Timeline(tk.Frame):
         # Retrieve actual object timeline
         actual_implementation = json_project['actual']
 
-        # Retrieve suspensions
-        suspensions = json_project['suspensions']
-
-        # Retrieve date started
-        date_started = json_project['date_started']
+        date_started = ''
+        try:
+            # Retrieve suspensions
+            suspensions = json_project['suspensions']
+            # Retrieve date started
+            date_started = json_project['date_started']
+        except KeyError:
+            pass
 
         self.projected_accomplishment = projected_imeplementation
         self.actual_accomplishment = actual_implementation
@@ -828,7 +831,16 @@ class Timeline(tk.Frame):
             # self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
             self.str_summ_rev_completion_date.set(end_date)
 
-
+            # Save the start date
+            proj_file = open(self.project_filename, 'r')
+            proj_file_lines = proj_file.readlines()
+            json_string = ''
+            for line in proj_file_lines:
+                json_string += line
+            json_project = json.loads(json_string)
+            json_project['date_started'] = str_start_date
+            with open(self.project_filename, 'w') as output_file:
+                json.dump(json_project, output_file, indent=4)
 
         else:
             messagebox.showerror('Input Error', 'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
