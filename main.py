@@ -9,5 +9,6 @@ if __name__ == '__main__':
     # root.iconbitmap(os.getcwd() + '\\res\\icons\\icon.ico')
 
     timeline = Timeline(root)
+    timeline.pack(fill='both', expand='yes')
 
     root.mainloop()

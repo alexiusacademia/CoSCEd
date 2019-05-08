@@ -206,9 +206,11 @@ class Timeline(tk.Frame):
         # canvas_frame = tk.Frame(self)
         # canvas_frame.grid(column=1, row=1)
         self.canvas = tk.Canvas(self, cursor='cross')
-        self.canvas.configure(width=self.canvas_width, height=self.canvas_height, bg="#ffffff")
-        self.canvas.grid(column=1, row=1, sticky='nesw')
+        self.canvas.grid(column=1, row=1, sticky='nesw', padx=10, pady=10)
+        # self.canvas.configure(width=self.canvas_width, height=self.canvas_height, bg="#ffffff")
+        self.canvas.configure(width=self.canvas.winfo_width(), height=self.canvas.winfo_height(), bg="#ffffff")
         self.canvas.bind('<Motion>', self.canvas_hover)
+        self.canvas.bind('<Configure>', self.on_resize)
         # ==========================================================
         # Status bar
         frame_status_bar = tk.Frame(self, bd=1, relief='sunken')
@@ -535,6 +537,11 @@ class Timeline(tk.Frame):
     # ===========================================================
     # Binding methods
 
+    def on_resize(self, event):
+        # Adapt to the size of the canvas
+        if self.project_filename:
+            self.reopen_project()
+
     def hover(self, event):
         """
         To be called when the cursor is over an element in the
@@ -617,6 +624,10 @@ class Timeline(tk.Frame):
         except KeyError:
             pass
 
+        # Adapt to the size of the canvas
+        self.canvas_width = self.canvas.winfo_width()
+        self.canvas_height = self.canvas.winfo_height()
+
         self.projected_accomplishment = projected_imeplementation
         self.actual_accomplishment = actual_implementation
         self.suspensions = suspensions
@@ -654,6 +665,10 @@ class Timeline(tk.Frame):
 
         # Retrieve suspensions
         suspensions = json_project['suspensions']
+
+        # Adapt to the size of the canvas
+        self.canvas_width = self.canvas.winfo_width()
+        self.canvas_height = self.canvas.winfo_height()
 
         self.projected_accomplishment = projected_implementation
         self.actual_accomplishment = actual_implementation
