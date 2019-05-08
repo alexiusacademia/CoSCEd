@@ -326,8 +326,9 @@ class Timeline(tk.Frame):
                             i * grid_height + self.canvas_top_margin,
                             fill=grid_color,
                             dash=(2, 2), width=0.01)
-            can.create_text(10, self.canvas_height - (i + 1) * grid_height, text=i * 10, anchor='nw', offset='15, 0')
-        can.create_text(10, self.canvas_height - (grid_count_vertical + 1) * grid_height, text=100, anchor='nw',
+            can.create_text(10, self.canvas_top_margin + i * grid_height, text=(grid_count_vertical - i) * 10,
+                            anchor='nw', offset='15, 0')
+        can.create_text(10, self.canvas_top_margin, text=100, anchor='nw',
                         offset='5, 0')
 
         # Display borders
