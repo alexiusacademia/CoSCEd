@@ -7,3 +7,4 @@ installer.cfg
 build/
 dist/
 *.spec
+generate_executable.bat
