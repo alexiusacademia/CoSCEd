@@ -611,6 +611,9 @@ class Timeline(tk.Frame):
         # Retrieve suspensions
         suspensions = json_project['suspensions']
 
+        # Retrieve date started
+        date_started = json_project['date_started']
+
         self.projected_accomplishment = projected_imeplementation
         self.actual_accomplishment = actual_implementation
         self.suspensions = suspensions
@@ -627,6 +630,8 @@ class Timeline(tk.Frame):
 
         self.project_opened = True
         self.project_filename = fn
+
+        self.str_start_date.set(date_started)
 
         self.str_status_message.set("Project Opened from " + self.project_filename)
         self.master.title('Project Timeline Editor' + ' | ' + fn)
@@ -822,6 +827,8 @@ class Timeline(tk.Frame):
             end_date = self.get_new_date(str_start_date, duration)
             # self.str_summ_rev_completion_date.set(end_date.strftime("%B %d, %Y"))
             self.str_summ_rev_completion_date.set(end_date)
+
+
 
         else:
             messagebox.showerror('Input Error', 'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
