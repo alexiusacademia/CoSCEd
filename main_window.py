@@ -40,6 +40,7 @@ class Timeline(tk.Frame):
         self.points = []
         self.grid(column=0, row=0)
         self.master.title('Project Timeline Editor')
+        self.master.geometry('720x550')
 
         self.grid_rowconfigure(1, weight=1)
         self.grid_columnconfigure(1, weight=1)
