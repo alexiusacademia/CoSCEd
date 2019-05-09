@@ -39,7 +39,7 @@ class Timeline(tk.Frame):
         self.parent = parent
         self.points = []
         self.grid(column=0, row=0)
-        self.master.title('Project Timeline Editor')
+        self.master.title(self.app_title)
         self.master.geometry('720x550')
 
         self.grid_rowconfigure(1, weight=1)
@@ -102,7 +102,7 @@ class Timeline(tk.Frame):
 
         self.parent.config(menu=menu_bar)
 
-        canvas_title = tk.Label(self, text="Time Frame")
+        canvas_title = tk.Label(self, text="S-CURVE", font=('Helvetica', '16', 'bold'), fg='gray')
         canvas_title.grid(column=1, row=0)
         # ===========================================================
         # Left panel for displaying of textual data.
