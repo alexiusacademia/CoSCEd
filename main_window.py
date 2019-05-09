@@ -595,11 +595,6 @@ class Timeline(tk.Frame):
 
         ps = self.canvas.postscript(file=fn, colormode='color',
                                     rotate=1)
-        root = fn[:-2]
-        img_file = root + 'jpg'
-        import os
-        result = os.system('convert ' + fn + ' +antialias ' + img_file)
-        # print(result)
 
     def open_project(self):
         fn = fd.askopenfilename(initialdir='/',
