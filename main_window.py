@@ -594,7 +594,14 @@ class Timeline(tk.Frame):
             fn += '.ps'
 
         ps = self.canvas.postscript(file=fn, colormode='color',
-                                    rotate=1)
+                                    rotate=1,
+                                    width=self.canvas.winfo_width(),
+                                    height=self.canvas.winfo_height(),
+                                    x=0, y=0)
+
+        import os
+        root = fn[:-2]
+        os.system('ps2pdf ' + fn + ' ' + root + 'pdf')
 
     def open_project(self):
         fn = fd.askopenfilename(initialdir='/',
