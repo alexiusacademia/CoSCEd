@@ -97,8 +97,13 @@ class Timeline(tk.Frame):
         edit_menu.add_command(label='Actual Accomplishment', command=self.edit_actual)
         edit_menu.add_command(label='Suspensions', command=self.edit_suspensions)
 
+        recent_menu = tk.Menu(menu_bar, tearoff=0)
+        recent_menu.add_command(label='Projects')
+        recent_menu.add_command(label='Locations')
+
         menu_bar.add_cascade(label="File", menu=file_menu)
         menu_bar.add_cascade(label="Edit", menu=edit_menu)
+        menu_bar.add_cascade(label='Recent', menu=recent_menu)
 
         self.parent.config(menu=menu_bar)
 
