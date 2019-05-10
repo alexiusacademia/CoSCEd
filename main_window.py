@@ -101,9 +101,14 @@ class Timeline(tk.Frame):
         recent_menu.add_command(label='Projects')
         recent_menu.add_command(label='Locations')
 
+        help_menu = tk.Menu(menu_bar, tearoff=0)
+        help_menu.add_command(label='Tutorial')
+        help_menu.add_command(label='About')
+
         menu_bar.add_cascade(label="File", menu=file_menu)
         menu_bar.add_cascade(label="Edit", menu=edit_menu)
         menu_bar.add_cascade(label='Recent', menu=recent_menu)
+        menu_bar.add_cascade(label='Help', menu=help_menu)
 
         self.parent.config(menu=menu_bar)
 
