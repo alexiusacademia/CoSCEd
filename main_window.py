@@ -99,7 +99,6 @@ class Timeline(tk.Frame):
 
         recent_menu = tk.Menu(menu_bar, tearoff=0)
         recent_menu.add_command(label='Projects')
-        recent_menu.add_command(label='Locations')
 
         help_menu = tk.Menu(menu_bar, tearoff=0)
         help_menu.add_command(label='Tutorial')
@@ -706,28 +705,22 @@ class Timeline(tk.Frame):
         if sys.platform == 'win32' or sys.platform == 'cygwin':
             fn += '.json'
 
-        data = {}
-        data['projected'] = []
+        data = {'projected': [], 'actual': [], 'suspensions': [], 'date_started': ''}
 
         data['projected'].append({
             'time': 0,
             'accomp': 0
         })
 
-        data['actual'] = []
-
         data['actual'].append({
             'time': 0,
             'accomp': 0
         })
-        data['suspensions'] = []
 
         data['suspensions'].append({
             'start': 0,
             'duration': 0
         })
-
-        data['date_started'] = ''
 
         with open(fn, 'w') as output_file:
             json.dump(data, output_file, indent=4)
