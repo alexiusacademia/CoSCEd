@@ -629,10 +629,19 @@ class Timeline(tk.Frame):
         fn = fd.askopenfilename(initialdir='/',
                                 title='Open Project',
                                 filetypes=[("JSON files", "*.json")])
-        proj_file = open(fn, 'r')
-        proj_file_lines = proj_file.readlines()
+
+        self.open(fn)
+
+    def open(self, fn):
+        """
+        Open the project given its path.
+        :param fn: Full path to the project file.
+        :return:
+        """
+        project_file = open(fn, 'r')
+        project_file_lines = project_file.readlines()
         json_string = ''
-        for line in proj_file_lines:
+        for line in project_file_lines:
             json_string += line
         json_project = json.loads(json_string)
         # Retrieve the projected object timeline
