@@ -551,11 +551,12 @@ class Timeline(tk.Frame):
         rec.add_recent(self.project_filename)
 
     def load_recent_to_menu(self):
+        from functools import partial
         rec = recent.Recent()
         recent_projects = rec.get_recent()
         menu = tk.Menu()
         for loc in recent_projects:
-            menu.add_command(label=loc, command=self.open_project)
+            menu.add_command(label=loc, command=partial(self.open, loc))
         self.menu_bar.add_cascade(label='Recent Projects', menu=menu)
 
     # ===========================================================
@@ -629,7 +630,6 @@ class Timeline(tk.Frame):
         fn = fd.askopenfilename(initialdir='/',
                                 title='Open Project',
                                 filetypes=[("JSON files", "*.json")])
-
         self.open(fn)
 
     def open(self, fn):
