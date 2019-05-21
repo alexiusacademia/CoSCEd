@@ -554,6 +554,7 @@ class Timeline(tk.Frame):
         from functools import partial
         rec = recent.Recent()
         recent_projects = rec.get_recent()
+        recent_projects.reverse()
         menu = tk.Menu()
         for loc in recent_projects:
             menu.add_command(label=loc, command=partial(self.open, loc))
