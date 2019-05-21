@@ -545,6 +545,11 @@ class Timeline(tk.Frame):
         new_date = start_date + datetime.timedelta(days=duration - 1)
         return date.strftime(new_date, '%B %d, %Y')
 
+    def add_project_to_recent(self):
+        from utils import recent
+        rec = recent.Recent()
+        rec.add_recent(self.project_filename)
+
     # ===========================================================
     # Binding methods
 
@@ -663,6 +668,8 @@ class Timeline(tk.Frame):
         self.str_status_message.set("Project Opened from " + self.project_filename)
         self.master.title('Project Timeline Editor' + ' | ' + fn)
 
+        self.add_project_to_recent()
+
     def reopen_project(self):
         proj_file = open(self.project_filename, 'r')
         proj_file_lines = proj_file.readlines()
@@ -728,6 +735,8 @@ class Timeline(tk.Frame):
         self.project_filename = fn
         self.display_grid()
         self.master.title('Project Timeline Editor' + ' | ' + fn)
+
+        self.add_project_to_recent()
 
     def edit_actual(self):
         self.dlg = actual_dialog.ActualAccomplishmentDialog(self.parent)
