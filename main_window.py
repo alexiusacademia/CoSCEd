@@ -11,6 +11,7 @@ import dialogs.projected as projected_dialog
 import dialogs.actual as actual_dialog
 import dialogs.suspensions as suspensions_dialog
 import utils.convert_to_num as converter
+from utils import recent
 
 
 class Timeline(tk.Frame):
@@ -32,6 +33,9 @@ class Timeline(tk.Frame):
     LINE_COLOR_ACTUAL = '#ff0000'
 
     app_title = "Project Timeline Editor"
+
+    menu_bar = None
+    recent_menu = None
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -71,6 +75,7 @@ class Timeline(tk.Frame):
         self.str_status_message = tk.StringVar()
 
         self.init_ui()
+        self.load_recent_to_menu()
 
         self.parent.protocol('WM_DELETE_WINDOW', self.close_main_window)
 
@@ -80,36 +85,32 @@ class Timeline(tk.Frame):
         """
         # ===========================================================
         # Menus
-        menu_bar = tk.Menu(self.parent)
+        self.menu_bar = tk.Menu(self.parent)
 
-        menu_save = tk.Menu(menu_bar, tearoff=0)
+        menu_save = tk.Menu(self.menu_bar, tearoff=0)
         menu_save.add_command(label='Export S-Curve as Post Script', command=self.export_scurve_as_postscript)
 
-        file_menu = tk.Menu(menu_bar, tearoff=0)
+        file_menu = tk.Menu(self.menu_bar, tearoff=0)
         file_menu.add_command(label='New', command=self.new_project)
         file_menu.add_command(label='Open Project', command=self.open_project)
         file_menu.add_cascade(label='Export', menu=menu_save)
         file_menu.add_separator()
         file_menu.add_command(label='Quit', command=self.close_main_window)
 
-        edit_menu = tk.Menu(menu_bar, tearoff=0)
+        edit_menu = tk.Menu(self.menu_bar, tearoff=0)
         edit_menu.add_command(label='Projected Accomplishment', command=self.edit_projected)
         edit_menu.add_command(label='Actual Accomplishment', command=self.edit_actual)
         edit_menu.add_command(label='Suspensions', command=self.edit_suspensions)
 
-        recent_menu = tk.Menu(menu_bar, tearoff=0)
-        recent_menu.add_command(label='Projects')
-
-        help_menu = tk.Menu(menu_bar, tearoff=0)
+        help_menu = tk.Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label='Tutorial')
         help_menu.add_command(label='About')
 
-        menu_bar.add_cascade(label="File", menu=file_menu)
-        menu_bar.add_cascade(label="Edit", menu=edit_menu)
-        menu_bar.add_cascade(label='Recent', menu=recent_menu)
-        menu_bar.add_cascade(label='Help', menu=help_menu)
+        self.menu_bar.add_cascade(label="File", menu=file_menu)
+        self.menu_bar.add_cascade(label="Edit", menu=edit_menu)
+        self.menu_bar.add_cascade(label='Help', menu=help_menu)
 
-        self.parent.config(menu=menu_bar)
+        self.parent.config(menu=self.menu_bar)
 
         canvas_title = tk.Label(self, text="S-CURVE", font=('Helvetica', '16', 'bold'), fg='gray')
         canvas_title.grid(column=1, row=0)
@@ -546,9 +547,16 @@ class Timeline(tk.Frame):
         return date.strftime(new_date, '%B %d, %Y')
 
     def add_project_to_recent(self):
-        from utils import recent
         rec = recent.Recent()
         rec.add_recent(self.project_filename)
+
+    def load_recent_to_menu(self):
+        rec = recent.Recent()
+        recent_projects = rec.get_recent()
+        menu = tk.Menu()
+        for loc in recent_projects:
+            menu.add_command(label=loc, command=self.open_project)
+        self.menu_bar.add_cascade(label='Recent Projects', menu=menu)
 
     # ===========================================================
     # Binding methods
