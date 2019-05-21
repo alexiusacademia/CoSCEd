@@ -8,3 +8,5 @@ build/
 dist/
 *.spec
 generate_executable.bat
+recent.dat
+timeline_sample_data.json
