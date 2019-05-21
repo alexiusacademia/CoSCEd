@@ -26,7 +26,7 @@ class Recent:
     def add_recent(self, path):
         recent_projects = self.get_recent()
         if path in recent_projects:
-            pass
+            recent_projects.append(recent_projects.pop(recent_projects.index(path)))
         else:
             recent_projects.append(path)
         data = {'recent': recent_projects}
