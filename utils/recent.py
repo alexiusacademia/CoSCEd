@@ -24,7 +24,16 @@ class Recent:
             json.dump(data, output_file, indent=4)
 
     def add_recent(self, path):
-        pass
+        recent_projects = self.get_recent()
+        if path in recent_projects:
+            pass
+        else:
+            recent_projects.append(path)
+        data = {'recent': recent_projects}
+
+        fn = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
+        with open(fn, 'w') as output_file:
+            json.dump(data, output_file, indent=4)
 
     def get_recent(self):
         """
