@@ -7,11 +7,12 @@ class Recent:
     Handles the recent projects feature
     """
     FILE_NAME_RECENT = 'recent.dat'
+    full_path = ''
 
     def __init__(self):
         # Create a recent json file if not exist
-        path = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
-        exists = os.path.isfile(path)
+        self.full_path = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
+        exists = os.path.isfile(self.full_path)
         if not exists:
             # Create it
             self.create_recent_file()
@@ -30,4 +31,13 @@ class Recent:
         Get the list of recent projects
         :return:
         """
-        pass
+        recent_file = open(self.full_path, 'r')
+
+        proj_file_lines = recent_file.readlines()
+        json_string = ''
+
+        for line in proj_file_lines:
+            json_string += line
+
+        recent_json = json.loads(json_string)
+        return recent_json['recent']
