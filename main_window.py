@@ -558,7 +558,7 @@ class Timeline(tk.Frame):
         menu = tk.Menu()
         for loc in recent_projects:
             menu.add_command(label=loc, command=partial(self.open, loc))
-        self.menu_bar.add_cascade(label='Recent Projects', menu=menu)
+        self.menu_bar.insert_cascade(3, label='Recent Projects', menu=menu)
 
     # ===========================================================
     # Binding methods
