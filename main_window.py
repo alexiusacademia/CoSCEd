@@ -73,6 +73,7 @@ class Timeline(tk.Frame):
         self.str_start_date = tk.StringVar()
         self.str_vert_grid_interval = tk.StringVar()
         self.str_status_message = tk.StringVar()
+        self.str_contract_days_used = tk.StringVar()
 
         self.init_ui()
         self.load_recent_to_menu()
@@ -186,11 +187,16 @@ class Timeline(tk.Frame):
         summ_rev_completion_days = ttk.Entry(frame_summary, width=10, justify='right',
                                             textvariable=self.str_summ_rev_completion_days, state='readonly') \
             .grid(row=3, column=1, padx=5, pady=5, sticky='nes')
-        summ_rev_completion_date_label = tk.Label(frame_summary, text='Revised Completion Date') \
+        summ_contract_days_used_label = tk.Label(frame_summary, text='Contract Days Used') \
             .grid(row=4, column=0, sticky='nw')
+        summ_contract_days_used = ttk.Entry(frame_summary, width=10, justify='right',
+                                             textvariable=self.str_contract_days_used, state='readonly') \
+            .grid(row=4, column=1, padx=5, pady=5, sticky='nes')
+        summ_rev_completion_date_label = tk.Label(frame_summary, text='Revised Completion Date') \
+            .grid(row=5, column=0, sticky='nw')
         summ_rev_completion_date = ttk.Entry(frame_summary, width=20, justify='right',
                                             textvariable=self.str_summ_rev_completion_date, state='readonly') \
-            .grid(row=4, column=1, padx=5, pady=5, sticky='nes')
+            .grid(row=5, column=1, padx=5, pady=5, sticky='nes')
 
         frame_inputs = tk.LabelFrame(left_panel, text='Inputs')
         frame_inputs.grid(row=2, column=0, sticky='nesw', padx=10, pady=5)
