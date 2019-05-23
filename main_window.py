@@ -4,7 +4,6 @@ from tkinter import messagebox, ttk
 from datetime import date
 import datetime
 import json
-import subprocess
 import sys
 
 import dialogs.projected as projected_dialog
@@ -12,6 +11,7 @@ import dialogs.actual as actual_dialog
 import dialogs.suspensions as suspensions_dialog
 import utils.convert_to_num as converter
 from utils import recent
+from utils import plotsvg
 
 
 class Timeline(tk.Frame):
@@ -324,7 +324,8 @@ class Timeline(tk.Frame):
         self.display_grid()
         self.plot(self.projected_accomplishment, 'projected', self.LINE_COLOR_PROJECTED)
         self.plot(self.actual_accomplishment, 'actual', self.LINE_COLOR_ACTUAL)
-        print(self.draw_object)
+        plot = plotsvg.PlotSvg(self.draw_object, self.canvas_width, self.canvas_height)
+        plot.save_png()
 
     def display_grid(self):
         """
