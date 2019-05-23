@@ -36,6 +36,7 @@ class Timeline(tk.Frame):
 
     menu_bar = None
     recent_menu = None
+    draw_object = {}
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -321,8 +322,8 @@ class Timeline(tk.Frame):
         """
         self.recalculate()
         self.display_grid()
-        self.plot(self.projected_accomplishment, self.LINE_COLOR_PROJECTED)
-        self.plot(self.actual_accomplishment, self.LINE_COLOR_ACTUAL)
+        self.plot(self.projected_accomplishment, 'projected', self.LINE_COLOR_PROJECTED)
+        self.plot(self.actual_accomplishment, 'actual', self.LINE_COLOR_ACTUAL)
 
     def display_grid(self):
         """
@@ -408,7 +409,7 @@ class Timeline(tk.Frame):
                         text='Actual', anchor='w', fill=self.LINE_COLOR_ACTUAL,
                         tags=['legend'])
 
-    def plot(self, data, line_fill_color):
+    def plot(self, data, name, line_fill_color):
         """
         Plot a given data, either the projected or actual accomplishment.
         :param data: The data to be plotted (e.g. projected accomplishment).
