@@ -324,6 +324,7 @@ class Timeline(tk.Frame):
         self.display_grid()
         self.plot(self.projected_accomplishment, 'projected', self.LINE_COLOR_PROJECTED)
         self.plot(self.actual_accomplishment, 'actual', self.LINE_COLOR_ACTUAL)
+        print(self.draw_object)
 
     def display_grid(self):
         """
@@ -439,6 +440,9 @@ class Timeline(tk.Frame):
         left_margin = self.canvas_left_margin
         bottom_margin = self.canvas_bottom_margin
 
+        # Reset content of draw_object
+        self.draw_object[name] = []
+
         rows = len(data)
         for i in range(rows - 1):
             # Draw lines on canavs
@@ -463,9 +467,14 @@ class Timeline(tk.Frame):
                 "time": x1,
                 "accomp": y1
             })
+
+            # Append points to draw_object
+            self.draw_object[name].append((x1, y1))
+
         # Plot the last node
         x1 = data[rows - 1]['time']
         y1 = data[rows - 1]['accomp']
+        self.draw_object[name].append((x1, y1))
         pt = can.create_rectangle(x1 * width_factor - 2 + left_margin,
                                   self.canvas_height - y1 * height_factor - 2 - bottom_margin,
                                   x1 * width_factor + 2 + left_margin,
