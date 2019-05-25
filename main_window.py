@@ -454,10 +454,20 @@ class Timeline(tk.Frame):
             y1 = data[i]['accomp']
             x2 = data[i + 1]['time']
             y2 = data[i + 1]['accomp']
-            can.create_line(x1 * width_factor + left_margin,
-                            self.canvas_height - y1 * height_factor - bottom_margin,
-                            x2 * width_factor + left_margin,
-                            self.canvas_height - y2 * height_factor - bottom_margin,
+
+            x1_1 = x1 * width_factor + left_margin
+            y1_1 = self.canvas_height - y1 * height_factor - bottom_margin
+            x2_1 = x2 * width_factor + left_margin
+            y2_1 = self.canvas_height - y2 * height_factor - bottom_margin
+
+            can.create_line(#x1 * width_factor + left_margin,
+                            x1_1,
+                            #self.canvas_height - y1 * height_factor - bottom_margin,
+                            y1_1,
+                            #x2 * width_factor + left_margin,
+                            x2_1,
+                            #self.canvas_height - y2 * height_factor - bottom_margin,
+                            y2_1,
                             fill=line_fill_color, activedash=(5, 5))
             pt = can.create_rectangle(x1 * width_factor - 2 + left_margin,
                                       self.canvas_height - y1 * height_factor - 2 - bottom_margin,
