@@ -90,6 +90,7 @@ class Timeline(tk.Frame):
         self.menu_bar = tk.Menu(self.parent)
 
         menu_save = tk.Menu(self.menu_bar, tearoff=0)
+        menu_save.add_command(label='Export S-Curve as Image (JPEG)')
         menu_save.add_command(label='Export S-Curve as Post Script', command=self.export_scurve_as_postscript)
 
         file_menu = tk.Menu(self.menu_bar, tearoff=0)
@@ -325,11 +326,6 @@ class Timeline(tk.Frame):
         self.plot(self.projected_accomplishment, 'projected', self.LINE_COLOR_PROJECTED)
         self.plot(self.actual_accomplishment, 'actual', self.LINE_COLOR_ACTUAL)
 
-        plot = plot_draw.PlotDraw('testimage.png', size=(self.canvas_width, self.canvas_height))
-        plot.set_projected(self.draw_object['projected'])
-        plot.set_actual(self.draw_object['actual'])
-        plot.draw_image()
-
     def display_grid(self):
         """
         Displays the grid lines of the graph.
@@ -460,13 +456,9 @@ class Timeline(tk.Frame):
             x2_1 = x2 * width_factor + left_margin
             y2_1 = self.canvas_height - y2 * height_factor - bottom_margin
 
-            can.create_line(#x1 * width_factor + left_margin,
-                            x1_1,
-                            #self.canvas_height - y1 * height_factor - bottom_margin,
+            can.create_line(x1_1,
                             y1_1,
-                            #x2 * width_factor + left_margin,
                             x2_1,
-                            #self.canvas_height - y2 * height_factor - bottom_margin,
                             y2_1,
                             fill=line_fill_color, activedash=(5, 5))
             pt = can.create_rectangle(x1 * width_factor - 2 + left_margin,
@@ -483,8 +475,8 @@ class Timeline(tk.Frame):
             })
 
             # Append points to draw_object
-            self.draw_object[name].append((x1 * width_factor + left_margin,
-                                           self.canvas_height - y1 * height_factor - bottom_margin))
+            self.draw_object[name].append((x1_1,
+                                           y1_1))
 
         # Plot the last node
         x1 = data[rows - 1]['time']
@@ -658,6 +650,24 @@ class Timeline(tk.Frame):
         import os
         root = fn[:-2]
         os.system('ps2pdf ' + fn + ' ' + root + 'pdf')
+
+    def export_image_as_jpeg(self):
+        # Check first if a project is open
+        if self.project_filename == '':
+            messagebox.showerror('Export Error', 'A project must be opened first before exporting the s-curve image.')
+            return
+
+        fn = fd.asksaveasfilename(initialdir='',
+                                  title='Save S-Curve File',
+                                  filetypes=[("JPEG files", "*.jpg")])
+
+        if sys.platform == 'win32' or sys.platform == 'cygwin':
+            fn += '.jpg'
+
+        plot = plot_draw.PlotDraw(fn, size=(self.canvas_width, self.canvas_height))
+        plot.set_projected(self.draw_object['projected'])
+        plot.set_actual(self.draw_object['actual'])
+        plot.draw_image()
 
     def open_project(self):
         fn = fd.askopenfilename(initialdir='/',
