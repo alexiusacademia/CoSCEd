@@ -325,6 +325,8 @@ class Timeline(tk.Frame):
         self.plot(self.projected_accomplishment, 'projected', self.LINE_COLOR_PROJECTED)
         self.plot(self.actual_accomplishment, 'actual', self.LINE_COLOR_ACTUAL)
         plot = plot_draw.PlotDraw('testimage.png', size=(self.canvas_width, self.canvas_height))
+        plot.set_projected(self.draw_object['projected'])
+        plot.set_actual(self.draw_object['actual'])
         plot.draw_image()
 
     def display_grid(self):
