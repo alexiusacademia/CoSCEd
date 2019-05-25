@@ -11,7 +11,7 @@ import dialogs.actual as actual_dialog
 import dialogs.suspensions as suspensions_dialog
 import utils.convert_to_num as converter
 from utils import recent
-from utils import plotsvg
+from utils import plot_draw
 
 
 class Timeline(tk.Frame):
@@ -324,8 +324,8 @@ class Timeline(tk.Frame):
         self.display_grid()
         self.plot(self.projected_accomplishment, 'projected', self.LINE_COLOR_PROJECTED)
         self.plot(self.actual_accomplishment, 'actual', self.LINE_COLOR_ACTUAL)
-        plot = plotsvg.PlotSvg(self.draw_object, self.canvas_width, self.canvas_height)
-        plot.save_png()
+        plot = plot_draw.PlotDraw('testimage.png', size=(self.canvas_width, self.canvas_height))
+        plot.draw_image()
 
     def display_grid(self):
         """
