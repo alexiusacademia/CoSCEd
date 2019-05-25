@@ -28,12 +28,13 @@ class PlotDraw:
         self.actual = actual
 
     def draw_image(self):
-        img = Image.new('RGBA', self.size, color='white')
+        img = Image.new('RGB', self.size, color='white')
 
         draw = ImageDraw.Draw(img)
 
         draw.line(self.projected, fill='blue', width=2)
         draw.line(self.actual, fill='red', width=2)
 
-        img.save(self.path)
+        img.save(self.path, quality=100)
+        img.resize((self.size[0]*2, self.size[1]*2), Image.ANTIALIAS)
         img.close()
