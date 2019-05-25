@@ -3,16 +3,37 @@ from PIL import Image, ImageDraw
 
 class PlotDraw:
     path = ''
+    size = ()
+    projected = []
+    actual = []
 
     def __init__(self, fp, size):
         self.path = fp
-        img = Image.new('RGBA', size, color='white')
-        img.save(fp)
-        img.close()
+        self.size = size
+
+    def set_projected(self, projected):
+        """
+        Sets the coordinates for plotting the projected line.
+        :param projected: List of tuples (x, y)
+        :return:
+        """
+        self.projected = projected
+
+    def set_actual(self, actual):
+        """
+        Sets the coordinates for plotting the actual line.
+        :param actual: List of tuples (x, y)
+        :return:
+        """
+        self.actual = actual
 
     def draw_image(self):
-        im = Image.open(self.path)
-        draw = ImageDraw.Draw(im, mode='RGBA')
-        draw.line((0, 0) + im.size, fill=128)
-        draw.line((0, im.size[1], im.size[0], 0), fill=128)
-        del draw
+        img = Image.new('RGBA', self.size, color='white')
+
+        draw = ImageDraw.Draw(img)
+
+        draw.line(self.projected, fill='blue', width=2)
+        draw.line(self.actual, fill='red', width=2)
+
+        img.save(self.path)
+        img.close()
