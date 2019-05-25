@@ -34,6 +34,8 @@ class PlotDraw:
 
         draw.line(self.projected, fill='blue', width=2)
         draw.line(self.actual, fill='red', width=2)
+        print(self.size)
+        print(self.projected)
 
         img.save(self.path)
         img.close()
