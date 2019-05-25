@@ -32,8 +32,8 @@ class PlotDraw:
 
         draw = ImageDraw.Draw(img)
 
-        draw.line(self.projected, fill='blue', width=2)
-        draw.line(self.actual, fill='red', width=2)
+        draw.line(self.projected, fill='blue', width=1)
+        draw.line(self.actual, fill='red', width=1)
 
         img.save(self.path, quality=100)
         img.resize((self.size[0]*2, self.size[1]*2), Image.ANTIALIAS)

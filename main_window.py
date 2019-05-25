@@ -90,7 +90,7 @@ class Timeline(tk.Frame):
         self.menu_bar = tk.Menu(self.parent)
 
         menu_save = tk.Menu(self.menu_bar, tearoff=0)
-        menu_save.add_command(label='Export S-Curve as Image (JPEG)')
+        menu_save.add_command(label='Export S-Curve as Image (JPEG)', command=self.export_image_as_jpeg)
         menu_save.add_command(label='Export S-Curve as Post Script', command=self.export_scurve_as_postscript)
 
         file_menu = tk.Menu(self.menu_bar, tearoff=0)
