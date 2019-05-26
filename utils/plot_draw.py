@@ -33,6 +33,10 @@ class PlotDraw:
         for hl in hor_grid_lines:
             draw.line(hl, fill='gray', width=1)
 
+        border_lines = self.draw_object['border_lines']
+        for bl in border_lines:
+            draw.line(bl, fill='black', width=2)
+
         img.save(self.path, quality=100)
         img.resize((self.size[0]*2, self.size[1]*2), Image.ANTIALIAS)
         img.close()
