@@ -339,7 +339,9 @@ class Timeline(tk.Frame):
 
         self.draw_object['labels'] = []
         self.draw_object['hor_grid_lines'] = []
-        # Display the horizontaal grid lines
+        self.draw_object['border_lines'] = []
+
+        # Display the horizontal grid lines
         for i in range(1, grid_count_vertical):
             x1 = self.canvas_left_margin
             y1 = i * grid_height + self.canvas_top_margin
@@ -353,6 +355,7 @@ class Timeline(tk.Frame):
                             dash=(2, 2), width=0.01)
             can.create_text(10, self.canvas_top_margin + i * grid_height, text=(grid_count_vertical - i) * 10,
                             anchor='nw', offset='15, 0')
+
             # Append the line segment
             self.draw_object['hor_grid_lines'].append((x1, y1, x2, y2))
 
@@ -360,26 +363,49 @@ class Timeline(tk.Frame):
                         offset='5, 0')
 
         # Display borders
-        can.create_line(self.canvas_left_margin,
-                        self.canvas_top_margin,
-                        w - self.canvas_right_margin,
-                        self.canvas_top_margin,
+        x1 = self.canvas_left_margin
+        y1 = self.canvas_top_margin
+        x2 = w - self.canvas_right_margin
+        y2 = self.canvas_top_margin
+        can.create_line(x1,
+                        y1,
+                        x2,
+                        y2,
                         width=2)
+        self.draw_object['border_lines'].append((x1, y1, x2, y2))
+
+        x1 = self.canvas_left_margin
+        y1 = self.canvas_height - self.canvas_bottom_margin
+        x2 = w - self.canvas_right_margin
+        y2 = self.canvas_height - self.canvas_bottom_margin
         can.create_line(self.canvas_left_margin,
                         self.canvas_height - self.canvas_bottom_margin,
                         w - self.canvas_right_margin,
                         self.canvas_height - self.canvas_bottom_margin,
                         width=2)
+        self.draw_object['border_lines'].append((x1, y1, x2, y2))
+
+        x1 = self.canvas_left_margin
+        y1 = self.canvas_top_margin
+        x2 = self.canvas_left_margin
+        y2 = self.canvas_height - self.canvas_bottom_margin
         can.create_line(self.canvas_left_margin,
                         self.canvas_top_margin,
                         self.canvas_left_margin,
                         self.canvas_height - self.canvas_bottom_margin,
                         width=2)
+        self.draw_object['border_lines'].append((x1, y1, x2, y2))
+
+        x1 = self.canvas_width - self.canvas_right_margin
+        y1 = self.canvas_top_margin
+        x2 = self.canvas_width - self.canvas_right_margin
+        y2 = self.canvas_height - self.canvas_bottom_margin
         can.create_line(self.canvas_width - self.canvas_right_margin,
                         self.canvas_top_margin,
                         self.canvas_width - self.canvas_right_margin,
                         self.canvas_height - self.canvas_bottom_margin,
                         width=2)
+        self.draw_object['border_lines'].append((x1, y1, x2, y2))
 
         can.create_text(self.canvas_width - self.canvas_right_margin + 10,
                         self.canvas_height / 2,
@@ -951,18 +977,22 @@ class Timeline(tk.Frame):
 
         num_of_days = int(self.str_summ_rev_completion_days.get())
 
+        self.draw_object['vert_grid_lines'] = []
+
         if vert_grid_interval == 0:
             # Interval is every 10 days
             interval = 10
             grid_qty = int(num_of_days / 10)
             for i in range(grid_qty):
-                self.canvas.create_line((i + 1) * interval * self.width_factor + self.canvas_left_margin,
-                                        self.canvas_top_margin,
-                                        (i + 1) * interval * self.width_factor + self.canvas_left_margin,
-                                        self.canvas_height - self.canvas_bottom_margin,
+                x1 = (i + 1) * interval * self.width_factor + self.canvas_left_margin
+                y1 = self.canvas_top_margin
+                x2 = (i + 1) * interval * self.width_factor + self.canvas_left_margin
+                y2 = self.canvas_height - self.canvas_bottom_margin
+                self.canvas.create_line(x1, y1, x2, y2,
                                         fill='#808080',
                                         dash=(2, 2),
                                         tag='vert_grid')
+                self.draw_object['vert_grid_lines'].append((x1, y1, x2, y2))
                 self.canvas.create_text(i * interval * self.width_factor + self.canvas_left_margin,
                                         self.canvas_top_margin - 20,
                                         text=str(i * interval), tag='vert_grid')
@@ -975,13 +1005,15 @@ class Timeline(tk.Frame):
             # Interval is every 30 days (fixed)
             grid_qty = int(num_of_days / interval)
             for i in range(grid_qty + 1):
-                self.canvas.create_line((i + 1) * interval * self.width_factor + self.canvas_left_margin,
-                                        self.canvas_top_margin,
-                                        (i + 1) * interval * self.width_factor + self.canvas_left_margin,
-                                        self.canvas_height - self.canvas_bottom_margin,
+                x1 = (i + 1) * interval * self.width_factor + self.canvas_left_margin
+                y1 = self.canvas_top_margin
+                x2 = (i + 1) * interval * self.width_factor + self.canvas_left_margin
+                y2 = self.canvas_height - self.canvas_bottom_margin
+                self.canvas.create_line(x1, y1, x2, y2,
                                         fill='#808080',
                                         dash=(2, 2),
                                         tag='vert_grid')
+                self.draw_object['vert_grid_lines'].append((x1, y1, x2, y2))
                 self.canvas.create_text(i * interval * self.width_factor + self.canvas_left_margin,
                                         self.canvas_top_margin - 20,
                                         text=str(i * interval), tag='vert_grid')
