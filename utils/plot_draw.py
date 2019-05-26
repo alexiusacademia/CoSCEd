@@ -37,6 +37,10 @@ class PlotDraw:
         for bl in border_lines:
             draw.line(bl, fill='black', width=2)
 
+        vert_grid_lines = self.draw_object['vert_grid_lines']
+        for vl in vert_grid_lines:
+            draw.line(vl, fill='gray', width=1)
+
         img.save(self.path, quality=100)
         img.resize((self.size[0]*2, self.size[1]*2), Image.ANTIALIAS)
         img.close()
