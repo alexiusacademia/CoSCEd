@@ -337,16 +337,25 @@ class Timeline(tk.Frame):
 
         w = self.canvas_width
 
+        self.draw_object['labels'] = []
+        self.draw_object['hor_grid_lines'] = []
         # Display the horizontaal grid lines
         for i in range(1, grid_count_vertical):
-            can.create_line(self.canvas_left_margin,
-                            i * grid_height + self.canvas_top_margin,
-                            w - self.canvas_right_margin,
-                            i * grid_height + self.canvas_top_margin,
+            x1 = self.canvas_left_margin
+            y1 = i * grid_height + self.canvas_top_margin
+            x2 = w - self.canvas_right_margin
+            y2 = y1
+            can.create_line(x1,
+                            y1,
+                            x2,
+                            y2,
                             fill=grid_color,
                             dash=(2, 2), width=0.01)
             can.create_text(10, self.canvas_top_margin + i * grid_height, text=(grid_count_vertical - i) * 10,
                             anchor='nw', offset='15, 0')
+            # Append the line segment
+            self.draw_object['hor_grid_lines'].append((x1, y1, x2, y2))
+
         can.create_text(10, self.canvas_top_margin, text=100, anchor='nw',
                         offset='5, 0')
 
@@ -665,8 +674,7 @@ class Timeline(tk.Frame):
             fn += '.jpg'
 
         plot = plot_draw.PlotDraw(fn, size=(self.canvas_width, self.canvas_height))
-        plot.set_projected(self.draw_object['projected'])
-        plot.set_actual(self.draw_object['actual'])
+        plot.set_draw_object(self.draw_object)
         plot.draw_image()
 
     def open_project(self):
