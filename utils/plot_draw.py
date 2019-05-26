@@ -29,6 +29,10 @@ class PlotDraw:
         actual = self.draw_object['actual']
         draw.line(actual, fill='red', width=1)
 
+        hor_grid_lines = self.draw_object['hor_grid_lines']
+        for hl in hor_grid_lines:
+            draw.line(hl, fill='gray', width=1)
+
         img.save(self.path, quality=100)
         img.resize((self.size[0]*2, self.size[1]*2), Image.ANTIALIAS)
         img.close()
