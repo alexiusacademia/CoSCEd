@@ -1,4 +1,5 @@
-from PIL import Image, ImageDraw
+from PIL import Image, ImageDraw, ImageFont
+import os
 
 
 class PlotDraw:
@@ -41,10 +42,17 @@ class PlotDraw:
         for vl in vert_grid_lines:
             draw.line(vl, fill='gray', width=1)
 
+        cwd = os.getcwd()
+        font_location = os.path.join(cwd, 'res', 'fonts', 'Nonserif.ttf')
+        fnt = ImageFont.truetype(font_location, 16)
+
         legend_object = self.draw_object['legend']
         legend_projected = legend_object['line_projected']
         legend_projected_line = legend_projected['line']
+        legend_projected_label = legend_projected['label']
         draw.line(legend_projected_line, fill='blue', width=2)
+        draw.text(legend_projected_label['location'],
+                  legend_projected_label['text'], fill='blue', font=fnt, anchor=-10)
 
         img.save(self.path, quality=100)
         img.resize((self.size[0]*2, self.size[1]*2), Image.ANTIALIAS)
