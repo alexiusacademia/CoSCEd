@@ -141,26 +141,26 @@ class Timeline(tk.Frame):
 
         cdp_time_label = ttk.Label(frame_canvas_data_display, text="Time").grid(row=0, column=0, sticky="nw")
         cdp_time = ttk.Entry(frame_canvas_data_display, width=10,
-                             textvariable=self.str_cdp_time, state='readonly', justify='right')\
+                             textvariable=self.str_cdp_time, state='readonly', justify='right') \
             .grid(row=0, column=1, sticky="nesw", padx=5, pady=5)
 
         cdp_accomp_label = tk.Label(frame_canvas_data_display, text="Projected Accomplishment").grid(row=1, column=0,
                                                                                                      sticky='nw')
         cdp_accomp = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
-                              textvariable=self.str_cdp_accomp, state='readonly') \
+                               textvariable=self.str_cdp_accomp, state='readonly') \
             .grid(row=1, column=1, sticky='nesw', padx=5, pady=5)
         cdp_actual_accomp_label = tk.Label(frame_canvas_data_display, text="Actual Accomplishment") \
             .grid(row=2, column=0, sticky='nw')
         cdp_accomp = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
-                              textvariable=self.str_cdp_actual_accomp, state='readonly') \
+                               textvariable=self.str_cdp_actual_accomp, state='readonly') \
             .grid(row=2, column=1, sticky='nesw', padx=5, pady=5)
         cdp_slippage_label = tk.Label(frame_canvas_data_display, text='Slippage').grid(row=3, column=0, sticky="nw")
         cdp_slippage = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
-                                textvariable=self.str_cdp_slippage, state='readonly') \
+                                 textvariable=self.str_cdp_slippage, state='readonly') \
             .grid(row=3, column=1, sticky='nesw', padx=5, pady=5)
         cdp_date_label = tk.Label(frame_canvas_data_display, text='Date').grid(row=4, column=0, sticky="nw")
         cdp_date = ttk.Entry(frame_canvas_data_display, width=10, justify='right',
-                            textvariable=self.str_cdp_date, state='readonly') \
+                             textvariable=self.str_cdp_date, state='readonly') \
             .grid(row=4, column=1, sticky='nesw', padx=5, pady=5)
 
         # Summary
@@ -171,33 +171,33 @@ class Timeline(tk.Frame):
         summ_total_susp_days_label = tk.Label(frame_summary, text='Total Suspended Days') \
             .grid(row=0, column=0, sticky='nw')
         summ_total_susp = ttk.Entry(frame_summary, width=10, justify='right',
-                                   textvariable=self.str_summary_total_suspended, state='readonly') \
+                                    textvariable=self.str_summary_total_suspended, state='readonly') \
             .grid(row=0, column=1, padx=5, pady=5, sticky='nes')
 
         summ_total_susp_order_label = tk.Label(frame_summary, text='Total Suspension Orders') \
             .grid(row=1, column=0, sticky='nw')
         summ_total_susp_order = ttk.Entry(frame_summary, width=10, justify='right',
-                                         textvariable=self.str_summary_total_suspension_order, state='readonly') \
+                                          textvariable=self.str_summary_total_suspension_order, state='readonly') \
             .grid(row=1, column=1, padx=5, pady=5, sticky='nes')
         summ_orig_completion_days_label = tk.Label(frame_summary, text='Original Completion Days') \
             .grid(row=2, column=0, sticky='nw')
         summ_orig_completion_days = ttk.Entry(frame_summary, width=10, justify='right',
-                                             textvariable=self.str_summ_orig_completion_days, state='readonly') \
+                                              textvariable=self.str_summ_orig_completion_days, state='readonly') \
             .grid(row=2, column=1, padx=5, pady=5, sticky='nes')
         summ_rev_completion_days_label = tk.Label(frame_summary, text='Revised Completion Days') \
             .grid(row=3, column=0, sticky='nw')
         summ_rev_completion_days = ttk.Entry(frame_summary, width=10, justify='right',
-                                            textvariable=self.str_summ_rev_completion_days, state='readonly') \
+                                             textvariable=self.str_summ_rev_completion_days, state='readonly') \
             .grid(row=3, column=1, padx=5, pady=5, sticky='nes')
         summ_contract_days_used_label = tk.Label(frame_summary, text='Contract Days Used') \
             .grid(row=4, column=0, sticky='nw')
         summ_contract_days_used = ttk.Entry(frame_summary, width=10, justify='right',
-                                             textvariable=self.str_contract_days_used, state='readonly') \
+                                            textvariable=self.str_contract_days_used, state='readonly') \
             .grid(row=4, column=1, padx=5, pady=5, sticky='nes')
         summ_rev_completion_date_label = tk.Label(frame_summary, text='Revised Completion Date') \
             .grid(row=5, column=0, sticky='nw')
         summ_rev_completion_date = ttk.Entry(frame_summary, width=20, justify='right',
-                                            textvariable=self.str_summ_rev_completion_date, state='readonly') \
+                                             textvariable=self.str_summ_rev_completion_date, state='readonly') \
             .grid(row=5, column=1, padx=5, pady=5, sticky='nes')
 
         frame_inputs = tk.LabelFrame(left_panel, text='Inputs')
@@ -340,6 +340,7 @@ class Timeline(tk.Frame):
         self.draw_object['labels'] = []
         self.draw_object['hor_grid_lines'] = []
         self.draw_object['border_lines'] = []
+        self.draw_object['vert_axis_label'] = []
 
         # Display the horizontal grid lines
         for i in range(1, grid_count_vertical):
@@ -347,20 +348,26 @@ class Timeline(tk.Frame):
             y1 = i * grid_height + self.canvas_top_margin
             x2 = w - self.canvas_right_margin
             y2 = y1
-            can.create_line(x1,
-                            y1,
-                            x2,
-                            y2,
+            can.create_line(x1, y1, x2, y2,
                             fill=grid_color,
                             dash=(2, 2), width=0.01)
-            can.create_text(10, self.canvas_top_margin + i * grid_height, text=(grid_count_vertical - i) * 10,
+            text = (grid_count_vertical - i) * 10
+            can.create_text(10, self.canvas_top_margin + i * grid_height, text=text,
                             anchor='nw', offset='15, 0')
 
             # Append the line segment
             self.draw_object['hor_grid_lines'].append((x1, y1, x2, y2))
+            self.draw_object['vert_axis_label'].append({
+                'text': text,
+                'location': (10, self.canvas_top_margin + i * grid_height)
+            })
 
         can.create_text(10, self.canvas_top_margin, text=100, anchor='nw',
                         offset='5, 0')
+        self.draw_object['vert_axis_label'].append({
+            'text': '100',
+            'location': (10, self.canvas_top_margin)
+        })
 
         # Display borders
         x1 = self.canvas_left_margin
