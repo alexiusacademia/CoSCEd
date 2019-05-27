@@ -41,6 +41,11 @@ class PlotDraw:
         for vl in vert_grid_lines:
             draw.line(vl, fill='gray', width=1)
 
+        legend_object = self.draw_object['legend']
+        legend_projected = legend_object['line_projected']
+        legend_projected_line = legend_projected['line']
+        draw.line(legend_projected_line, fill='blue', width=2)
+
         img.save(self.path, quality=100)
         img.resize((self.size[0]*2, self.size[1]*2), Image.ANTIALIAS)
         img.close()
