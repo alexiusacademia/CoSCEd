@@ -359,14 +359,14 @@ class Timeline(tk.Frame):
             self.draw_object['hor_grid_lines'].append((x1, y1, x2, y2))
             self.draw_object['vert_axis_label'].append({
                 'text': text,
-                'location': (10, self.canvas_top_margin + i * grid_height)
+                'location': (10, self.canvas_top_margin + i * grid_height - 15)
             })
 
         can.create_text(10, self.canvas_top_margin, text=100, anchor='nw',
                         offset='5, 0')
         self.draw_object['vert_axis_label'].append({
-            'text': '100',
-            'location': (10, self.canvas_top_margin)
+            'text': 100,
+            'location': (10, self.canvas_top_margin - 15)
         })
 
         # Display borders
