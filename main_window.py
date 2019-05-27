@@ -419,19 +419,46 @@ class Timeline(tk.Frame):
         self.display_legend()
 
     def display_legend(self):
+        self.draw_object['legend'] = {}
+        obj = {}
+
         can = self.canvas
         # Display Legends
-        can.create_line(self.canvas_left_margin + 10,
-                        self.canvas_top_margin + 30,
-                        self.canvas_left_margin + 100,
-                        self.canvas_top_margin + 30,
+        l1_x1 = self.canvas_left_margin + 10
+        l1_y1 = self.canvas_top_margin + 30
+        l1_x2 = self.canvas_left_margin + 100
+        l1_y2 = self.canvas_top_margin + 30
+
+        can.create_line(l1_x1, l1_y1, l1_x2, l1_y2,
                         fill=self.LINE_COLOR_PROJECTED,
                         tags=['legend'])
+        obj['line_projected'] = {
+            'line': (l1_x1, l1_y1, l1_x2, l1_y2),
+            'label': {
+                'text': 'Projected',
+                'location': (self.canvas_left_margin + 110,
+                             self.canvas_top_margin + 30)
+            }
+        }
 
         can.create_text(self.canvas_left_margin + 110,
                         self.canvas_top_margin + 30,
                         text='Projected', anchor='w', fill=self.LINE_COLOR_PROJECTED,
                         tags=['legend'])
+
+        l2_x1 = self.canvas_left_margin + 10
+        l2_y1 = self.canvas_top_margin + 60
+        l2_x2 = self.canvas_left_margin + 100
+        l2_y2 = self.canvas_top_margin + 60
+
+        obj['line_actual'] = {
+            'line': (l2_x1, l2_y1, l2_x2, l2_y2),
+            'label': {
+                'text': 'Actual',
+                'location': (self.canvas_left_margin + 110,
+                             self.canvas_top_margin + 60)
+            }
+        }
 
         can.create_line(self.canvas_left_margin + 10,
                         self.canvas_top_margin + 60,
@@ -444,6 +471,8 @@ class Timeline(tk.Frame):
                         self.canvas_top_margin + 60,
                         text='Actual', anchor='w', fill=self.LINE_COLOR_ACTUAL,
                         tags=['legend'])
+
+        self.draw_object['legend'] = obj
 
     def plot(self, data, name, line_fill_color):
         """
