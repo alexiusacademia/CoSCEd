@@ -22,6 +22,12 @@ class PlotDraw:
     def draw_image(self):
         img = Image.new('RGB', self.size, color='white')
 
+        # Set the font
+        cwd = os.getcwd()
+        font_location = os.path.join(cwd, 'res', 'fonts', 'Nonserif.ttf')
+        fnt = ImageFont.truetype(font_location, 16)
+        fnt_axes = ImageFont.truetype(font_location, 14)
+
         draw = ImageDraw.Draw(img)
 
         projected = self.draw_object['projected']
@@ -34,6 +40,10 @@ class PlotDraw:
         for hl in hor_grid_lines:
             draw.line(hl, fill='gray', width=1)
 
+        vert_axis_labels = self.draw_object['vert_axis_label']
+        for val in vert_axis_labels:
+            draw.text(val['location'], str(val['text']), fill=0, font=fnt_axes)
+
         border_lines = self.draw_object['border_lines']
         for bl in border_lines:
             draw.line(bl, fill='black', width=2)
@@ -41,10 +51,6 @@ class PlotDraw:
         vert_grid_lines = self.draw_object['vert_grid_lines']
         for vl in vert_grid_lines:
             draw.line(vl, fill='gray', width=1)
-
-        cwd = os.getcwd()
-        font_location = os.path.join(cwd, 'res', 'fonts', 'Nonserif.ttf')
-        fnt = ImageFont.truetype(font_location, 16)
 
         legend_object = self.draw_object['legend']
 
