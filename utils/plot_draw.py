@@ -25,10 +25,10 @@ class PlotDraw:
         draw = ImageDraw.Draw(img)
 
         projected = self.draw_object['projected']
-        draw.line(projected, fill='blue', width=1)
+        draw.line(projected, fill='blue', width=2)
 
         actual = self.draw_object['actual']
-        draw.line(actual, fill='red', width=1)
+        draw.line(actual, fill='red', width=2)
 
         hor_grid_lines = self.draw_object['hor_grid_lines']
         for hl in hor_grid_lines:
