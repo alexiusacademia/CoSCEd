@@ -437,7 +437,7 @@ class Timeline(tk.Frame):
             'label': {
                 'text': 'Projected',
                 'location': (self.canvas_left_margin + 110,
-                             self.canvas_top_margin + 30)
+                             self.canvas_top_margin + 30 - 15)
             }
         }
 
@@ -456,7 +456,7 @@ class Timeline(tk.Frame):
             'label': {
                 'text': 'Actual',
                 'location': (self.canvas_left_margin + 110,
-                             self.canvas_top_margin + 60)
+                             self.canvas_top_margin + 60 - 15)
             }
         }
 
