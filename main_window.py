@@ -739,6 +739,9 @@ class Timeline(tk.Frame):
         plot.set_draw_object(self.draw_object)
         plot.draw_image()
 
+        # Display status message
+        self.str_status_message.set('Image saved at ' + fn)
+
     def open_project(self):
         fn = fd.askopenfilename(initialdir='/',
                                 title='Open Project',
