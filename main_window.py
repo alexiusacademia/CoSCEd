@@ -14,7 +14,7 @@ from utils import recent
 from utils import plot_draw
 
 
-class Timeline(tk.Frame):
+class TimeLine(tk.Frame):
     projected_accomplishment = []
     actual_accomplishment = []
     suspensions = []
