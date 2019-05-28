@@ -1006,6 +1006,19 @@ class Timeline(tk.Frame):
         else:
             messagebox.showerror('Input Error', 'Invalid date format.\nFormat shall be in the form of \'mm/dd/yyyy\'')
 
+        # Check if a project is opened
+        if self.project_filename:
+            # Calculate contract days used
+            nodes_actual = len(self.actual_accomplishment)
+            actual_duration = self.actual_accomplishment[nodes_actual - 1]['time']
+
+            # Get all the suspensions
+            suspensions_total_duration = 0
+            for sus in self.suspensions:
+                suspensions_total_duration += sus['duration']
+
+
+
     def cbo_vert_grid_selected(self, event):
         # Draw the vertical grid
         self.canvas.delete('vert_grid')
