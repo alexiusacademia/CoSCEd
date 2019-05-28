@@ -1017,7 +1017,10 @@ class Timeline(tk.Frame):
             for sus in self.suspensions:
                 suspensions_total_duration += sus['duration']
 
+            contract_days_used = actual_duration - suspensions_total_duration
+            self.str_contract_days_used.set(str(contract_days_used))
 
+            self.str_status_message.set('Contract days used calculated.')
 
     def cbo_vert_grid_selected(self, event):
         # Draw the vertical grid
