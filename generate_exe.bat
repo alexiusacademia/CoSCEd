@@ -1,0 +1,1 @@
+python -OO -m PyInstaller main.py -F -w -n CoSCEd -i res/icons/icon.ico
