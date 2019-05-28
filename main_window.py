@@ -1014,6 +1014,7 @@ class Timeline(tk.Frame):
         num_of_days = int(self.str_summ_rev_completion_days.get())
 
         self.draw_object['vert_grid_lines'] = []
+        self.draw_object['hor_axis_label'] = []
 
         if vert_grid_interval == 0:
             # Interval is every 10 days
@@ -1024,17 +1025,32 @@ class Timeline(tk.Frame):
                 y1 = self.canvas_top_margin
                 x2 = (i + 1) * interval * self.width_factor + self.canvas_left_margin
                 y2 = self.canvas_height - self.canvas_bottom_margin
+                text_location = (i * interval * self.width_factor + self.canvas_left_margin,
+                                 self.canvas_top_margin - 20)
+
                 self.canvas.create_line(x1, y1, x2, y2,
                                         fill='#808080',
                                         dash=(2, 2),
                                         tag='vert_grid')
                 self.draw_object['vert_grid_lines'].append((x1, y1, x2, y2))
-                self.canvas.create_text(i * interval * self.width_factor + self.canvas_left_margin,
-                                        self.canvas_top_margin - 20,
+
+                self.canvas.create_text(text_location[0],
+                                        text_location[1],
                                         text=str(i * interval), tag='vert_grid')
+                self.draw_object['hor_axis_label'].append({
+                    'text': str(i * interval),
+                    'location': (text_location[0],
+                                 text_location[1])
+                })
+
             self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
                                     self.canvas_top_margin - 20,
                                     text=str(num_of_days), tag='vert_grid')
+            self.draw_object['hor_axis_label'].append({
+                'text': str(num_of_days),
+                'location': (num_of_days * self.width_factor + self.canvas_left_margin,
+                             self.canvas_top_margin - 20)
+            })
 
         elif vert_grid_interval == 1:
             interval = 30
@@ -1045,17 +1061,33 @@ class Timeline(tk.Frame):
                 y1 = self.canvas_top_margin
                 x2 = (i + 1) * interval * self.width_factor + self.canvas_left_margin
                 y2 = self.canvas_height - self.canvas_bottom_margin
+                text_location = (i * interval * self.width_factor + self.canvas_left_margin,
+                                 self.canvas_top_margin - 20)
+
                 self.canvas.create_line(x1, y1, x2, y2,
                                         fill='#808080',
                                         dash=(2, 2),
                                         tag='vert_grid')
                 self.draw_object['vert_grid_lines'].append((x1, y1, x2, y2))
-                self.canvas.create_text(i * interval * self.width_factor + self.canvas_left_margin,
-                                        self.canvas_top_margin - 20,
+
+                self.canvas.create_text(text_location[0],
+                                        text_location[1],
                                         text=str(i * interval), tag='vert_grid')
+                self.draw_object['hor_axis_label'].append({
+                    'text': str(i * interval),
+                    'location': (text_location[0],
+                                 text_location[1])
+                })
+
             self.canvas.create_text(num_of_days * self.width_factor + self.canvas_left_margin,
                                     self.canvas_top_margin - 20,
                                     text=str(num_of_days), tag='vert_grid')
+            self.draw_object['hor_axis_label'].append({
+                'text': str(num_of_days),
+                'location': (num_of_days * self.width_factor + self.canvas_left_margin,
+                             self.canvas_top_margin - 20)
+            })
+
         else:
             self.canvas.delete('vert_grid')
 
