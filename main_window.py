@@ -32,7 +32,7 @@ class TimeLine(tk.Frame):
     LINE_COLOR_PROJECTED = '#0000ff'
     LINE_COLOR_ACTUAL = '#ff0000'
 
-    app_title = "Project Timeline Editor"
+    app_title = "Construction S-Curve Editor"
 
     menu_bar = None
     recent_menu = None
