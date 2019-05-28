@@ -1,7 +1,7 @@
-# Project Timeline Editor
+# CoSCEd
 
-**Project Timeline Editor** is a desktop application to view and edit project
-or contract timeline in a graphical way to easily visualize the activities.
+**Construction S-Curve Editor** is a desktop application to view and edit project
+or contract schedule in a graphical way to easily visualize and edit the activities in percentage manner.
 
 
 ## Screenshots
