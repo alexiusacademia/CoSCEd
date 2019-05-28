@@ -52,6 +52,10 @@ class PlotDraw:
         for vl in vert_grid_lines:
             draw.line(vl, fill='gray', width=1)
 
+        hor_axis_labels = self.draw_object['hor_axis_label']
+        for hal in hor_axis_labels:
+            draw.text(hal['location'], str(hal['text']), fill=0, font=fnt_axes)
+
         legend_object = self.draw_object['legend']
 
         legend_projected = legend_object['line_projected']
