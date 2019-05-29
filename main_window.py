@@ -660,9 +660,8 @@ class TimeLine(tk.Frame):
 
     def on_about_clicked(self):
         messagebox.showinfo('About',
-                            'CoCSEd v0.3.0\nConstruction S-Curve Editor\n'
-                            'Copyright 2019\n'
-                            'Alexius S. Academia')
+                            'CoCSEd v0.3.0\nConstruction S-Curve Editor\n\n'
+                            'Copyright 2019   Alexius Academia')
 
     def on_resize(self, event):
         # Adapt to the size of the canvas
