@@ -107,7 +107,7 @@ class TimeLine(tk.Frame):
 
         help_menu = tk.Menu(self.menu_bar, tearoff=0)
         help_menu.add_command(label='Tutorial')
-        help_menu.add_command(label='About')
+        help_menu.add_command(label='About', command=self.on_about_clicked)
 
         self.menu_bar.add_cascade(label="File", menu=file_menu)
         self.menu_bar.add_cascade(label="Edit", menu=edit_menu)
@@ -657,6 +657,12 @@ class TimeLine(tk.Frame):
 
     # ===========================================================
     # Binding methods
+
+    def on_about_clicked(self):
+        messagebox.showinfo('About',
+                            'CoCSEd v0.3.0\nConstruction S-Curve Editor\n'
+                            'Copyright 2019\n'
+                            'Alexius S. Academia')
 
     def on_resize(self, event):
         # Adapt to the size of the canvas
