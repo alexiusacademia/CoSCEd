@@ -1,5 +1,6 @@
 import os
 import json
+from utils.file_op import FileOperation
 
 
 class Recent:
@@ -7,12 +8,12 @@ class Recent:
     Handles the recent projects feature
     """
     FILE_NAME_RECENT = 'recent.dat'
-    full_path = ''
+    filename = ''
 
     def __init__(self):
         # Create a recent json file if not exist
-        self.full_path = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
-        exists = os.path.isfile(self.full_path)
+        self.filename = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
+        exists = os.path.isfile(self.filename)
         if not exists:
             # Create it
             self.create_recent_file()
@@ -40,7 +41,7 @@ class Recent:
         Get the list of recent projects
         :return:
         """
-        recent_file = open(self.full_path, 'r')
+        recent_file = open(self.filename, 'r')
 
         proj_file_lines = recent_file.readlines()
         json_string = ''
