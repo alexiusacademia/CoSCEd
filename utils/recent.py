@@ -9,20 +9,22 @@ class Recent:
     """
     FILE_NAME_RECENT = 'recent.dat'
     filename = ''
+    file_op = None
 
     def __init__(self):
         # Create a recent json file if not exist
         self.filename = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
+
         exists = os.path.isfile(self.filename)
         if not exists:
             # Create it
             self.create_recent_file()
 
+        self.file_op = FileOperation(self.filename)
+
     def create_recent_file(self):
-        fn = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
         data = {'recent': []}
-        with open(fn, 'w') as output_file:
-            json.dump(data, output_file, indent=4)
+        self.file_op.save_json(data)
 
     def add_recent(self, path):
         recent_projects = self.get_recent()
