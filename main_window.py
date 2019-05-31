@@ -12,6 +12,7 @@ import dialogs.suspensions as suspensions_dialog
 import utils.convert_to_num as converter
 from utils import recent
 from utils import plot_draw
+from utils.file_op import FileOperation
 
 
 class TimeLine(tk.Frame):
@@ -759,12 +760,9 @@ class TimeLine(tk.Frame):
         :param fn: Full path to the project file.
         :return:
         """
-        project_file = open(fn, 'r')
-        project_file_lines = project_file.readlines()
-        json_string = ''
-        for line in project_file_lines:
-            json_string += line
-        json_project = json.loads(json_string)
+        fileop = FileOperation(fn)
+        json_project = fileop.get_json()
+
         # Retrieve the projected object timeline
         projected_imeplementation = json_project['projected']
 
