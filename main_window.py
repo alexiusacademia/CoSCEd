@@ -807,12 +807,9 @@ class TimeLine(tk.Frame):
         self.add_project_to_recent()
 
     def reopen_project(self):
-        proj_file = open(self.project_filename, 'r')
-        proj_file_lines = proj_file.readlines()
-        json_string = ''
-        for line in proj_file_lines:
-            json_string += line
-        json_project = json.loads(json_string)
+        fileop = FileOperation(self.project_filename)
+        json_project = fileop.get_json()
+
         # Retrieve the projected object timeline
         projected_implementation = json_project['projected']
 
