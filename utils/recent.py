@@ -34,9 +34,7 @@ class Recent:
             recent_projects.append(path)
         data = {'recent': recent_projects}
 
-        fn = os.path.join(os.getcwd(), self.FILE_NAME_RECENT)
-        with open(fn, 'w') as output_file:
-            json.dump(data, output_file, indent=4)
+        self.file_op.save_json(data)
 
     def get_recent(self):
         """
