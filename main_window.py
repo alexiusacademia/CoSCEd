@@ -760,8 +760,8 @@ class TimeLine(tk.Frame):
         :param fn: Full path to the project file.
         :return:
         """
-        fileop = FileOperation(fn)
-        json_project = fileop.get_json()
+        file_op = FileOperation(fn)
+        json_project = file_op.get_json()
 
         # Retrieve the projected object timeline
         projected_imeplementation = json_project['projected']
@@ -807,8 +807,8 @@ class TimeLine(tk.Frame):
         self.add_project_to_recent()
 
     def reopen_project(self):
-        fileop = FileOperation(self.project_filename)
-        json_project = fileop.get_json()
+        file_op = FileOperation(self.project_filename)
+        json_project = file_op.get_json()
 
         # Retrieve the projected object timeline
         projected_implementation = json_project['projected']
