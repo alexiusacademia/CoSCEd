@@ -862,8 +862,8 @@ class TimeLine(tk.Frame):
             'duration': 0
         })
 
-        with open(fn, 'w') as output_file:
-            json.dump(data, output_file, indent=4)
+        file_op = FileOperation(fn)
+        file_op.save_json(data)
 
         self.project_filename = fn
         self.display_grid()
