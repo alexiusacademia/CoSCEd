@@ -27,3 +27,7 @@ class FileOperation:
             json_string += line
         json_project = json.loads(json_string)
         return json_project
+
+    def save_json(self, data):
+        with open(self.filename, 'w') as output_file:
+            json.dump(data, output_file, indent=4)
