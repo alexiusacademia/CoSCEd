@@ -29,5 +29,10 @@ class FileOperation:
         return json_project
 
     def save_json(self, data):
+        """
+        Saves the json object to file.
+        :param data: The json object to save.
+        :return:
+        """
         with open(self.filename, 'w') as output_file:
             json.dump(data, output_file, indent=4)
