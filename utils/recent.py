@@ -41,13 +41,6 @@ class Recent:
         Get the list of recent projects
         :return:
         """
-        recent_file = open(self.filename, 'r')
+        recent_json = self.file_op.get_json()
 
-        proj_file_lines = recent_file.readlines()
-        json_string = ''
-
-        for line in proj_file_lines:
-            json_string += line
-
-        recent_json = json.loads(json_string)
         return recent_json['recent']
