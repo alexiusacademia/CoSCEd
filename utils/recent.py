@@ -23,6 +23,10 @@ class Recent:
         self.file_op = FileOperation(self.filename)
 
     def create_recent_file(self):
+        """
+        Create the recent.dat file.
+        :return:
+        """
         data = {'recent': []}
         self.file_op.save_json(data)
 
