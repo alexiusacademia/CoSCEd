@@ -27,6 +27,11 @@ class Recent:
         self.file_op.save_json(data)
 
     def add_recent(self, path):
+        """
+        Add the given path to the recent file.
+        :param path: The filename to add.
+        :return:
+        """
         recent_projects = self.get_recent()
         if path in recent_projects:
             recent_projects.append(recent_projects.pop(recent_projects.index(path)))
