@@ -3,6 +3,10 @@ import os
 
 
 class PlotDraw:
+    """
+    This class is responsible for drawing the image and saving it
+    as an image file.
+    """
     path = ''
     size = ()
     draw_object = {}
