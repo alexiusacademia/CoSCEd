@@ -996,12 +996,16 @@ class TimeLine(tk.Frame):
             self.str_summ_rev_completion_date.set(end_date)
 
             # Save the start date
-            proj_file = open(self.project_filename, 'r')
-            proj_file_lines = proj_file.readlines()
-            json_string = ''
-            for line in proj_file_lines:
-                json_string += line
-            json_project = json.loads(json_string)
+            # proj_file = open(self.project_filename, 'r')
+            # proj_file_lines = proj_file.readlines()
+            # json_string = ''
+            # for line in proj_file_lines:
+            #     json_string += line
+            # json_project = json.loads(json_string)
+
+            file_op = FileOperation(self.project_filename)
+            json_project = file_op.get_json()
+
             json_project['date_started'] = str_start_date
             with open(self.project_filename, 'w') as output_file:
                 json.dump(json_project, output_file, indent=4)
