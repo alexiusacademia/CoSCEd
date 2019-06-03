@@ -598,7 +598,8 @@ class TimeLine(tk.Frame):
             self.slippage = round((actual - projected), 2)
         return self.slippage
 
-    def get_accomplishment_at(self, time, accomplishment_list):
+    @staticmethod
+    def get_accomplishment_at(time, accomplishment_list):
         # Calculates accomplishment by interpolation
         for i in range(len(accomplishment_list) - 1):
             t1 = accomplishment_list[i]['time']
