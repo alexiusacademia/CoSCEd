@@ -115,7 +115,7 @@ class TimeLine(tk.Frame):
         self.menu_bar.add_cascade(label='Help', menu=help_menu)
 
         # self.parent.config(menu=self.menu_bar)
-        project_menu = ProjectMenu(self.parent)
+        project_menu = ProjectMenu(self.parent, self)
         self.parent.config(menu=project_menu)
 
         canvas_title = tk.Label(self, text="S-CURVE", font=('Helvetica', '16', 'bold'), fg='gray')
