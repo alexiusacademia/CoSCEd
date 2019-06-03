@@ -26,5 +26,11 @@ class ProjectMenu(tk.Menu):
         edit_menu.add_command(label='Actual Accomplishment', command=self.parent.edit_actual)
         edit_menu.add_command(label='Suspensions', command=self.parent.edit_suspensions)
 
+        # Help Menu
+        help_menu = tk.Menu(self, tearoff=0)
+        # help_menu.add_command(label='Tutorial')
+        help_menu.add_command(label='About', command=self.parent.on_about_clicked)
+
         self.add_cascade(label='File', menu=file_menu)
         self.add_cascade(label='Edit', menu=edit_menu)
+        self.add_cascade(label='Help', menu=help_menu)
