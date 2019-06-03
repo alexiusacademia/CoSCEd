@@ -12,11 +12,19 @@ class ProjectMenu(tk.Menu):
         menu_save = tk.Menu(self, tearoff=0)
         menu_save.add_command(label='Export S-Curve as Image (JPEG)', command=self.parent.export_image_as_jpeg)
 
+        # File Menu
         file_menu = tk.Menu(self, tearoff=0)
         file_menu.add_command(label='New', command=self.parent.new_project)
-        file_menu.add_command(label='Open Project' , command=self.parent.open_project)
+        file_menu.add_command(label='Open Project', command=self.parent.open_project)
         file_menu.add_cascade(label='Export', menu=menu_save)
         file_menu.add_separator()
-        file_menu.add_command(label='Quit') # , command=self.close_main_window)
+        file_menu.add_command(label='Quit', command=self.parent.close_main_window)
+
+        # Edit Menu
+        edit_menu = tk.Menu(self, tearoff=0)
+        edit_menu.add_command(label='Projected Accomplishment', command=self.parent.edit_projected)
+        edit_menu.add_command(label='Actual Accomplishment', command=self.parent.edit_actual)
+        edit_menu.add_command(label='Suspensions', command=self.parent.edit_suspensions)
 
         self.add_cascade(label='File', menu=file_menu)
+        self.add_cascade(label='Edit', menu=edit_menu)
