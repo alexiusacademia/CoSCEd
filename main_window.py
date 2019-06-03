@@ -88,35 +88,11 @@ class TimeLine(tk.Frame):
         """
         # ===========================================================
         # Menus
-        self.menu_bar = tk.Menu(self.parent)
-
-        menu_save = tk.Menu(self.menu_bar, tearoff=0)
-        menu_save.add_command(label='Export S-Curve as Image (JPEG)', command=self.export_image_as_jpeg)
-        menu_save.add_command(label='Export S-Curve as Post Script', command=self.export_scurve_as_postscript)
-
-        file_menu = tk.Menu(self.menu_bar, tearoff=0)
-        file_menu.add_command(label='New', command=self.new_project)
-        file_menu.add_command(label='Open Project', command=self.open_project)
-        file_menu.add_cascade(label='Export', menu=menu_save)
-        file_menu.add_separator()
-        file_menu.add_command(label='Quit', command=self.close_main_window)
-
-        edit_menu = tk.Menu(self.menu_bar, tearoff=0)
-        edit_menu.add_command(label='Projected Accomplishment', command=self.edit_projected)
-        edit_menu.add_command(label='Actual Accomplishment', command=self.edit_actual)
-        edit_menu.add_command(label='Suspensions', command=self.edit_suspensions)
-
-        help_menu = tk.Menu(self.menu_bar, tearoff=0)
-        help_menu.add_command(label='Tutorial')
-        help_menu.add_command(label='About', command=self.on_about_clicked)
-
-        self.menu_bar.add_cascade(label="File", menu=file_menu)
-        self.menu_bar.add_cascade(label="Edit", menu=edit_menu)
-        self.menu_bar.add_cascade(label='Help', menu=help_menu)
+        # self.menu_bar = tk.Menu(self.parent)
 
         # self.parent.config(menu=self.menu_bar)
-        project_menu = ProjectMenu(self.parent, self)
-        self.parent.config(menu=project_menu)
+        self.menu_bar = ProjectMenu(self.parent, self)
+        self.parent.config(menu=self.menu_bar)
 
         canvas_title = tk.Label(self, text="S-CURVE", font=('Helvetica', '16', 'bold'), fg='gray')
         canvas_title.grid(column=1, row=0)
