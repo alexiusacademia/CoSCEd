@@ -3,7 +3,6 @@ from tkinter import filedialog as fd
 from tkinter import messagebox, ttk
 from datetime import date
 import datetime
-import json
 import sys
 
 import dialogs.projected as projected_dialog
@@ -13,6 +12,7 @@ import utils.convert_to_num as converter
 from utils import recent
 from utils import plot_draw
 from utils.file_op import FileOperation
+from utils.menus import ProjectMenu
 
 
 class TimeLine(tk.Frame):
@@ -114,7 +114,9 @@ class TimeLine(tk.Frame):
         self.menu_bar.add_cascade(label="Edit", menu=edit_menu)
         self.menu_bar.add_cascade(label='Help', menu=help_menu)
 
-        self.parent.config(menu=self.menu_bar)
+        # self.parent.config(menu=self.menu_bar)
+        project_menu = ProjectMenu(self.parent)
+        self.parent.config(menu=project_menu)
 
         canvas_title = tk.Label(self, text="S-CURVE", font=('Helvetica', '16', 'bold'), fg='gray')
         canvas_title.grid(column=1, row=0)
